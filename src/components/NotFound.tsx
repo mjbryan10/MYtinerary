@@ -1,5 +1,4 @@
 import React from 'react';
-import Footer from './footer/Footer';  
 
 export default function NotFound() {
     const styles = {
@@ -14,7 +13,6 @@ export default function NotFound() {
             <h1>Page not found</h1>
             <h3>"This is not the page you were looking for ..."</h3>
             <img src="https://media.giphy.com/media/4Xbr39OD96ZmU/giphy.gif" alt="Obi Wan waving hand"/>
-            <Footer />
         </div>
     )
 }
