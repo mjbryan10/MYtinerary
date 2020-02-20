@@ -1,0 +1,18 @@
+@import '../../styles/variables.scss';
+
+$icon-size: 50px;
+
+footer {
+    margin: 1rem auto;
+    a{
+        opacity: 0.5;
+        transition: opacity ease-out 0.25s;
+        &:hover {
+            opacity: 1;
+        }
+        img {
+            height: $icon-size;
+            width: $icon-size;
+        }
+    }
+}
