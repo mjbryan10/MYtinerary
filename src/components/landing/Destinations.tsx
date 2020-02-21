@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import CityCard from "./CityCard";
-import Cities from "../../data/cities.json";
+// import Cities from "../../data/cities.json";
 import DestinationControls from "./DestinationControls";
 
 import { createStyles, makeStyles } from "@material-ui/core/styles";
@@ -10,8 +10,9 @@ const useStyles = makeStyles(() =>
 			display: "flex",
 			flexFlow: "row wrap",
 			width: "100%",
+			minHeight: "250px",
 			// color: "blue",
-		},
+		}
 	})
 );
 export default function Destinations() {
@@ -20,7 +21,20 @@ export default function Destinations() {
 	const [cities, setCities] = useState<any>([]);
 	const [slideLength, setSlideLength] = useState<number>(0);
 	const [slideIndex, setSlideIndex] = useState<number>(0);
-	const [isLoading, setisLoading] = useState<Boolean>(false);
+	const [isFetchingCities, setIsFetchingCities] = useState<boolean>(false);
+	const [citiesLoaded, setCitiesLoaded] = useState<boolean>(false);
+	const fetchCities = () => {
+		setIsFetchingCities(true);
+		fetch("http://localhost:5000/cities/all")
+			.then(response => response.json())
+			.then(result => {
+				setIsFetchingCities(false);
+				setCities(result);
+				setCitiesLoaded(true);
+				console.log(cities);
+			})
+			.catch(e => console.log(e));
+	};
 
 	let numPerSlide = 4;
 	const calcNumOfSlides = (): number => {
@@ -28,28 +42,33 @@ export default function Destinations() {
 	};
 	let onButtonClick = (direction: string) => {
 		// setisLoading(true);
-		let index = slideIndex;
+		let index: number = slideIndex;
 		if (direction === "right") {
-			index = (slideIndex === slideLength - 1) ? 0 : index + 1;
+			index = slideIndex === slideLength - 1 ? 0 : index + 1;
 		} else if (direction === "left") {
-			index = (slideIndex === 0) ? slideLength - 1 : index - 1;
+			index = slideIndex === 0 ? slideLength - 1 : index - 1;
 		}
 		setSlideIndex(index);
 		// setisLoading(false);
 	};
 	const updateState = (): void => {
-		setCities(Cities);
+		// setCities(Cities);
 		setSlideLength(calcNumOfSlides());
-	}
+	};
 	function filterByCurrentSlide(array: [any]) {
 		let filteredArray = [];
-		let index = numPerSlide * slideIndex;
-		for (let i = index; i < index + numPerSlide; i++) {
+		let index: number = numPerSlide * slideIndex;
+		let length: number =
+			index + numPerSlide >= array.length ? array.length : index + numPerSlide;
+		for (let i = index; i < length; i++) {
 			const element = array[i];
-			filteredArray.push(element)
+			filteredArray.push(element);
 		}
 		return filteredArray;
 	}
+	useEffect((): void => {
+		fetchCities();
+	}, []);
 	useEffect((): void => {
 		updateState();
 	});
@@ -57,17 +76,21 @@ export default function Destinations() {
 	return (
 		<div>
 			<h3>Popular MYtineraries</h3>
-			{(isLoading) ? <p>Loading...</p> : null}
-			<div className={classes.cardsContainer}>
-				{filterByCurrentSlide(cities).map((city: any, index: Number) => {
-					return <CityCard cityName={city} key={index} />;
-				})}
-				<DestinationControls
-					slideLength={slideLength}
-					slideIndex={slideIndex}
-					onButtonClick={onButtonClick}
-				/>
-			</div>
+			{!citiesLoaded ? (
+				<p>Loading...</p>
+			) : (
+				<div className={classes.cardsContainer}>
+					{console.log(filterByCurrentSlide(cities))}
+					{filterByCurrentSlide(cities).map((city: any, index: number) => {
+						return <CityCard cityName={city.name} key={index} />;
+					})}
+					<DestinationControls
+						slideLength={slideLength}
+						slideIndex={slideIndex}
+						onButtonClick={onButtonClick}
+					/>
+				</div>
+			)}
 		</div>
 	);
 }

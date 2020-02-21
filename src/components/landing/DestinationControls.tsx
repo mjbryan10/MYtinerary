@@ -9,6 +9,7 @@ const useStyles = makeStyles(() =>
             width: "100%",
             maxWidth: "800px",
             justifyContent: "center",
+            height: "25px"
 			// color: "blue",
 		},
 	})
@@ -26,7 +27,7 @@ export default function DestinationControls(props: any) {
             <button onClick={handleClick} value="left">Left</button>
             {[...Array(slideLength)].map((element, index) => {
                 return(
-                    (slideIndex === index) ? <span>(*)</span> : <span>*</span>
+                    (slideIndex === index) ? <span className="span-dot current"></span> : <span className="span-dot"></span>
                     )
                 })}
                 <button onClick={handleClick} value="right">Right</button>
