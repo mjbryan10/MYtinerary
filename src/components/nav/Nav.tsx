@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme: Theme) =>
             marginRight: theme.spacing(2),
         },
         bar: {
-            background: 'linear-gradient(45deg, #dc2b00 30%, #FF8E53 90%)',
+            // background: 'linear-gradient(45deg, #dc2b00 30%, #FF8E53 90%)',
             display: 'flex',
             justifyContent: 'space-between'
         }
@@ -48,12 +48,13 @@ export default function Nav() {
         console.log("TCL: handleMenu -> event.currentTarget", event.currentTarget);
 	};
 
-	const handleClose = () => {
+	const handleClose = (e: any) => {
+		console.log(e.target)
 		setAnchorEl(null);
 	};
 	return (
 		<div className={classes.root}>
-			<AppBar position="sticky" style={{ margin: 0 }}>
+			<AppBar position="static" style={{ margin: 0 }}>
 				<Toolbar className={classes.bar}>
 					<div>
 						<IconButton
