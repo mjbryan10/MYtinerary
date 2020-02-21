@@ -16,14 +16,18 @@ const useStyles = makeStyles(() =>
 );
 export default function Destinations() {
 	const classes = useStyles();
+	//STATE
 	const [cities, setCities] = useState<any>([]);
 	const [slideLength, setSlideLength] = useState<number>(0);
 	const [slideIndex, setSlideIndex] = useState<number>(0);
+	const [isLoading, setisLoading] = useState<Boolean>(false);
+
 	let numPerSlide = 4;
 	const calcNumOfSlides = (): number => {
 		return Math.ceil(cities.length / numPerSlide);
 	};
 	let onButtonClick = (direction: string) => {
+		// setisLoading(true);
 		let index = slideIndex;
 		if (direction === "right") {
 			index = (slideIndex === slideLength - 1) ? 0 : index + 1;
@@ -31,6 +35,7 @@ export default function Destinations() {
 			index = (slideIndex === 0) ? slideLength - 1 : index - 1;
 		}
 		setSlideIndex(index);
+		// setisLoading(false);
 	};
 	const updateState = (): void => {
 		setCities(Cities);
@@ -52,6 +57,7 @@ export default function Destinations() {
 	return (
 		<div>
 			<h3>Popular MYtineraries</h3>
+			{(isLoading) ? <p>Loading...</p> : null}
 			<div className={classes.cardsContainer}>
 				{filterByCurrentSlide(cities).map((city: any, index: Number) => {
 					return <CityCard cityName={city} key={index} />;

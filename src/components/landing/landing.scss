@@ -51,7 +51,15 @@ header {
     margin: 0.2rem;
     position: relative;
     background-color: blue;
-    .city-card.inner {
+    .city-card-inner {
         position: absolute;
+        display: flex;
+        height: 100%;
+        width: 100%;
+        align-items: center;
+        justify-content: center;
+        // top: 0;
+        // right:0;
+        // bottom: 0;
     }
 }
