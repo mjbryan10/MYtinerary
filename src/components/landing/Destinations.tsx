@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import CityCard from "./CityCard";
+import CityCard from "../cities/CityCard";
 // import Cities from "../../data/cities.json";
 import DestinationControls from "./DestinationControls";
 import Spinner from "../global/Spinner";

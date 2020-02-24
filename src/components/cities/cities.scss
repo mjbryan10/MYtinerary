@@ -1,0 +1,12 @@
+.cities-container {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    width: 100%;
+    .cards-container {
+        width: 100%;
+    }
+    & .city-card {
+        background-color: #ccc;
+    }
+}
