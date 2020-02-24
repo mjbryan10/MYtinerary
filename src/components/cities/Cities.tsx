@@ -1,13 +1,19 @@
 import React, { useState, useEffect } from "react";
 import CityCard from "./CityCard";
 import Spinner from "../global/Spinner";
+import { connect } from "react-redux";
 
 import "./cities.scss";
 
-export default function Cities() {
+const Cities = (props: any) => {
+	const { test } = props;
+    console.log("TCL: Cities -> test", test);
+	
+
+
 	const [searchStr, setSearchStr] = useState("");
 	const [hasLoaded, setHasLoaded] = useState(false);
-	const [isFetchingCities, setIsFetchingCities] = useState<boolean>(false);
+	// const [isFetchingCities, setIsFetchingCities] = useState<boolean>(false);
 	const [cities, setCities] = useState<any>({});
 	const fetchCities = () => {
 		setHasLoaded(false);
@@ -17,7 +23,7 @@ export default function Cities() {
 				setCities(result);
 				setHasLoaded(true);
 			})
-			.catch(e => console.log(e));
+			.catch(err => console.log(err));
 	};
 	const handleChange = (e: any) => {
 		e.preventDefault();
@@ -62,3 +68,9 @@ export default function Cities() {
 		</div>
 	);
 }
+const mapStateToProps = (state: any): object => {
+	return {
+		test: state.test,
+	};
+};
+export default connect(mapStateToProps)(Cities);

@@ -39,9 +39,8 @@ export default function Destinations() {
 				setIsFetchingCities(false);
 				setCities(result);
 				setCitiesLoaded(true);
-				console.log(cities);
 			})
-			.catch(e => console.log(e));
+			.catch(err => console.log(err));
 	};
 
 	let numPerSlide = 4;
@@ -88,7 +87,6 @@ export default function Destinations() {
 				<Spinner />
 			) : (
 				<div className={classes.cardsContainer}>
-					{console.log(filterByCurrentSlide(cities))}
 					{filterByCurrentSlide(cities).map((city: any, index: number) => {
 						return <CityCard cityName={city.name} key={index} />;
 					})}
