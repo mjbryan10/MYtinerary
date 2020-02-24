@@ -28,7 +28,7 @@ export default function Cities() {
 		if (searchStr.length) {
 			let filtered = [];
 			for (const city of cities) {
-				if (city.name.toLowerCase().includes(searchStr)) {
+				if (city.name.toLowerCase().search(searchStr) === 0) {
 					filtered.push(city);
 				}
 			}
