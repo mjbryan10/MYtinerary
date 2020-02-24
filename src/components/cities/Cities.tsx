@@ -25,14 +25,16 @@ export default function Cities() {
 		// props.onChange(e.target.value);
 	};
 	function filterCities(): any {
-		let filtered = cities.filter((city: any) => {
-			return city.name.toLowerCase() === searchStr.toLowerCase()
-		});
-		if (filtered.length) {
-			return filtered
-		} else {
-			return cities
+		if (searchStr.length) {
+			let filtered = [];
+			for (const city of cities) {
+				if (city.name.toLowerCase().includes(searchStr)) {
+					filtered.push(city);
+				}
+			}
+			return filtered;
 		}
+		return cities;
 	}
 	useEffect((): void => {
 		fetchCities();
