@@ -33,6 +33,7 @@ export default function Destinations() {
 	const [citiesLoaded, setCitiesLoaded] = useState<boolean>(false);
 	const fetchCities = () => {
 		setIsFetchingCities(true);
+		setCitiesLoaded(false);
 		fetch("http://localhost:5000/cities/all")
 			.then(response => response.json())
 			.then(result => {
@@ -83,15 +84,14 @@ export default function Destinations() {
 	return (
 		<div className={classes.destinationContainer}>
 			<h3>Popular MYtineraries</h3>
-			{!citiesLoaded ? (
-				<Spinner />
-			) : (
+			{isFetchingCities ? <Spinner /> : null}
+			{citiesLoaded ? (
 				<div className={classes.cardsContainer}>
 					{filterByCurrentSlide(cities).map((city: any, index: number) => {
 						return <CityCard cityName={city.name} key={index} />;
 					})}
 				</div>
-			)}
+			) : null}
 			<DestinationControls
 				slideLength={slideLength}
 				slideIndex={slideIndex}
