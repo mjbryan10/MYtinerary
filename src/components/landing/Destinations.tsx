@@ -29,14 +29,15 @@ export default function Destinations() {
 	const [cities, setCities] = useState<any>([]);
 	const [slideLength, setSlideLength] = useState<number>(0);
 	const [slideIndex, setSlideIndex] = useState<number>(0);
-	const [isFetchingCities, setIsFetchingCities] = useState<boolean>(false);
+	// const [isFetchingCities, setIsFetchingCities] = useState<boolean>(false);
 	const [citiesLoaded, setCitiesLoaded] = useState<boolean>(false);
 	const fetchCities = () => {
-		setIsFetchingCities(true);
+		setCitiesLoaded(false);
+		// setIsFetchingCities(true);
 		fetch("http://localhost:5000/cities/all")
 			.then(response => response.json())
 			.then(result => {
-				setIsFetchingCities(false);
+				// setIsFetchingCities(false);
 				setCities(result);
 				setCitiesLoaded(true);
 				console.log(cities);

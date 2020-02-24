@@ -7,7 +7,7 @@ import "./cities.scss";
 export default function Cities() {
 	const [searchStr, setSearchStr] = useState("");
 	const [hasLoaded, setHasLoaded] = useState(false);
-	const [isFetchingCities, setIsFetchingCities] = useState<boolean>(false);
+	// const [isFetchingCities, setIsFetchingCities] = useState<boolean>(false);
 	const [cities, setCities] = useState<any>({});
 	const fetchCities = () => {
 		setHasLoaded(false);
@@ -29,6 +29,7 @@ export default function Cities() {
 			let filtered = [];
 			for (const city of cities) {
 				if (city.name.toLowerCase().search(searchStr) === 0) {
+					//can change to to includes on preference
 					filtered.push(city);
 				}
 			}
