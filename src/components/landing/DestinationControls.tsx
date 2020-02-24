@@ -9,7 +9,12 @@ const useStyles = makeStyles(() =>
             width: "100%",
             maxWidth: "800px",
             justifyContent: "center",
-            height: "25px"
+            alignItems: 'center',
+            height: "25px",
+            padding: '2px',
+            '& > *': {
+                margin: '0 2px'
+            }
 			// color: "blue",
 		},
 	})

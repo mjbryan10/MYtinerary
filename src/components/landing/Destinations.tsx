@@ -2,17 +2,25 @@ import React, { useState, useEffect } from "react";
 import CityCard from "./CityCard";
 // import Cities from "../../data/cities.json";
 import DestinationControls from "./DestinationControls";
+import Spinner from "../global/Spinner";
 
 import { createStyles, makeStyles } from "@material-ui/core/styles";
 const useStyles = makeStyles(() =>
 	createStyles({
+		destinationContainer: {
+			display: "flex",
+			flexFlow: "column nowrap",
+			justifyContent: "space-between",
+			width: "100%",
+			minHeight: "250px",
+		},
 		cardsContainer: {
 			display: "flex",
 			flexFlow: "row wrap",
 			width: "100%",
-			minHeight: "250px",
+
 			// color: "blue",
-		}
+		},
 	})
 );
 export default function Destinations() {
@@ -74,23 +82,23 @@ export default function Destinations() {
 	});
 	//TODO: Build carrasousel with cards
 	return (
-		<div>
+		<div className={classes.destinationContainer}>
 			<h3>Popular MYtineraries</h3>
 			{!citiesLoaded ? (
-				<p>Loading...</p>
+				<Spinner />
 			) : (
 				<div className={classes.cardsContainer}>
 					{console.log(filterByCurrentSlide(cities))}
 					{filterByCurrentSlide(cities).map((city: any, index: number) => {
 						return <CityCard cityName={city.name} key={index} />;
 					})}
-					<DestinationControls
-						slideLength={slideLength}
-						slideIndex={slideIndex}
-						onButtonClick={onButtonClick}
-					/>
 				</div>
 			)}
+			<DestinationControls
+				slideLength={slideLength}
+				slideIndex={slideIndex}
+				onButtonClick={onButtonClick}
+			/>
 		</div>
 	);
 }
