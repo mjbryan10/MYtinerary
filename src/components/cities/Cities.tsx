@@ -4,7 +4,7 @@ import CityCard from "./CityCard";
 import Spinner from "../global/Spinner";
 
 //REDUX
-import { bindActionCreators } from "redux"; //ALT
+import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { default as fetchCitiesAction } from "../../store/actions/fetchCities";
 
@@ -45,9 +45,7 @@ const Cities = (props: any) => {
 						onChange={handleChange}
 					/>
 					{filterCities().map((city: any, index: number) => (
-						<a href={"/" + city.name}>
 							<CityCard className="city-card" cityName={city.name} key={index} />
-						</a>
 					))}
 				</div>
 			) : null}

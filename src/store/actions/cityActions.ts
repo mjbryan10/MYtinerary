@@ -21,6 +21,3 @@ export function fetchCitiesError(error: string) {
         payload: error
     }
 }
-
-
-

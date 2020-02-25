@@ -4,6 +4,11 @@ import CityCard from "../cities/CityCard";
 import DestinationControls from "./DestinationControls";
 import Spinner from "../global/Spinner";
 
+//REDUX
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
+import { default as fetchCitiesAction } from "../../store/actions/fetchCities";
+
 import { createStyles, makeStyles } from "@material-ui/core/styles";
 const useStyles = makeStyles(() =>
 	createStyles({
@@ -23,26 +28,27 @@ const useStyles = makeStyles(() =>
 		},
 	})
 );
-export default function Destinations() {
+function Destinations(props: any) {
+	const { fetchCities, loading, cities } = props;
 	const classes = useStyles();
 	//STATE
-	const [cities, setCities] = useState<any>([]);
+	// const [cities, setCities] = useState<any>([]);
 	const [slideLength, setSlideLength] = useState<number>(0);
 	const [slideIndex, setSlideIndex] = useState<number>(0);
-	const [isFetchingCities, setIsFetchingCities] = useState<boolean>(false);
-	const [citiesLoaded, setCitiesLoaded] = useState<boolean>(false);
-	const fetchCities = () => {
-		setIsFetchingCities(true);
-		setCitiesLoaded(false);
-		fetch("http://localhost:5000/cities/all")
-			.then(response => response.json())
-			.then(result => {
-				setIsFetchingCities(false);
-				setCities(result);
-				setCitiesLoaded(true);
-			})
-			.catch(err => console.log(err));
-	};
+	// const [isFetchingCities, setIsFetchingCities] = useState<boolean>(false);
+	// const [citiesLoaded, setCitiesLoaded] = useState<boolean>(false);
+	// const fetchCities = () => {
+	// 	setIsFetchingCities(true);
+	// 	setCitiesLoaded(false);
+	// 	fetch("http://localhost:5000/cities/all")
+	// 		.then(response => response.json())
+	// 		.then(result => {
+	// 			setIsFetchingCities(false);
+	// 			setCities(result);
+	// 			setCitiesLoaded(true);
+	// 		})
+	// 		.catch(err => console.log(err));
+	// };
 
 	let numPerSlide = 4;
 	const calcNumOfSlides = (): number => {
@@ -84,8 +90,8 @@ export default function Destinations() {
 	return (
 		<div className={classes.destinationContainer}>
 			<h3>Popular MYtineraries</h3>
-			{isFetchingCities ? <Spinner /> : null}
-			{citiesLoaded ? (
+			{loading ? <Spinner /> : null}
+			{cities.length ? (
 				<div className={classes.cardsContainer}>
 					{filterByCurrentSlide(cities).map((city: any, index: number) => {
 						return <CityCard cityName={city.name} key={index} />;
@@ -100,3 +106,21 @@ export default function Destinations() {
 		</div>
 	);
 }
+
+const mapStateToProps = (state: any): object => {
+	console.log(state);
+	return {
+		loading: state.cities.loading,
+		cities: state.cities.cities,
+		error: state.cities.error,
+	};
+};
+const mapDispatchToProps = (dispatch: any) =>
+	bindActionCreators(
+		{
+			fetchCities: fetchCitiesAction,
+		},
+		dispatch
+	);
+
+export default connect(mapStateToProps, mapDispatchToProps)(Destinations)
