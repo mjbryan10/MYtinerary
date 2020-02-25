@@ -12,7 +12,6 @@ const Cities = (props: any) => {
 	const { cities, fetchCities, loading } = props;
 	const [searchStr, setSearchStr] = useState("");
 	useEffect((): void => {
-		console.log("useffect did run");
 		fetchCities();
 	}, []);
 	const handleChange = (e: any) => {
@@ -53,7 +52,6 @@ const Cities = (props: any) => {
 	);
 };
 const mapStateToProps = (state: any): object => {
-	console.log(state);
 	return {
 		loading: state.cities.loading,
 		cities: state.cities.cities,

@@ -1,5 +1,6 @@
 import React from "react";
 import { connect } from 'react-redux';
+import {Link} from 'react-router-dom'
 import { fetchCurrentCity as fetchCurrentCityAction } from '../../store/actions/currentCityActions';
 import { bindActionCreators } from "redux";
 
@@ -10,11 +11,11 @@ function CityCard(props: any) {
 		fetchCurrentCity(cityName);
 	}
 	return (
-		<a className="city-card" href={"/itineraries"} onClick={handleClick} >
+		<Link className="city-card" to={"/itineraries"} onClick={handleClick} >
 				<div className="city-card-inner">
 					<h4>{cityName}</h4>
 				</div>
-		</a>
+		</Link>
 	);
 }
 

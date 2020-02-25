@@ -1,7 +1,7 @@
 //ACTION NAMES
-export const CURRENT_CITY_REQUEST = "FETCH_CITIES_REQUEST";
-export const CURRENT_CITY_SUCCESS = "FETCH_CITIES_SUCCESS";
-export const CURRENT_CITY_ERROR = "FETCH_CITIES_ERROR";
+export const CURRENT_CITY_REQUEST = "CURRENT_CITY_REQUEST";
+export const CURRENT_CITY_SUCCESS = "CURRENT_CITY_SUCCESS";
+export const CURRENT_CITY_ERROR = "CURRENT_CITY_ERROR";
 
 //ACTION BUILDERS
 
@@ -12,18 +12,20 @@ export function currentCityRequest(): object {
 }
 export function currentCitySuccess(city: object): object {
 	return {
-		type: CURRENT_CITY_REQUEST,
+		type: CURRENT_CITY_SUCCESS,
 		payload: city,
 	};
 }
 export function currentCityError(error: string): object {
 	return {
-		type: CURRENT_CITY_REQUEST,
+		type: CURRENT_CITY_ERROR,
 		payload: error,
 	};
 }
 
 export function fetchCurrentCity(cityName: string) {
+    console.log("triggered", cityName);
+    
 	return (dispatch: any) => {
 		dispatch(currentCityRequest());
 		fetch(`http://localhost:5000/cities/${cityName}`)
