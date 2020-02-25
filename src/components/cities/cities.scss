@@ -9,5 +9,10 @@
     & .city-card {
         display: block;
         background-color: #ccc;
+        a {
+            &:visited {
+                color: inherit;
+            }
+        }
     }
 }

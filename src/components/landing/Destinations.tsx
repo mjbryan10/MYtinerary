@@ -90,14 +90,15 @@ function Destinations(props: any) {
 	return (
 		<div className={classes.destinationContainer}>
 			<h3>Popular MYtineraries</h3>
-			{loading ? <Spinner /> : null}
-			{cities.length ? (
+			{loading ? (
+				<Spinner />
+			) : (
 				<div className={classes.cardsContainer}>
 					{filterByCurrentSlide(cities).map((city: any, index: number) => {
 						return <CityCard cityName={city.name} key={index} />;
 					})}
 				</div>
-			) : null}
+			)}
 			<DestinationControls
 				slideLength={slideLength}
 				slideIndex={slideIndex}
@@ -123,4 +124,4 @@ const mapDispatchToProps = (dispatch: any) =>
 		dispatch
 	);
 
-export default connect(mapStateToProps, mapDispatchToProps)(Destinations)
+export default connect(mapStateToProps, mapDispatchToProps)(Destinations);

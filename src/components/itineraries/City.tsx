@@ -1,17 +1,28 @@
+import "./itineraries.scss"
 import React from 'react';
 import CityCard from '../cities/CityCard';
-import "./itineraries.scss"
+import Spinner from '../global/Spinner';
 
 import { connect } from "react-redux";
 
-function City() {
+function City(props: any) {
+    const { city, cityLoading } = props;
     return (
         <div>
-            <CityCard cityName="TEST NAME" />
+            {cityLoading ? <Spinner /> : <CityCard cityName={city.name} />}
+            
         </div>
     )
 }
 
-export default City
+const mapStateToProps = (state: any): object => {
+    return {
+        loading: state.currentCity.loading,
+        city: state.currentCity.city
+    }
+}
+
+
+export default connect(mapStateToProps)(City)
 
 

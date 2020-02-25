@@ -15,7 +15,7 @@ export default function citiesReducer(state: object = initialCurrentCityState, a
 		case CURRENT_CITY_REQUEST:
 			return {
 				...state,
-				loading: false,
+				loading: true,
 			};
 		case CURRENT_CITY_SUCCESS:
 			return {
