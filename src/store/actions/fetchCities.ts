@@ -1,19 +1,19 @@
-import {fetchCitiesLoading, fetchCitiesSuccess, fetchCitiesError} from './cityActions';
+import {fetchCitiesRequest, fetchCitiesSuccess, fetchCitiesError} from './cityActions';
 
-function fetchCities() {
+const fetchCities = () => {
     return (dispatch: any) => {
-        dispatch(fetchCitiesLoading());
+        dispatch(fetchCitiesRequest());
         fetch('http://localhost:5000/cities/all')
         .then(res => res.json())
         .then(res => {
-            if(res.error) {
-                throw(res.error);
-            }
-            dispatch(fetchCitiesSuccess(res.cities));
-            return res.cities;
+            // if(res.error) {
+            //     throw(res.error);
+            // }
+            dispatch(fetchCitiesSuccess(res));
+            return res.cities;//UNSURE: Does this need to return?
         })
         .catch(error => {
-            dispatch(fetchCitiesError(error));
+            dispatch(fetchCitiesError(error.message));
         })
     }
 }

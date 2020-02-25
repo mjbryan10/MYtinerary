@@ -4,33 +4,15 @@ import CityCard from "./CityCard";
 import Spinner from "../global/Spinner";
 
 //REDUX
-import { bindActionCreators } from "redux";
+import { bindActionCreators } from "redux"; //ALT
 import { connect } from "react-redux";
-// import { loadCities } from "../../store/actions/cityActions";
-import fetchCitiesAction from "../../store/actions/fetchCities";
+import { default as fetchCitiesAction } from "../../store/actions/fetchCities";
 
 const Cities = (props: any) => {
-	// const { test } = props;
-	// console.log("TCL: Cities -> test", test);
-
+	const { cities, fetchCities, loading } = props;
 	const [searchStr, setSearchStr] = useState("");
-	// const [hasLoaded, setHasLoaded] = useState(false);
-	// const [isFetchingCities, setIsFetchingCities] = useState<boolean>(false);
-	// const [cities, setCities] = useState<any>({});
-	// const fetchCities = () => {
-	// 	setIsFetchingCities(true);
-	// 	setHasLoaded(false);
-	// 	fetch("http://localhost:5000/cities/all")
-	// 		.then(response => response.json())
-	// 		.then(result => {
-	// 			setCities(result);
-	// 			setIsFetchingCities(false);
-	// 			setHasLoaded(true);
-	// 		})
-	// 		.catch(err => console.log(err));
-	// };
-	const { cities, fetchCities, isFetchingCities } = props;
 	useEffect((): void => {
+		console.log("useffect did run");
 		fetchCities();
 	}, []);
 	const handleChange = (e: any) => {
@@ -53,8 +35,8 @@ const Cities = (props: any) => {
 	return (
 		<div className="cities-container">
 			<h1>Cities</h1>
-			{isFetchingCities ? <Spinner /> : null}
-			{/* {hasLoaded ? (
+			{loading ? <Spinner /> : null}
+			{cities.length ? (
 				<div className="cards-container">
 					<input
 						type="text"
@@ -68,14 +50,16 @@ const Cities = (props: any) => {
 						</a>
 					))}
 				</div>
-			) : null} */}
+			) : null}
 		</div>
 	);
 };
 const mapStateToProps = (state: any): object => {
 	console.log(state);
 	return {
-		cities: state.citiesReducer.cities,
+		loading: state.cities.loading,
+		cities: state.cities.cities,
+		error: state.cities.error,
 	};
 };
 const mapDispatchToProps = (dispatch: any) =>
@@ -85,4 +69,10 @@ const mapDispatchToProps = (dispatch: any) =>
 		},
 		dispatch
 	);
+//ALT
+// const mapDispatchToProps = (dispatch: any): object => {
+// 	return {
+// 		fetchCities: () => dispatch(fetchCitiesAction()),
+// 	};
+// };
 export default connect(mapStateToProps, mapDispatchToProps)(Cities);

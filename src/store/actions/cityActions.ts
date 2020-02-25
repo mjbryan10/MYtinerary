@@ -1,24 +1,24 @@
-export const FETCH_CITIES_LOADING = 'FETCH_CITIES_LOADING';
+export const FETCH_CITIES_REQUEST = 'FETCH_CITIES_REQUEST';
 export const FETCH_CITIES_SUCCESS = 'FETCH_CITIES_SUCCESS';
 export const FETCH_CITIES_ERROR = 'FETCH_CITIES_ERROR';
 
-export function fetchCitiesLoading() {
+export function fetchCitiesRequest() {
     return {
-        type: FETCH_CITIES_LOADING
+        type: FETCH_CITIES_REQUEST
     }
 }
 
-export function fetchCitiesSuccess(cities: any) {
+export function fetchCitiesSuccess(cities: [any]) {
     return {
         type: FETCH_CITIES_SUCCESS,
-        cities: cities
+        payload: cities
     }
 }
 
-export function fetchCitiesError(error: any) {
+export function fetchCitiesError(error: string) {
     return {
         type: FETCH_CITIES_ERROR,
-        error: error
+        payload: error
     }
 }
 
