@@ -24,8 +24,6 @@ export function currentCityError(error: string): object {
 }
 
 export function fetchCurrentCity(cityName: string) {
-    console.log("triggered", cityName);
-    
 	return (dispatch: any) => {
 		dispatch(currentCityRequest());
 		fetch(`http://localhost:5000/cities/${cityName}`)
@@ -36,6 +34,6 @@ export function fetchCurrentCity(cityName: string) {
 				}
 				dispatch(currentCitySuccess(res));
 			})
-			.catch(err => dispatch(currentCityError(err)));
+			.catch(err => dispatch(currentCityError(err.message)));
 	};
 }

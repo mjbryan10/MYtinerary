@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import CityCard from "../cities/CityCard";
-// import Cities from "../../data/cities.json";
 import DestinationControls from "./DestinationControls";
 import Spinner from "../global/Spinner";
 
@@ -23,8 +22,6 @@ const useStyles = makeStyles(() =>
 			display: "flex",
 			flexFlow: "row wrap",
 			width: "100%",
-
-			// color: "blue",
 		},
 	})
 );
@@ -32,25 +29,9 @@ function Destinations(props: any) {
 	const { fetchCities, loading, cities } = props;
 	const classes = useStyles();
 	//STATE
-	// const [cities, setCities] = useState<any>([]);
 	const [slideLength, setSlideLength] = useState<number>(0);
 	const [slideIndex, setSlideIndex] = useState<number>(0);
-	// const [isFetchingCities, setIsFetchingCities] = useState<boolean>(false);
-	// const [citiesLoaded, setCitiesLoaded] = useState<boolean>(false);
-	// const fetchCities = () => {
-	// 	setIsFetchingCities(true);
-	// 	setCitiesLoaded(false);
-	// 	fetch("http://localhost:5000/cities/all")
-	// 		.then(response => response.json())
-	// 		.then(result => {
-	// 			setIsFetchingCities(false);
-	// 			setCities(result);
-	// 			setCitiesLoaded(true);
-	// 		})
-	// 		.catch(err => console.log(err));
-	// };
-
-	let numPerSlide = 4;
+	let numPerSlide = 4; //Change this to set how many cities appear per slide
 	const calcNumOfSlides = (): number => {
 		return Math.ceil(cities.length / numPerSlide);
 	};
@@ -82,11 +63,10 @@ function Destinations(props: any) {
 	}
 	useEffect((): void => {
 		fetchCities();
-	}, []);
+	}, [fetchCities]);
 	useEffect((): void => {
 		updateState();
 	});
-	//TODO: Build carrasousel with cards
 	return (
 		<div className={classes.destinationContainer}>
 			<h3>Popular MYtineraries</h3>
@@ -109,7 +89,6 @@ function Destinations(props: any) {
 }
 
 const mapStateToProps = (state: any): object => {
-	console.log(state);
 	return {
 		loading: state.cities.loading,
 		cities: state.cities.cities,

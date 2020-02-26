@@ -11,7 +11,7 @@ function CityCard(props: any) {
 		fetchCurrentCity(cityName);
 	}
 	return (
-		<Link className="city-card" to={"/itineraries"} onClick={handleClick} >
+		<Link className="city-card" to={"/itineraries/" + cityName} onClick={handleClick} >
 				<div className="city-card-inner">
 					<h4>{cityName}</h4>
 				</div>

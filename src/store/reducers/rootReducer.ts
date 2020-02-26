@@ -8,7 +8,14 @@
 // export default rootReducer;
 
 import { combineReducers } from "redux";
+//IMPORTED REDUCERS:
 import citiesReducer from "./citiesReducer";
 import currentCityReducer from "./currentCityReducer";
-const rootReducer = combineReducers({cities: citiesReducer, currentCity: currentCityReducer});
+import itineraryReducer from "./itineraryReducer";
+
+const rootReducer = combineReducers({
+	cities: citiesReducer,
+	currentCity: currentCityReducer,
+	itineraries: itineraryReducer,
+});
 export default rootReducer;

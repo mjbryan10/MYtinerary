@@ -7,10 +7,13 @@ import {
 const initialCurrentCityState = {
 	loading: false,
 	city: {},
-	error : '',
+	error: "",
 };
 
-export default function citiesReducer(state: object = initialCurrentCityState, action: any = {}) {
+export default function citiesReducer(
+	state: object = initialCurrentCityState,
+	action: any = {}
+) {
 	switch (action.type) {
 		case CURRENT_CITY_REQUEST:
 			return {

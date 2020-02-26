@@ -13,7 +13,7 @@ const Cities = (props: any) => {
 	const [searchStr, setSearchStr] = useState("");
 	useEffect((): void => {
 		fetchCities();
-	}, []);
+	}, [fetchCities]);
 	const handleChange = (e: any) => {
 		e.preventDefault();
 		setSearchStr(e.target.value);
@@ -44,7 +44,7 @@ const Cities = (props: any) => {
 						onChange={handleChange}
 					/>
 					{filterCities().map((city: any, index: number) => (
-							<CityCard className="city-card" cityName={city.name} key={index} />
+						<CityCard className="city-card" cityName={city.name} key={index} />
 					))}
 				</div>
 			) : null}

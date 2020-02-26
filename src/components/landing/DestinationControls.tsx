@@ -32,7 +32,7 @@ export default function DestinationControls(props: any) {
             <button onClick={handleClick} value="left">Left</button>
             {[...Array(slideLength)].map((element, index) => {
                 return(
-                    (slideIndex === index) ? <span className="span-dot current"></span> : <span className="span-dot"></span>
+                    (slideIndex === index) ? <span key={index} className="span-dot current"></span> : <span key={index} className="span-dot"></span>
                     )
                 })}
                 <button onClick={handleClick} value="right">Right</button>
