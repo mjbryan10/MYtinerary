@@ -39,10 +39,8 @@ const CityItineraries: FunctionComponent<CityItinerariesProps> = ({
 	resetItineraries,
 	resetCurrentCity,
 }) => {
-	let pathName = window.location.pathname;
-	let cityName = pathName.split("/")[2];
-	console.log(useParams().cityName)
-	//look into useParams()
+	let pathName: any = useParams();
+	let cityName = pathName.cityName;
 
 	useEffect(() => {
 		if (!city.length) {
@@ -61,6 +59,7 @@ const CityItineraries: FunctionComponent<CityItinerariesProps> = ({
 			resetItineraries();
 			resetCurrentCity();
 		};
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 	return (
 		<div>
