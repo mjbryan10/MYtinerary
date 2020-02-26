@@ -1,7 +1,7 @@
 import React, { FunctionComponent, useState, useEffect } from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import { Paper, Avatar } from "@material-ui/core";
 import Spinner from "../global/Spinner";
+import { makeStyles } from "@material-ui/core/styles";
+import { Paper, Avatar, Button } from "@material-ui/core";
 
 type itineraryProps = {
 	itinerary: any;
@@ -9,7 +9,8 @@ type itineraryProps = {
 
 const useStyles = makeStyles({
 	root: {
-		maxWidth: "600px",
+		maxWidth: "800px",
+		margin: "8px auto",
 		"& header": {
 			display: "flex",
 			flexFlow: "row wrap",
@@ -20,15 +21,51 @@ const useStyles = makeStyles({
 		flexFlow: "column nowrap",
 		justifyContent: "center",
 		alignItems: "center",
+		padding: "0.2rem",
+		margin: "0 1rem",
 	},
-	details: {},
-	stats: {},
+	details: {
+		// textAlign: 'center',
+		flex: "1 0 auto",
+		display: "flex",
+		flexFlow: "column nowrap",
+		justifyContent: "flex-start",
+		padding: "0.2rem",
+		"h1, h2, h3, h4": {
+			padding: 0,
+		},
+	},
+	stats: {
+		display: "flex",
+        // justifyContent: "space-evenly",
+        "& p": {
+            // marginRight: '1em'
+            margin: "0 0.5em",
+        }
+	},
+	costIndex: {
+		fontWeight: 500,
+		fontSize: "1.1em",
+	},
+	tags: {
+		// display: 'flex',
+		// justifyContent: 'space-evenly',
+		// textAlign: 'center',
+		"& span": {
+			margin: "0 0.5em",
+		},
+	},
+	moreBtn: {
+		width: "100%",
+	},
 });
 
 const ItineraryCard: FunctionComponent<itineraryProps> = ({ itinerary }): any => {
-	const classes = useStyles();
-	const [author, setAuthor] = useState({ itineraries: [], _id: "", name: "", img: "" });
-	const [authorLoading, setAuthorLoading] = useState(true);
+    const classes = useStyles();
+    const authorInitialState = { itineraries: [], _id: "", name: "", img: "" };
+	const [author, setAuthor] = useState(authorInitialState);
+    const [authorLoading, setAuthorLoading] = useState(true);
+    const [moreToggled, setmoreToggled] = useState(false);
 	const fetchAuthor = () => {
 		setAuthorLoading(true);
 		let authorId = itinerary.author_id;
@@ -43,7 +80,7 @@ const ItineraryCard: FunctionComponent<itineraryProps> = ({ itinerary }): any =>
 	useEffect(() => {
 		fetchAuthor();
 		return () => {
-			// setAuthor({});
+			setAuthor(authorInitialState);
 		};
 	}, []);
 	const handleDuration = (duration: number): string | undefined => {
@@ -54,9 +91,10 @@ const ItineraryCard: FunctionComponent<itineraryProps> = ({ itinerary }): any =>
 		} else {
 			return "--";
 		}
-	};
+    };
+    const handleMoreToggle = (e:any): void => setmoreToggled(!moreToggled);
 	return (
-		<Paper className={classes.root}>
+		<Paper className={classes.root} elevation={3}>
 			<header>
 				<div className={classes.avatarContainer}>
 					<Avatar alt="" src="" />
@@ -66,11 +104,28 @@ const ItineraryCard: FunctionComponent<itineraryProps> = ({ itinerary }): any =>
 					<h3>{itinerary.title}</h3>
 					<div className={classes.stats}>
 						<p>Likes: {itinerary.likes}</p>
-						<p>Duration: {handleDuration(itinerary.duration)}</p>
-						{/* <p>{'$' * itinerary.cost_rating}</p>  */}
+						<p>{handleDuration(itinerary.duration)}</p>
+						<p className={classes.costIndex}>
+							{[...Array(itinerary.cost_rating)].map((cost, index: number) => (
+								<span key={index}>$</span>
+							))}
+						</p>
 					</div>
+					<p className={classes.tags}>
+						{itinerary.tags.map((tag: string, index: number) => (
+							<span key={index}>#{tag} </span>
+						))}
+					</p>
 				</div>
 			</header>
+            {moreToggled ? (<article>
+				Lorem ipsum, dolor sit amet consectetur adipisicing elit. Illum, vitae omnis
+				aspernatur ullam temporibus recusandae quis facere aliquam nulla impedit ipsum,
+				voluptates molestiae laboriosam repudiandae quaerat porro officia cumque quos.
+			</article>) : null}
+			<Button className={classes.moreBtn} size="small" color="primary" onClick={handleMoreToggle}>
+				View All
+			</Button>
 		</Paper>
 	);
 };

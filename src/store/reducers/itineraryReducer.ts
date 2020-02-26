@@ -2,6 +2,7 @@ import {
 	FETCH_ITINERARIES_REQUEST,
 	FETCH_ITINERARIES_SUCCESS,
 	FETCH_ITINERARIES_FAILURE,
+	RESET_ITINERARIES,
 } from "../actions/itineraryActions";
 
 const initialItineraryState = {
@@ -30,6 +31,12 @@ export default function itinerariesReducer(
 				loading: false,
 				itineraries: [],
 				error: action.payload,
+			};
+		case RESET_ITINERARIES:
+			return {
+				loading: false,
+				itineraries: [],
+				error: "",
 			};
 		default:
 			return state;

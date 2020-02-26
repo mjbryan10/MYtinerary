@@ -2,6 +2,7 @@
 export const CURRENT_CITY_REQUEST = "CURRENT_CITY_REQUEST";
 export const CURRENT_CITY_SUCCESS = "CURRENT_CITY_SUCCESS";
 export const CURRENT_CITY_ERROR = "CURRENT_CITY_ERROR";
+export const RESET_CURRENT_CITY = "RESET_CURRENT_CITY";
 
 //ACTION BUILDERS
 
@@ -20,6 +21,11 @@ export function currentCityError(error: string): object {
 	return {
 		type: CURRENT_CITY_ERROR,
 		payload: error,
+	};
+}
+export function resetCurrentCity() {
+	return {
+		type: RESET_CURRENT_CITY,
 	};
 }
 

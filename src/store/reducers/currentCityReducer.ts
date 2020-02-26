@@ -2,6 +2,7 @@ import {
 	CURRENT_CITY_REQUEST,
 	CURRENT_CITY_SUCCESS,
 	CURRENT_CITY_ERROR,
+	RESET_CURRENT_CITY,
 } from "../actions/currentCityActions";
 
 const initialCurrentCityState = {
@@ -29,6 +30,12 @@ export default function citiesReducer(
 			return {
 				loading: false,
 				error: action.payload,
+			};
+		case RESET_CURRENT_CITY:
+			return {
+				loading: false,
+				city: {},
+				error: "",
 			};
 		default:
 			return state;

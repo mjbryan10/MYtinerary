@@ -1,6 +1,7 @@
 import "./itineraries.scss";
 import React, { FunctionComponent } from "react";
 import { useEffect } from "react";
+import { useParams } from 'react-router'
 import CityCard from "../cities/CityCard";
 import Spinner from "../global/Spinner";
 import ItineraryCard from "./ItineraryCard";
@@ -8,8 +9,14 @@ import ItineraryCard from "./ItineraryCard";
 //REDUX
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { fetchCurrentCity as fetchCurrentCityAction } from "../../store/actions/currentCityActions";
-import { fetchCurrentCityItineraries as fetchItinerariesAction } from "../../store/actions/itineraryActions";
+import {
+	fetchCurrentCity as fetchCurrentCityAction,
+	resetCurrentCity as resetCurrentCityAction,
+} from "../../store/actions/currentCityActions";
+import {
+	fetchCurrentCityItineraries as fetchItinerariesAction,
+	resetItineraries as resetItinerariesAction,
+} from "../../store/actions/itineraryActions";
 
 type CityItinerariesProps = {
 	fetchCurrentCity: any;
@@ -18,6 +25,8 @@ type CityItinerariesProps = {
 	fetchItineraries: any;
 	itinerariesLoading: boolean;
 	itineraries: [any];
+	resetItineraries: any;
+	resetCurrentCity: any;
 };
 
 const CityItineraries: FunctionComponent<CityItinerariesProps> = ({
@@ -27,15 +36,32 @@ const CityItineraries: FunctionComponent<CityItinerariesProps> = ({
 	fetchItineraries,
 	itinerariesLoading,
 	itineraries,
+	resetItineraries,
+	resetCurrentCity,
 }) => {
 	let pathName = window.location.pathname;
 	let cityName = pathName.split("/")[2];
-	useEffect((): void => {
+	console.log(useParams().cityName)
+	//look into useParams()
+
+	useEffect(() => {
 		if (!city.length) {
 			fetchCurrentCity(cityName);
 		}
 		fetchItineraries(city._id);
-	}, [city._id, city.length, cityName, fetchCurrentCity, fetchItineraries]);
+	}, [
+		city._id,
+		city.length,
+		cityName,
+		fetchCurrentCity,
+		fetchItineraries,
+    ]);
+    useEffect(() => {
+        return () => {
+			resetItineraries();
+			resetCurrentCity();
+		};
+    }, [])
 	return (
 		<div>
 			{cityLoading ? <Spinner /> : <CityCard cityName={city.name} />}
@@ -64,6 +90,8 @@ const mapDispatchToProps = (dispatch: any) =>
 		{
 			fetchCurrentCity: fetchCurrentCityAction,
 			fetchItineraries: fetchItinerariesAction,
+			resetItineraries: resetItinerariesAction,
+			resetCurrentCity: resetCurrentCityAction,
 			// fetchAuthors: fetchAuthorsAction,
 		},
 		dispatch
