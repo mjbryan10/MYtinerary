@@ -44,7 +44,7 @@ interface State {
 	img: string; //???
 }
 interface ValidState {
-	email: boolean | null;
+	email: boolean;
 	password: boolean;
 }
 
@@ -55,10 +55,12 @@ function CreateAccount() {
 		password: "",
 		img: "",
 	});
-	const [valid, setValid] = React.useState<ValidState>({
+	const [valid, setValid] = React.useState<ValidState | any>({
 		email: true,
 		password: true,
 	});
+	const [success, setSuccess] = React.useState<boolean | null>(null);
+	const [errors, setErrors] = React.useState<any>({});
 	const handleValueChange = (prop: keyof State, newValue: any) => {
 		setValues({ ...values, [prop]: newValue });
 	};
@@ -75,7 +77,30 @@ function CreateAccount() {
 			email: validateEmail(email),
 			password: validatePassword(password),
 		});
+		fetch("http://localhost:5000/usersAPI/", {
+			method: "post",
+			headers: {
+				Accept: "application/json, text/plain, */*",
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({ email: email, password: password }),
+		})
+			.then(res => res.json())
+			.then(res => {
+				if(res === "errors") {
+					//TODO ACCESS THE ERRORS AND UPDATE STATE
+					setErrors(res)
+				} else {
+					setSuccess(true)
+				}
+            console.log("TCL: handleSubmit -> res", res);
+			})
+			.catch(err => {
+				console.error(err);
+				setSuccess(false);
+			});
 	};
+	// console.log(validateSubmit());
 
 	//Validation functions:
 	function validateEmail(email: string): boolean {
@@ -91,6 +116,16 @@ function CreateAccount() {
 		}
 		return false;
 	}
+	function validateSubmit(): boolean {
+		//NEEDS REFACTORING
+		for (const key in valid) {
+			if (!valid[key]) {
+				return false;
+			}
+		}
+		return true;
+	}
+
 	return (
 		<div className={classes.root}>
 			<Paper elevation={3}>
@@ -123,6 +158,8 @@ function CreateAccount() {
 						Create Account
 					</Button>
 				</form>
+				{success ? <p>Welcome!</p> : null}
+				{success === false ? <p>Oops, something went wrong. Please try again</p> : null}
 			</Paper>
 		</div>
 	);

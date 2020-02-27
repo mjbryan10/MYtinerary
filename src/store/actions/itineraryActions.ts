@@ -29,7 +29,7 @@ export function resetItineraries() {
 export function fetchCurrentCityItineraries(cityId: string) {
 	return (dispatch: any) => {
 		dispatch(fetchItinerariesRequest());
-		fetch(`http://localhost:5000/itineraries/${cityId}`) //TODO: NOT YET ROUTED
+		fetch(`http://localhost:5000/itinerariesAPI/${cityId}`) //TODO: NOT YET ROUTED
 			.then(res => res.json())
 			.then(res => {
 				if (res.error) {
