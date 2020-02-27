@@ -45,7 +45,7 @@ export default function DestinationControls(props: any) {
 		<div className={classes.controlsContainer}>
 			<Button
 				variant="contained"
-				color="primary"
+				color="secondary"
 				onClick={handleClick}
 				value="left"
 				startIcon={<NavigateBeforeIcon />}
@@ -60,7 +60,7 @@ export default function DestinationControls(props: any) {
 			})}
 			<Button
 				variant="contained"
-				color="primary"
+				color="secondary"
 				onClick={handleClick}
 				value="right"
 				startIcon={<NavigateNextIcon />}
