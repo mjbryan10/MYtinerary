@@ -24,6 +24,7 @@ const Cities = (props: any) => {
 			let filtered = [];
 			for (const city of cities) {
 				if (city.name.toLowerCase().search(searchStr) === 0) {
+					//can change to to includes on preference
 					filtered.push(city);
 				}
 			}
