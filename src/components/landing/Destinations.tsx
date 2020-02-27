@@ -15,8 +15,12 @@ const useStyles = makeStyles(() =>
 			display: "flex",
 			flexFlow: "column nowrap",
 			justifyContent: "space-between",
+			alignItems: "center",
 			width: "100%",
 			minHeight: "250px",
+			"& h3": {
+				marginRight: "auto",
+			},
 		},
 		cardsContainer: {
 			display: "flex",

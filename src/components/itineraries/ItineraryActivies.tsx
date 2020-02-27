@@ -1,4 +1,5 @@
 import React, { FunctionComponent } from "react";
+import Comments from './comments/Comments';
 import { makeStyles } from "@material-ui/core/styles";
 
 type ItineraryActiviesProps = {
@@ -39,9 +40,7 @@ const ItineraryActivies: FunctionComponent<ItineraryActiviesProps> = ({ itinerar
 					</div>
 				))}
 			</div>
-			Lorem ipsum, dolor sit amet consectetur adipisicing elit. Illum, vitae omnis aspernatur
-			ullam temporibus recusandae quis facere aliquam nulla impedit ipsum, voluptates
-			molestiae laboriosam repudiandae quaerat porro officia cumque quos.
+			<Comments />
 		</article>
 	);
 };

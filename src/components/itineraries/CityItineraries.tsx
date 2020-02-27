@@ -17,6 +17,7 @@ import {
 	fetchCurrentCityItineraries as fetchItinerariesAction,
 	resetItineraries as resetItinerariesAction,
 } from "../../store/actions/itineraryActions";
+import { Link } from "react-router-dom";
 
 type CityItinerariesProps = {
 	fetchCurrentCity: any;
@@ -71,6 +72,7 @@ const CityItineraries: FunctionComponent<CityItinerariesProps> = ({
 					return <ItineraryCard key={index} itinerary={itinerary} />;
 				})
 			)}
+			<Link to="/cities" >Choose another city...</Link> 
 		</div>
 	);
 };
