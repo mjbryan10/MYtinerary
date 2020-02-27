@@ -18,7 +18,9 @@ const theme = createMuiTheme({
 	spacing: 8,
 	palette: {
 		primary: {
-			main: "#dc2b00",
+			//Dont forget to change on variables.scss also
+			main: "#4a90ff",
+			// main: "#dc2b00",
 		},
 		secondary: {
 			main: "#394e56",
