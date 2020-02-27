@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from "react";
 import CityCard from "../cities/CityCard";
-// import Cities from "../../data/cities.json";
 import DestinationControls from "./DestinationControls";
 import Spinner from "../global/Spinner";
+
+//REDUX
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
+import { default as fetchCitiesAction } from "../../store/actions/fetchCities";
 
 import { createStyles, makeStyles } from "@material-ui/core/styles";
 const useStyles = makeStyles(() =>
@@ -11,41 +15,27 @@ const useStyles = makeStyles(() =>
 			display: "flex",
 			flexFlow: "column nowrap",
 			justifyContent: "space-between",
+			alignItems: "center",
 			width: "100%",
 			minHeight: "250px",
+			"& h3": {
+				marginRight: "auto",
+			},
 		},
 		cardsContainer: {
 			display: "flex",
 			flexFlow: "row wrap",
 			width: "100%",
-
-			// color: "blue",
 		},
 	})
 );
-export default function Destinations() {
+function Destinations(props: any) {
+	const { fetchCities, loading, cities } = props;
 	const classes = useStyles();
 	//STATE
-	const [cities, setCities] = useState<any>([]);
 	const [slideLength, setSlideLength] = useState<number>(0);
 	const [slideIndex, setSlideIndex] = useState<number>(0);
-	// const [isFetchingCities, setIsFetchingCities] = useState<boolean>(false);
-	const [citiesLoaded, setCitiesLoaded] = useState<boolean>(false);
-	const fetchCities = () => {
-		setCitiesLoaded(false);
-		// setIsFetchingCities(true);
-		fetch("http://localhost:5000/cities/all")
-			.then(response => response.json())
-			.then(result => {
-				// setIsFetchingCities(false);
-				setCities(result);
-				setCitiesLoaded(true);
-				console.log(cities);
-			})
-			.catch(e => console.log(e));
-	};
-
-	let numPerSlide = 4;
+	let numPerSlide = 4; //Change this to set how many cities appear per slide
 	const calcNumOfSlides = (): number => {
 		return Math.ceil(cities.length / numPerSlide);
 	};
@@ -77,19 +67,17 @@ export default function Destinations() {
 	}
 	useEffect((): void => {
 		fetchCities();
-	}, []);
+	}, [fetchCities]);
 	useEffect((): void => {
 		updateState();
 	});
-	//TODO: Build carrasousel with cards
 	return (
 		<div className={classes.destinationContainer}>
 			<h3>Popular MYtineraries</h3>
-			{!citiesLoaded ? (
+			{loading ? (
 				<Spinner />
 			) : (
 				<div className={classes.cardsContainer}>
-					{console.log(filterByCurrentSlide(cities))}
 					{filterByCurrentSlide(cities).map((city: any, index: number) => {
 						return <CityCard cityName={city.name} key={index} />;
 					})}
@@ -103,3 +91,20 @@ export default function Destinations() {
 		</div>
 	);
 }
+
+const mapStateToProps = (state: any): object => {
+	return {
+		loading: state.cities.loading,
+		cities: state.cities.cities,
+		error: state.cities.error,
+	};
+};
+const mapDispatchToProps = (dispatch: any) =>
+	bindActionCreators(
+		{
+			fetchCities: fetchCitiesAction,
+		},
+		dispatch
+	);
+
+export default connect(mapStateToProps, mapDispatchToProps)(Destinations);

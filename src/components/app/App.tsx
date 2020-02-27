@@ -6,6 +6,7 @@ import "./App.scss";
 import Nav from "../nav/Nav";
 import Landing from "../landing/Landing";
 import Cities from "../cities/Cities";
+import CityItineraries from "../itineraries/CityItineraries";
 import NotFound from "../NotFound";
 import Footer from "../footer/Footer";
 
@@ -30,6 +31,7 @@ function App() {
 						<Switch>
 							<Route exact path="/" component={Landing} />
 							<Route path="/cities" component={Cities} />
+							<Route path="/itineraries/:cityName" component={CityItineraries} />
 							<Route component={NotFound} />
 						</Switch>
 					</div>

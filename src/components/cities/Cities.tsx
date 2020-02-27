@@ -1,24 +1,19 @@
+import "./cities.scss";
 import React, { useState, useEffect } from "react";
 import CityCard from "./CityCard";
 import Spinner from "../global/Spinner";
 
-import "./cities.scss";
+//REDUX
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
+import { default as fetchCitiesAction } from "../../store/actions/fetchCities";
 
-export default function Cities() {
+const Cities = (props: any) => {
+	const { cities, fetchCities, loading } = props;
 	const [searchStr, setSearchStr] = useState("");
-	const [hasLoaded, setHasLoaded] = useState(false);
-	// const [isFetchingCities, setIsFetchingCities] = useState<boolean>(false);
-	const [cities, setCities] = useState<any>({});
-	const fetchCities = () => {
-		setHasLoaded(false);
-		fetch("http://localhost:5000/cities/all")
-			.then(response => response.json())
-			.then(result => {
-				setCities(result);
-				setHasLoaded(true);
-			})
-			.catch(e => console.log(e));
-	};
+	useEffect((): void => {
+		fetchCities();
+	}, [fetchCities]);
 	const handleChange = (e: any) => {
 		e.preventDefault();
 		setSearchStr(e.target.value);
@@ -37,13 +32,11 @@ export default function Cities() {
 		}
 		return cities;
 	}
-	useEffect((): void => {
-		fetchCities();
-	}, []);
 	return (
 		<div className="cities-container">
 			<h1>Cities</h1>
-			{hasLoaded ? (
+			{loading ? <Spinner /> : null}
+			{cities.length ? (
 				<div className="cards-container">
 					<input
 						type="text"
@@ -52,14 +45,31 @@ export default function Cities() {
 						onChange={handleChange}
 					/>
 					{filterCities().map((city: any, index: number) => (
-						<a href={"/" + city.name}>
-							<CityCard className="city-card" cityName={city.name} key={index} />
-						</a>
+						<CityCard className="city-card" cityName={city.name} key={index} />
 					))}
 				</div>
-			) : (
-				<Spinner />
-			)}
+			) : null}
 		</div>
 	);
-}
+};
+const mapStateToProps = (state: any): object => {
+	return {
+		loading: state.cities.loading,
+		cities: state.cities.cities,
+		error: state.cities.error,
+	};
+};
+const mapDispatchToProps = (dispatch: any) =>
+	bindActionCreators(
+		{
+			fetchCities: fetchCitiesAction,
+		},
+		dispatch
+	);
+//ALT
+// const mapDispatchToProps = (dispatch: any): object => {
+// 	return {
+// 		fetchCities: () => dispatch(fetchCitiesAction()),
+// 	};
+// };
+export default connect(mapStateToProps, mapDispatchToProps)(Cities);

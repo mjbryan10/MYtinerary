@@ -37,6 +37,14 @@
     }
   }
 }
+a {
+  text-decoration: none;
+  color: $primary-color;
+  &:visited {
+    color: inherit;
+    color: $primary-color;
+  }
+}
 //dots for pagination
 .span-dot {
   $height: 1.3em;
@@ -52,5 +60,30 @@
     opacity: 1;
     height: $height * 1.2;
   width: $height * 1.2;
+  }
+}
+
+//ANIMATIONS
+.fade-in {
+  animation: fade-in 0.8s;
+}
+.scale-in-font {
+  animation: scale-in-font 0.2s
+}
+@keyframes fade-in {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+@keyframes scale-in-font {
+  from {
+    font-size: 0;
+  }
+  to {
+    font-size: auto;
   }
 }
