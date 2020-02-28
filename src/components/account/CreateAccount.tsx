@@ -149,13 +149,13 @@ function CreateAccount() {
 					<PasswordInput
 						onValueChange={handleValueChange}
 						validPassword={!errors.password.length}
-						errorString={errors.password.msg}
+						errorString={errors.password}
 					/>
 					<div className={classes.upload}>
 						<AccountCircleIcon fontSize="large" color="primary" />
 						<UploadImage />
 					</div>
-					<SubmitButton loading={isPosting} success={success} text="Create Account" />
+					<SubmitButton loading={isPosting} success={success} text="Create Account" successText="Account Created!" />
 				</form>
 			</Paper>
 		</div>
