@@ -15,12 +15,17 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
-export default function Spinner() {
-  const classes = useStyles();
+type spinnerProps = {
+  height?: string;
+  width?: string;
+}
 
+const Spinner: React.FunctionComponent<spinnerProps> = ({height, width}) => {
+  const classes = useStyles();
   return (
-    <div className={classes.root}>
+    <div className={classes.root} style={{height, width}}>
       <CircularProgress />
     </div>
   );
 }
+export default Spinner;

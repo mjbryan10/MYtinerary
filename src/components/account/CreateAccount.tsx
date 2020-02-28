@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
+// import Spinner from "../global/Spinner";
+import SubmitButton from '../global/SubmitButton';
 import PasswordInput from "./PasswordInput";
 import UploadImage from "./UploadImage";
 import {
@@ -50,17 +52,21 @@ interface ValidState {
 
 function CreateAccount() {
 	const classes = useStyles();
-	const [values, setValues] = React.useState<State>({
+	const [values, setValues] = useState<State>({
 		email: "",
 		password: "",
 		img: "",
 	});
-	const [valid, setValid] = React.useState<ValidState | any>({
+	const [valid, setValid] = useState<ValidState | any>({
 		email: true,
 		password: true,
 	});
-	const [success, setSuccess] = React.useState<boolean | null>(null);
-	const [errors, setErrors] = React.useState<any>({});
+	const [success, setSuccess] = useState<boolean>(false);
+	const [errors, setErrors] = useState<any>({
+		email: "",
+		password: "",
+	});
+	const [isPosting, setIsPosting] = useState(false);
 	const handleValueChange = (prop: keyof State, newValue: any) => {
 		setValues({ ...values, [prop]: newValue });
 	};
@@ -77,6 +83,7 @@ function CreateAccount() {
 			email: validateEmail(email),
 			password: validatePassword(password),
 		});
+		setIsPosting(true);
 		fetch("http://localhost:5000/usersAPI/", {
 			method: "post",
 			headers: {
@@ -87,17 +94,20 @@ function CreateAccount() {
 		})
 			.then(res => res.json())
 			.then(res => {
-				if(res === "errors") {
+				if (res.errors) {
 					//TODO ACCESS THE ERRORS AND UPDATE STATE
-					setErrors(res)
+					updateErrors(res.erorrs);
 				} else {
-					setSuccess(true)
+					setSuccess(true);
 				}
-            console.log("TCL: handleSubmit -> res", res);
+				console.log("TCL: handleSubmit -> res", res);
+				setIsPosting(false);
 			})
 			.catch(err => {
 				console.error(err);
 				setSuccess(false);
+				setIsPosting(false);
+				setErrors(err);
 			});
 	};
 	// console.log(validateSubmit());
@@ -116,16 +126,23 @@ function CreateAccount() {
 		}
 		return false;
 	}
-	function validateSubmit(): boolean {
-		//NEEDS REFACTORING
-		for (const key in valid) {
-			if (!valid[key]) {
-				return false;
+	// function validateSubmit(): boolean {
+	// 	//NEEDS REFACTORING
+	// 	for (const key in valid) {
+	// 		if (!valid[key]) {
+	// 			return false;
+	// 		}
+	// 	}
+	// 	return true;
+	// }
+	function updateErrors(result: any): void {
+		for (const key in result) {
+			if (result.hasOwnProperty(key)) {
+				const value = result[key];
+				setErrors({ ...errors, key: value });
 			}
 		}
-		return true;
 	}
-
 	return (
 		<div className={classes.root}>
 			<Paper elevation={3}>
@@ -149,17 +166,17 @@ function CreateAccount() {
 						<AccountCircleIcon fontSize="large" color="primary" />
 						<UploadImage />
 					</div>
-					<Button
+					{/* <Button
 						type="submit"
 						variant="contained"
 						color="secondary"
-						// className={classes.button}
 					>
-						Create Account
-					</Button>
+						{!isPosting ? <Spinner height="25px" width="150px" /> : "Create Account"}
+					</Button> */}
+				<SubmitButton loading={isPosting} success={success} text="Create Account" />
 				</form>
-				{success ? <p>Welcome!</p> : null}
-				{success === false ? <p>Oops, something went wrong. Please try again</p> : null}
+				{/* {success ? <p>Welcome!</p> : null} */}
+				{/* {success === false ? <p>Oops, something went wrong. Please try again</p> : null} */}
 			</Paper>
 		</div>
 	);
