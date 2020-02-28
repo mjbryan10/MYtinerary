@@ -1,12 +1,9 @@
 import React, { useState } from "react";
-// import Spinner from "../global/Spinner";
 import SubmitButton from "../global/SubmitButton";
 import PasswordInput from "./PasswordInput";
 import UploadImage from "./UploadImage";
 import SimplePopover from "../global/SimplePopover";
 import {
-	// TextField,
-	// Button,
 	FormControl,
 	InputLabel,
 	Input,
@@ -47,10 +44,6 @@ interface State {
 	password: string;
 	img: string; //???
 }
-// interface ValidState {
-// 	email: boolean;
-// 	password: boolean;
-// }
 interface duplicateState {
 	isDuplicate: boolean;
 	msg: string;
@@ -65,14 +58,8 @@ function CreateAccount() {
 	});
 	const [success, setSuccess] = useState<boolean>(false);
 	const [errors, setErrors] = useState<any>({
-		email: {
-			isFault: false,
-			msg: "",
-		},
-		password: {
-			isFault: false,
-			msg: "",
-		},
+		email: "",
+		password: "",
 	});
 	const [isPosting, setIsPosting] = useState(false);
 	const [duplicateEmail, setDuplicateEmail] = useState<duplicateState>({
@@ -82,6 +69,8 @@ function CreateAccount() {
 
 	const handleValueChange = (prop: keyof State, newValue: any) => {
 		setValues({ ...values, [prop]: newValue });
+		setErrors({...errors, [prop]: ""}); //Reset errors not working
+
 	};
 	const handleChange = (prop: keyof State) => (
 		event: React.ChangeEvent<HTMLInputElement>
@@ -90,9 +79,11 @@ function CreateAccount() {
 	};
 	const handleSubmit = (event: React.SyntheticEvent) => {
 		event.preventDefault();
-		const { email, password } = values;
 		setIsPosting(true);
-		setErrors({ email: "", password: "" }); //Reset errors
+		postUser();
+	};
+	function postUser() {
+		const { email, password } = values;
 		fetch("http://localhost:5000/usersAPI/", {
 			method: "post",
 			headers: {
@@ -104,7 +95,6 @@ function CreateAccount() {
 			.then(res => res.json())
 			.then(res => {
 				if (res.hasOwnProperty("errors")) {
-					//TODO ACCESS THE ERRORS AND UPDATE STATE
 					updateErrors(res.errors);
 				} else if (res.hasOwnProperty("duplicate")) {
 					setDuplicateEmail({
@@ -114,7 +104,6 @@ function CreateAccount() {
 				} else {
 					setSuccess(true);
 				}
-				console.log("TCL: handleSubmit -> res", res);
 				setIsPosting(false);
 			})
 			.catch(err => {
@@ -123,34 +112,30 @@ function CreateAccount() {
 				setIsPosting(false);
 				setErrors(err);
 			});
-	};
-
+	}
 	function updateErrors(result: any): void {
-		let object: any = {...errors};
+		let object: any = { ...errors };
 		for (let i = 0; i < result.length; i++) {
 			const error = result[i];
 			let key = error.param;
 			let value = error.msg;
-			// object[key] = value;
-			object[key] = { isFault: true, msg: value };
+			object[key] = value;
 		}
 		setErrors(object);
-		console.log("TCL: CreateAccount -> object", object);
 	}
 	return (
 		<div className={classes.root}>
-		{console.log("TCL: CreateAccount -> errors.email.isFault", errors.email.isFault)}
 			<Paper elevation={3}>
 				<form className={classes.formRoot} onSubmit={handleSubmit}>
 					<FormControl>
 						<InputLabel htmlFor="email-input">Email address</InputLabel>
 						<Input
-							error={errors.email.isFault}
+							error={errors.email.length ? true : false}
 							id="email-input"
 							onChange={handleChange("email")}
 						/>
 						<FormHelperText id="email-helper-text">
-							{errors.email.isFault
+							{errors.email.length
 								? "Please provide a valid email"
 								: "We'll never share your email."}
 						</FormHelperText>
@@ -163,7 +148,7 @@ function CreateAccount() {
 					/>
 					<PasswordInput
 						onValueChange={handleValueChange}
-						validPassword={!errors.password.isFault}
+						validPassword={!errors.password.length}
 						errorString={errors.password.msg}
 					/>
 					<div className={classes.upload}>

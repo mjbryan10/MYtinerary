@@ -29,9 +29,9 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 type Props = {
-  onValueChange?: any;
-  validPassword?: boolean;
-  errorString?: string;
+	onValueChange?: any;
+	validPassword?: boolean;
+	errorString?: string;
 };
 
 interface State {
@@ -39,7 +39,11 @@ interface State {
 	showPassword: boolean;
 }
 
-const InputAdornments: React.FunctionComponent<Props> = ({ onValueChange, validPassword, errorString }) => {
+const InputAdornments: React.FunctionComponent<Props> = ({
+	onValueChange,
+	validPassword,
+	errorString,
+}) => {
 	const classes = useStyles();
 	const [values, setValues] = React.useState<State>({
 		password: "",
@@ -49,8 +53,8 @@ const InputAdornments: React.FunctionComponent<Props> = ({ onValueChange, validP
 	const handleChange = (prop: keyof State) => (
 		event: React.ChangeEvent<HTMLInputElement>
 	) => {
-    setValues({ ...values, [prop]: event.target.value });
-		onValueChange("password", values.password);
+		setValues({ ...values, [prop]: event.target.value });
+		onValueChange("password", event.target.value);
 	};
 
 	const handleClickShowPassword = () => {
@@ -67,7 +71,7 @@ const InputAdornments: React.FunctionComponent<Props> = ({ onValueChange, validP
 				<FormControl className={clsx(classes.margin, classes.textField)}>
 					<InputLabel htmlFor="standard-adornment-password">Password</InputLabel>
 					<Input
-            error={!validPassword}
+						error={!validPassword}
 						id="stadard-adornment-password"
 						type={values.showPassword ? "text" : "password"}
 						value={values.password}
@@ -84,9 +88,7 @@ const InputAdornments: React.FunctionComponent<Props> = ({ onValueChange, validP
 							</InputAdornment>
 						}
 					/>
-          <FormHelperText>
-							{validPassword ? null : errorString}
-						</FormHelperText>
+					<FormHelperText>{validPassword ? null : errorString}</FormHelperText>
 				</FormControl>
 			</div>
 		</div>
