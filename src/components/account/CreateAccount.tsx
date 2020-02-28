@@ -1,20 +1,22 @@
 import React, { useState } from "react";
 // import Spinner from "../global/Spinner";
-import SubmitButton from '../global/SubmitButton';
+import SubmitButton from "../global/SubmitButton";
 import PasswordInput from "./PasswordInput";
 import UploadImage from "./UploadImage";
+import SimplePopover from "../global/SimplePopover";
 import {
 	// TextField,
-	Button,
+	// Button,
 	FormControl,
 	InputLabel,
 	Input,
 	FormHelperText,
 	Paper,
 } from "@material-ui/core";
+
+//STYLES
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
-
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
 		root: {
@@ -39,17 +41,21 @@ const useStyles = makeStyles((theme: Theme) =>
 		},
 	})
 );
-
+//TYPES
 interface State {
 	email: string;
 	password: string;
 	img: string; //???
 }
-interface ValidState {
-	email: boolean;
-	password: boolean;
+// interface ValidState {
+// 	email: boolean;
+// 	password: boolean;
+// }
+interface duplicateState {
+	isDuplicate: boolean;
+	msg: string;
 }
-
+//COMPONENT
 function CreateAccount() {
 	const classes = useStyles();
 	const [values, setValues] = useState<State>({
@@ -57,16 +63,23 @@ function CreateAccount() {
 		password: "",
 		img: "",
 	});
-	const [valid, setValid] = useState<ValidState | any>({
-		email: true,
-		password: true,
-	});
 	const [success, setSuccess] = useState<boolean>(false);
 	const [errors, setErrors] = useState<any>({
-		email: "",
-		password: "",
+		email: {
+			isFault: false,
+			msg: "",
+		},
+		password: {
+			isFault: false,
+			msg: "",
+		},
 	});
 	const [isPosting, setIsPosting] = useState(false);
+	const [duplicateEmail, setDuplicateEmail] = useState<duplicateState>({
+		isDuplicate: false,
+		msg: "",
+	});
+
 	const handleValueChange = (prop: keyof State, newValue: any) => {
 		setValues({ ...values, [prop]: newValue });
 	};
@@ -78,12 +91,8 @@ function CreateAccount() {
 	const handleSubmit = (event: React.SyntheticEvent) => {
 		event.preventDefault();
 		const { email, password } = values;
-		setValid({
-			...valid,
-			email: validateEmail(email),
-			password: validatePassword(password),
-		});
 		setIsPosting(true);
+		setErrors({ email: "", password: "" }); //Reset errors
 		fetch("http://localhost:5000/usersAPI/", {
 			method: "post",
 			headers: {
@@ -94,9 +103,14 @@ function CreateAccount() {
 		})
 			.then(res => res.json())
 			.then(res => {
-				if (res.errors) {
+				if (res.hasOwnProperty("errors")) {
 					//TODO ACCESS THE ERRORS AND UPDATE STATE
-					updateErrors(res.erorrs);
+					updateErrors(res.errors);
+				} else if (res.hasOwnProperty("duplicate")) {
+					setDuplicateEmail({
+						isDuplicate: res.duplicate,
+						msg: res.msg,
+					});
 				} else {
 					setSuccess(true);
 				}
@@ -110,73 +124,54 @@ function CreateAccount() {
 				setErrors(err);
 			});
 	};
-	// console.log(validateSubmit());
 
-	//Validation functions:
-	function validateEmail(email: string): boolean {
-		if (/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-	function validatePassword(password: string): boolean {
-		if (password.length >= 4) {
-			return true;
-		}
-		return false;
-	}
-	// function validateSubmit(): boolean {
-	// 	//NEEDS REFACTORING
-	// 	for (const key in valid) {
-	// 		if (!valid[key]) {
-	// 			return false;
-	// 		}
-	// 	}
-	// 	return true;
-	// }
 	function updateErrors(result: any): void {
-		for (const key in result) {
-			if (result.hasOwnProperty(key)) {
-				const value = result[key];
-				setErrors({ ...errors, key: value });
-			}
+		let object: any = {...errors};
+		for (let i = 0; i < result.length; i++) {
+			const error = result[i];
+			let key = error.param;
+			let value = error.msg;
+			// object[key] = value;
+			object[key] = { isFault: true, msg: value };
 		}
+		setErrors(object);
+		console.log("TCL: CreateAccount -> object", object);
 	}
 	return (
 		<div className={classes.root}>
+		{console.log("TCL: CreateAccount -> errors.email.isFault", errors.email.isFault)}
 			<Paper elevation={3}>
 				<form className={classes.formRoot} onSubmit={handleSubmit}>
 					<FormControl>
 						<InputLabel htmlFor="email-input">Email address</InputLabel>
 						<Input
-							error={!valid.email}
+							error={errors.email.isFault}
 							id="email-input"
-							aria-describedby="my-helper-text"
 							onChange={handleChange("email")}
 						/>
 						<FormHelperText id="email-helper-text">
-							{valid.email ? "We'll never share your email." : "Please provide a valid email"}
+							{errors.email.isFault
+								? "Please provide a valid email"
+								: "We'll never share your email."}
 						</FormHelperText>
 					</FormControl>
-					{/* <TextField id="standard-basic" label="Username" style={{ margin: "8px" }} /> */}
-					<PasswordInput onValueChange={handleValueChange} validPassword={valid.password} />
-					{/* <PasswordInput /> */}
+					<SimplePopover
+						textString="This email is already in use"
+						elementAnchor={
+							duplicateEmail.isDuplicate ? document.getElementById("email-input") : null
+						}
+					/>
+					<PasswordInput
+						onValueChange={handleValueChange}
+						validPassword={!errors.password.isFault}
+						errorString={errors.password.msg}
+					/>
 					<div className={classes.upload}>
 						<AccountCircleIcon fontSize="large" color="primary" />
 						<UploadImage />
 					</div>
-					{/* <Button
-						type="submit"
-						variant="contained"
-						color="secondary"
-					>
-						{!isPosting ? <Spinner height="25px" width="150px" /> : "Create Account"}
-					</Button> */}
-				<SubmitButton loading={isPosting} success={success} text="Create Account" />
+					<SubmitButton loading={isPosting} success={success} text="Create Account" />
 				</form>
-				{/* {success ? <p>Welcome!</p> : null} */}
-				{/* {success === false ? <p>Oops, something went wrong. Please try again</p> : null} */}
 			</Paper>
 		</div>
 	);

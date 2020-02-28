@@ -33,38 +33,21 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 type SubmitButtonProps = {
-    text?: string;
-    loading: boolean;
-    success: boolean;
+	text?: string;
+	loading: boolean;
+	success: boolean;
 };
 
-const SubmitButton: React.FunctionComponent<SubmitButtonProps> = ({ text, loading, success }) => {
+const SubmitButton: React.FunctionComponent<SubmitButtonProps> = ({
+	text,
+	loading,
+	success,
+}) => {
 	const classes = useStyles();
-	// const [loading, setLoading] = React.useState(false);
-	// const [success, setSuccess] = React.useState(false);
-	//   const timer = React.useRef<number>();
 
 	const buttonClassname = clsx({
 		[classes.buttonSuccess]: success,
 	});
-
-	React.useEffect(() => {
-		return () => {
-			//   clearTimeout(timer.current);
-		};
-	}, []);
-
-	const handleButtonClick = () => {
-		if (!loading) {
-			// setSuccess(false);
-			// setLoading(true);
-			//   timer.current = setTimeout(() => {
-			//     setSuccess(true);
-			//     setLoading(false);
-			//   }, 2000);
-		}
-	};
-
 	return (
 		<div className={classes.root}>
 			<div className={classes.wrapper}>
@@ -73,8 +56,7 @@ const SubmitButton: React.FunctionComponent<SubmitButtonProps> = ({ text, loadin
 					color="primary"
 					className={buttonClassname}
 					disabled={loading}
-                    // onClick={handleButtonClick}
-                    type="submit"
+					type="submit"
 				>
 					{text || "Submit"}
 				</Button>

@@ -31,6 +31,7 @@ const useStyles = makeStyles((theme: Theme) =>
 type Props = {
   onValueChange?: any;
   validPassword?: boolean;
+  errorString?: string;
 };
 
 interface State {
@@ -38,7 +39,7 @@ interface State {
 	showPassword: boolean;
 }
 
-const InputAdornments: React.FunctionComponent<Props> = ({ onValueChange, validPassword }) => {
+const InputAdornments: React.FunctionComponent<Props> = ({ onValueChange, validPassword, errorString }) => {
 	const classes = useStyles();
 	const [values, setValues] = React.useState<State>({
 		password: "",
@@ -84,7 +85,7 @@ const InputAdornments: React.FunctionComponent<Props> = ({ onValueChange, validP
 						}
 					/>
           <FormHelperText>
-							{validPassword ? null : "Passwords need to be longer than 4 characters"}
+							{validPassword ? null : errorString}
 						</FormHelperText>
 				</FormControl>
 			</div>
