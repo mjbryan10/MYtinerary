@@ -3,13 +3,7 @@ import SubmitButton from "../global/SubmitButton";
 import PasswordInput from "./PasswordInput";
 import UploadImage from "./UploadImage";
 import SimplePopover from "../global/SimplePopover";
-import {
-	FormControl,
-	InputLabel,
-	Input,
-	FormHelperText,
-	Paper,
-} from "@material-ui/core";
+import { FormControl, InputLabel, Input, FormHelperText, Paper } from "@material-ui/core";
 
 //STYLES
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
@@ -69,8 +63,7 @@ function CreateAccount() {
 
 	const handleValueChange = (prop: keyof State, newValue: any) => {
 		setValues({ ...values, [prop]: newValue });
-		setErrors({...errors, [prop]: ""}); //Reset errors not working
-
+		setErrors({ ...errors, [prop]: "" }); //Reset errors not working
 	};
 	const handleChange = (prop: keyof State) => (
 		event: React.ChangeEvent<HTMLInputElement>
@@ -80,19 +73,8 @@ function CreateAccount() {
 	const handleSubmit = (event: React.SyntheticEvent) => {
 		event.preventDefault();
 		setIsPosting(true);
-		postUser();
-	};
-	function postUser() {
-		const { email, password } = values;
-		fetch("http://localhost:5000/usersAPI/", {
-			method: "post",
-			headers: {
-				Accept: "application/json, text/plain, */*",
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify({ email: email, password: password }),
-		})
-			.then(res => res.json())
+		postUser()
+			//delete below for non async await ----
 			.then(res => {
 				if (res.hasOwnProperty("errors")) {
 					updateErrors(res.errors);
@@ -112,6 +94,51 @@ function CreateAccount() {
 				setIsPosting(false);
 				setErrors(err);
 			});
+		//---
+	};
+	// function postUser() {
+	// 	const { email, password } = values;
+	// 	fetch("http://localhost:5000/usersAPI/", {
+	// 		method: "post",
+	// 		headers: {
+	// 			Accept: "application/json, text/plain, */*",
+	// 			"Content-Type": "application/json",
+	// 		},
+	// 		body: JSON.stringify({ email: email, password: password }),
+	// 	})
+	// 		.then(res => res.json())
+	// 		.then(res => {
+	// 			if (res.hasOwnProperty("errors")) {
+	// 				updateErrors(res.errors);
+	// 			} else if (res.hasOwnProperty("duplicate")) {
+	// 				setDuplicateEmail({
+	// 					isDuplicate: res.duplicate,
+	// 					msg: res.msg,
+	// 				});
+	// 			} else {
+	// 				setSuccess(true);
+	// 			}
+	// 			setIsPosting(false);
+	// 		})
+	// 		.catch(err => {
+	// 			console.error(err);
+	// 			setSuccess(false);
+	// 			setIsPosting(false);
+	// 			setErrors(err);
+	// 		});
+	// }
+	async function postUser() {
+		const { email, password } = values;
+		let response = await fetch("http://localhost:5000/usersAPI/", {
+			method: "post",
+			headers: {
+				Accept: "application/json, text/plain, */*",
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({ email: email, password: password }),
+		});
+		let data = await response.json();
+		return data;
 	}
 	function updateErrors(result: any): void {
 		let object: any = { ...errors };
@@ -152,10 +179,15 @@ function CreateAccount() {
 						errorString={errors.password}
 					/>
 					<div className={classes.upload}>
-						<AccountCircleIcon fontSize="large" color="primary" />
+						<AccountCircleIcon fontSize="large" color="secondary" />
 						<UploadImage />
 					</div>
-					<SubmitButton loading={isPosting} success={success} text="Create Account" successText="Account Created!" />
+					<SubmitButton
+						loading={isPosting}
+						success={success}
+						text="Create Account"
+						successText="Account Created!"
+					/>
 				</form>
 			</Paper>
 		</div>

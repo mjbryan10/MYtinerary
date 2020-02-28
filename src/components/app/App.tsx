@@ -8,6 +8,7 @@ import Landing from "../landing/Landing";
 import Cities from "../cities/Cities";
 import CityItineraries from "../itineraries/CityItineraries";
 import CreateAccount from "../account/CreateAccount";
+import LoginPage from '../account/LoginPage'
 import NotFound from "../NotFound";
 import Footer from "../footer/Footer";
 
@@ -40,6 +41,7 @@ function App() {
 							<Route path="/cities" component={Cities} />
 							<Route path="/itineraries/:cityName" component={CityItineraries} />
 							<Route path="/create" component={CreateAccount} />
+							<Route path="/login" component={LoginPage} />
 							<Route component={NotFound} />
 						</Switch>
 					</div>

@@ -35,8 +35,10 @@ const useStyles = makeStyles((theme: Theme) =>
 type SubmitButtonProps = {
 	text?: string;
 	successText?: string;
-    loading: boolean;
-	success: boolean;
+    // loading: boolean;
+	// success: boolean;
+    loading?: boolean;
+	success?: boolean;
 };
 
 const SubmitButton: React.FunctionComponent<SubmitButtonProps> = ({
