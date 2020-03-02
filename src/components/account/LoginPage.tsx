@@ -1,9 +1,12 @@
 import React, { useState } from "react";
+import { connect } from "react-redux";
+import { tokenStatus as tokenStatusAction } from "../../store/actions/loginActions";
 import PasswordInput from "./PasswordInput";
 import { Paper, FormControl, InputLabel, Input, FormHelperText } from "@material-ui/core";
 
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import SubmitButton from "../global/SubmitButton";
+import { bindActionCreators } from "redux";
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
 		root: {
@@ -33,21 +36,23 @@ interface State {
 	password: string;
 }
 
-function LoginPage() {
+function LoginPage(props: any) {
 	const classes = useStyles();
 	//STATE:
 	const [values, setValues] = useState<State>({
 		email: "",
 		password: "",
 	});
-	const [errors, setErrors] = useState({
+	const [errors, setErrors] = useState<State>({
 		email: "",
 		password: "",
 	});
+	const [loading, setloading] = useState<boolean>(false);
+	const [loginSuccess, setLoginSuccess] = useState<boolean>(false);
 	//FUNCTIONS:
 	const handleValueChange = (prop: keyof State, newValue: any) => {
 		setValues({ ...values, [prop]: newValue });
-		setErrors({ ...errors, [prop]: "" }); //Reset errors not working
+		setErrors({ ...errors, [prop]: "" });
 	};
 	const handleChange = (prop: keyof State) => (
 		event: React.ChangeEvent<HTMLInputElement>
@@ -56,17 +61,48 @@ function LoginPage() {
 	};
 	const handleSubmit = (event: React.SyntheticEvent) => {
 		event.preventDefault();
-		let errorsObj: any = {...errors};
+		let errorsObj: any = { ...errors };
 		if (!values.email.length) {
-			errorsObj.email = "Please enter your email"
+			errorsObj.email = "Please enter your email";
 		}
 		if (!values.password.length) {
-			errorsObj.password = "Please enter your password"
+			errorsObj.password = "Please enter your password";
 		}
-		setErrors(errorsObj);
-		const { email, password } = values;
-		console.log (email, password)
+		if (errorsObj.email.length || errorsObj.password.length) {
+			setErrors(errorsObj);
+		} else {
+			const { email, password } = values;
+			setloading(true);
+			window.localStorage.removeItem("session_token");
+			submitLogin(email, password)
+				.then((res: any): any => {
+					if (res.success) {
+						window.localStorage.setItem("session_token", res.token);
+						setLoginSuccess(true);
+					} else {
+						setErrors({ email: res.msg, password: res.msg });
+					}
+					setloading(false);
+					props.tokenStatus();
+				})
+				.catch(err => {
+					console.error(err);
+					setloading(false);
+					props.tokenStatus();
+				});
+		}
 	};
+	async function submitLogin(email: string, password: string): Promise<any> {
+		let response = await fetch("http://localhost:5000/usersAPI/login", {
+			method: "post",
+			headers: {
+				Accept: "application/json, text/plain, */*",
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({ email, password }),
+		});
+		return await response.json();
+	}
 	return (
 		<div className={classes.root}>
 			<Paper elevation={3}>
@@ -89,8 +125,8 @@ function LoginPage() {
 						errorString={errors.password}
 					/>
 					<SubmitButton
-						// loading={isPosting}
-						// success={success}
+						loading={loading}
+						success={loginSuccess}
 						text="Log in"
 						successText="Success!"
 					/>
@@ -99,5 +135,19 @@ function LoginPage() {
 		</div>
 	);
 }
+//REDUX:
+const mapStatetoProps = (state: any): object => {
+	return {
+		loggedIn: state.login.loggedIn,
+	};
+};
+const mapDispatchToProps = (dispatch: any) =>
+	bindActionCreators(
+		{
+			tokenStatus: tokenStatusAction,
+		},
+		dispatch
+	);
+export default connect(mapStatetoProps, mapDispatchToProps)(LoginPage);
 
-export default LoginPage;
+//ADD REDUX PROPS and FUNCTIONS

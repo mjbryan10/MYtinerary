@@ -12,10 +12,12 @@ import { combineReducers } from "redux";
 import citiesReducer from "./citiesReducer";
 import currentCityReducer from "./currentCityReducer";
 import itineraryReducer from "./itineraryReducer";
+import loginReducer from './loginReducer';
 
 const rootReducer = combineReducers({
 	cities: citiesReducer,
 	currentCity: currentCityReducer,
 	itineraries: itineraryReducer,
+	login: loginReducer,
 });
 export default rootReducer;

@@ -62,8 +62,8 @@ function CreateAccount() {
 	});
 
 	const handleValueChange = (prop: keyof State, newValue: any) => {
-		setValues({ ...values, [prop]: newValue });
-		setErrors({ ...errors, [prop]: "" }); //Reset errors not working
+		setValues({ ...values, [prop]: newValue }); //Changes state value
+		setErrors({ ...errors, [prop]: "" }); //Resets errors
 	};
 	const handleChange = (prop: keyof State) => (
 		event: React.ChangeEvent<HTMLInputElement>
@@ -129,7 +129,7 @@ function CreateAccount() {
 	// }
 	async function postUser() {
 		const { email, password } = values;
-		let response = await fetch("http://localhost:5000/usersAPI/", {
+		let response = await fetch("http://localhost:5000/usersAPI/create", {
 			method: "post",
 			headers: {
 				Accept: "application/json, text/plain, */*",

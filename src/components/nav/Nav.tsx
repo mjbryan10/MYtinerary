@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
@@ -13,45 +13,52 @@ import AccountCircle from "@material-ui/icons/AccountCircle";
 // import FormGroup from '@material-ui/core/FormGroup';
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
+import { connect } from "react-redux";
+import { tokenStatus } from "../../store/actions/loginActions";
 
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
 		root: {
-            // flexGrow: 1,
+			// flexGrow: 1,
 		},
 		menuButton: {
-            marginRight: theme.spacing(2),
-        },
-        bar: {
-            // background: 'linear-gradient(45deg, #dc2b00 30%, #FF8E53 90%)',
-            display: 'flex',
-            justifyContent: 'space-between'
-        }
+			marginRight: theme.spacing(2),
+		},
+		bar: {
+			// background: 'linear-gradient(45deg, #dc2b00 30%, #FF8E53 90%)',
+			display: "flex",
+			justifyContent: "space-between",
+		},
 		// title: {
 		// 	flexGrow: 1,
 		// },
 	})
 );
 
-export default function Nav() {
+function Nav(props: any) {
 	const classes = useStyles();
-	// const [auth, setAuth] = React.useState(true);
+
+	//state
 	const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 	const open = Boolean(anchorEl);
-
-	// const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-	// 	setAuth(event.target.checked);
-	// };
+	const { loggedIn, updateLoginStatus, logOutUser } = props;
 
 	const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
 		setAnchorEl(event.currentTarget);
-        console.log("TCL: handleMenu -> event.currentTarget", event.currentTarget);
 	};
 
 	const handleClose = (e: any) => {
-		console.log(e.target)
 		setAnchorEl(null);
 	};
+	const handleLogOut = (event: any) => {
+		event.preventDefault();
+		handleClose(event);
+		window.localStorage.removeItem("session_token");
+		updateLoginStatus();
+	};
+	useEffect(() => {
+		updateLoginStatus();
+	}, [loggedIn, updateLoginStatus]);
 	return (
 		<div className={classes.root}>
 			<AppBar position="static" style={{ margin: 0 }}>
@@ -81,12 +88,14 @@ export default function Nav() {
 							open={open}
 							onClose={handleClose}
 						>
-							<MenuItem onClick={handleClose}>
-								<Link to="/login">Log in</Link>
+							<MenuItem onClick={loggedIn ? handleLogOut : handleClose}>
+								{loggedIn ? <a href="">Log out</a> : <Link to="/login">Log in</Link>}
 							</MenuItem>
-							<MenuItem onClick={handleClose}>
-								<Link to="/create">Create Account</Link>
-							</MenuItem>
+							{loggedIn ? null : (
+								<MenuItem onClick={handleClose}>
+									<Link to="/create">Create Account</Link>
+								</MenuItem>
+							)}
 						</Menu>
 					</div>
 					<IconButton
@@ -102,8 +111,18 @@ export default function Nav() {
 		</div>
 	);
 }
-// <div className="login-container">
-// 	<p>Want to build your won MYtinerary?</p>
-// 	<Link to="/login">Log in</Link>
-// 	<Link to="/create">Create Account</Link>
-// </div>
+
+const mapStateToProps = (state: any): object => {
+	return {
+		loggedIn: state.login.loggedIn,
+	};
+};
+
+const mapDispatchToProps = (dispatch: any): object => {
+	return {
+		updateLoginStatus: () => dispatch(tokenStatus()),
+		// logOutUser: () => dispatch(logOutUser()),
+	};
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Nav);
