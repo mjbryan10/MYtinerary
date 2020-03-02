@@ -1,7 +1,16 @@
-import { USER_LOGIN, USER_LOGOUT } from "../actions/loginActions";
+import { USER_LOGIN, USER_LOGOUT, UPDATE_CURRENT_USER_DETAILS } from "../actions/loginActions";
 
-const initialLoginState = {
+type IntialLoginState = {
+	loggedIn: boolean;
+	token: string;
+	details: object;
+	error: string;
+};
+
+const initialLoginState: IntialLoginState = {
 	loggedIn: false,
+	token: "",
+	details: {},
 	error: "",
 };
 
@@ -14,12 +23,17 @@ export default function loginReducer(
 			return {
 				...state,
 				loggedIn: true,
+				token: action.payload,
 			};
 		case USER_LOGOUT:
 			return {
-				...state,
-				loggedIn: false,
+				initialLoginState
 			};
+		case UPDATE_CURRENT_USER_DETAILS:
+			return {
+				...state,
+				details: action.payload
+			} 
 		default:
 			return state;
 	}

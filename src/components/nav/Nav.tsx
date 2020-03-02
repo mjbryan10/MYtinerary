@@ -14,7 +14,14 @@ import AccountCircle from "@material-ui/icons/AccountCircle";
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
 import { connect } from "react-redux";
-import { tokenStatus } from "../../store/actions/loginActions";
+import {
+	tokenStatus,
+} from "../../store/actions/loginActions";
+import {
+	fetchCurrentUser as fetchCurrentUserAction
+} from "../../store/actions/userActions";
+import { bindActionCreators } from "redux";
+
 
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
@@ -41,7 +48,7 @@ function Nav(props: any) {
 	//state
 	const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 	const open = Boolean(anchorEl);
-	const { loggedIn, updateLoginStatus, logOutUser } = props;
+	const { loggedIn, token, details, updateLoginStatus, fetchCurrentUser } = props;
 
 	const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
 		setAnchorEl(event.currentTarget);
@@ -58,7 +65,8 @@ function Nav(props: any) {
 	};
 	useEffect(() => {
 		updateLoginStatus();
-	}, [loggedIn, updateLoginStatus]);
+		fetchCurrentUser(token);
+	}, [fetchCurrentUser, loggedIn, token, updateLoginStatus]);
 	return (
 		<div className={classes.root}>
 			<AppBar position="static" style={{ margin: 0 }}>
@@ -98,6 +106,7 @@ function Nav(props: any) {
 							)}
 						</Menu>
 					</div>
+					{details.name}
 					<IconButton
 						edge="start"
 						className={classes.menuButton}
@@ -115,14 +124,17 @@ function Nav(props: any) {
 const mapStateToProps = (state: any): object => {
 	return {
 		loggedIn: state.login.loggedIn,
+		token: state.login.token,
+		details: state.currentUser.details
 	};
 };
-
-const mapDispatchToProps = (dispatch: any): object => {
-	return {
-		updateLoginStatus: () => dispatch(tokenStatus()),
-		// logOutUser: () => dispatch(logOutUser()),
-	};
-};
+const mapDispatchToProps = (dispatch: any) =>
+	bindActionCreators(
+		{
+			updateLoginStatus: tokenStatus,
+			fetchCurrentUser: fetchCurrentUserAction
+		},
+		dispatch
+	);
 
 export default connect(mapStateToProps, mapDispatchToProps)(Nav);
