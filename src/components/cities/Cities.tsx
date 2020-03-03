@@ -2,11 +2,13 @@ import "./cities.scss";
 import React, { useState, useEffect } from "react";
 import CityCard from "./CityCard";
 import Spinner from "../global/Spinner";
+import Search from '../global/Search';
 
 //REDUX
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { default as fetchCitiesAction } from "../../store/actions/fetchCities";
+import { fetchAllCities as fetchCitiesAction } from "../../store/actions/cityActions";
+// import { default as fetchCitiesAction } from "../../store/actions/fetchCities";
 
 const Cities = (props: any) => {
 	const { cities, fetchCities, loading } = props;
@@ -23,7 +25,7 @@ const Cities = (props: any) => {
 		if (searchStr.length) {
 			let filtered = [];
 			for (const city of cities) {
-				if (city.name.toLowerCase().search(searchStr) === 0) {
+				if (city.name.toLowerCase().search(searchStr.toLowerCase()) === 0) {
 					//can change to to includes on preference
 					filtered.push(city);
 				}
@@ -38,12 +40,13 @@ const Cities = (props: any) => {
 			{loading ? <Spinner /> : null}
 			{cities.length ? (
 				<div className="cards-container">
-					<input
+					<Search value={searchStr} onChange={handleChange} />
+					{/* <input
 						type="text"
 						placeholder="Search for a city.."
 						value={searchStr}
 						onChange={handleChange}
-					/>
+					/> */}
 					{filterCities().map((city: any, index: number) => (
 						<CityCard
 							// className="city-card"

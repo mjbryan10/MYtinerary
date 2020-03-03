@@ -1,3 +1,5 @@
+//DEPRECATION WARNING
+
 import {fetchCitiesRequest, fetchCitiesSuccess, fetchCitiesError} from './cityActions';
 
 const fetchCities = () => {

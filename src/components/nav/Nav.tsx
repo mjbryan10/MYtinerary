@@ -112,7 +112,7 @@ function Nav(props: any) {
 							onClose={handleClose}
 						>
 							<MenuItem onClick={loggedIn ? handleLogOutClick : handleClose}>
-								{loggedIn ? <a href="">Log out</a> : <Link to="/login">Log in</Link>}
+								{loggedIn ? <Link to="/">Log out</Link> : <Link to="/login">Log in</Link>}
 							</MenuItem>
 							{loggedIn ? null : (
 								<MenuItem onClick={handleClose}>
@@ -125,12 +125,33 @@ function Nav(props: any) {
 
 					<IconButton
 						edge="start"
+						aria-controls="hamburger-appbar"
 						className={classes.menuButton}
 						color="inherit"
 						aria-label="menu"
+						onClick={handleMenu}
 					>
 						<MenuIcon />
 					</IconButton>
+					<Menu
+						id="hamburger-appbar"
+						anchorEl={anchorEl}
+						anchorOrigin={{
+							vertical: "top",
+							horizontal: "right",
+						}}
+						keepMounted
+						transformOrigin={{
+							vertical: "top",
+							horizontal: "right",
+						}}
+						open={open}
+						onClose={handleClose}
+					>
+						<MenuItem onClick={handleClose}>
+							<Link to="/cities">View Cities</Link>
+						</MenuItem>
+					</Menu>
 				</Toolbar>
 			</AppBar>
 		</div>
