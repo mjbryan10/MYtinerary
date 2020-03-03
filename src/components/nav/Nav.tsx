@@ -65,7 +65,9 @@ function Nav(props: any) {
 	};
 	useEffect(() => {
 		updateLoginStatus();
-		fetchCurrentUser(token);
+		if (loggedIn) {
+			fetchCurrentUser(token);
+		}
 	}, [fetchCurrentUser, loggedIn, token, updateLoginStatus]);
 	return (
 		<div className={classes.root}>
@@ -106,7 +108,8 @@ function Nav(props: any) {
 							)}
 						</Menu>
 					</div>
-					{details.name}
+					{/* DEBUG!!! {details.name.length ? details.name : null}*/}
+					
 					<IconButton
 						edge="start"
 						className={classes.menuButton}
@@ -125,7 +128,7 @@ const mapStateToProps = (state: any): object => {
 	return {
 		loggedIn: state.login.loggedIn,
 		token: state.login.token,
-		details: state.currentUser.details
+		details: state.currentUser.details,
 	};
 };
 const mapDispatchToProps = (dispatch: any) =>

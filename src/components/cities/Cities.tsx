@@ -45,7 +45,13 @@ const Cities = (props: any) => {
 						onChange={handleChange}
 					/>
 					{filterCities().map((city: any, index: number) => (
-						<CityCard className="city-card" cityName={city.name} key={index} />
+						<CityCard
+							// className="city-card"
+							cityName={city.name}
+							cityImg={city.img}
+							imgCredit={city.img_credit}
+							key={index}
+						/>
 					))}
 				</div>
 			) : null}

@@ -1,4 +1,9 @@
-import { USER_PENDING, USER_SUCCESS, USER_ERROR } from "../actions/userActions";
+import {
+	USER_PENDING,
+	USER_SUCCESS,
+	USER_ERROR,
+	CLEAR_CURRENT_USER,
+} from "../actions/userActions";
 
 type IntialUserState = {
 	pending: boolean;
@@ -12,10 +17,7 @@ const intialUserState: IntialUserState = {
 	error: "",
 };
 
-export default function loginReducer(
-	state: object = intialUserState,
-	action: any = {}
-) {
+export default function loginReducer(state: object = intialUserState, action: any = {}) {
 	switch (action.type) {
 		case USER_PENDING:
 			return {
@@ -24,16 +26,20 @@ export default function loginReducer(
 			};
 		case USER_SUCCESS:
 			return {
-                ...state,
-                pending: false,
-                details: action.payload
+				...state,
+				pending: false,
+				details: action.payload,
 			};
 		case USER_ERROR:
 			return {
-                ...state,
-                details: {},
-				error: action.payload
-			} 
+				...state,
+				details: {},
+				error: action.payload,
+			};
+		case CLEAR_CURRENT_USER:
+			return {
+				intialUserState,
+			};
 		default:
 			return state;
 	}

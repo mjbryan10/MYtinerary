@@ -1,6 +1,7 @@
 export const USER_PENDING = "USER_PENDING";
 export const USER_SUCCESS = "USER_SUCCESS";
 export const USER_ERROR = "USER_ERROR";
+export const CLEAR_CURRENT_USER = "CLEAR_CURRENT_USER";
 
 export function fetchUserPending(): object {
 	return {
@@ -18,6 +19,11 @@ export function fetchUserFailure(payload: any): object {
 		type: USER_ERROR,
 		payload,
 	};
+}
+export function clearCurrentUser(): object {
+    return {
+        type: CLEAR_CURRENT_USER,
+    }
 }
 // export const fetchCurrentUser = async (token: string) => {
 // 	console.log("getCurrentUserDetails -> getCurrentUserDetails");

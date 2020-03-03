@@ -1,18 +1,51 @@
+@import "../../styles/variables.scss";
+.city-card {
+	display: block;
+	position: relative;
+	background-color: #ccc;
+	overflow: hidden;
+	img {
+        z-index: 1;
+		position: absolute;
+		max-width: 100%;
+		height: auto;
+        object-fit: cover;
+        // margin: auto;
+		// bottom: -50%;
+	}
+	a {
+		&:visited {
+			color: inherit;
+		}
+	}
+	h1,
+	h2,
+	h3,
+	h4 {
+        z-index: 10;
+		padding: 1em;
+		color: white;
+		// background-color: rgba(255,255,255,0.2);
+		// background-color: transparentize($secondary-color, 0.9);
+		background-image: radial-gradient(
+			transparentize($secondary-color, 0.8),
+			transparentize($secondary-color, 0.85),
+			transparentize($secondary-color, 1),
+			transparentize($secondary-color, 1)
+        );
+    
+		// border-radius: 50%;
+		font-weight: 600;
+		font-size: 1.4em;
+		text-shadow: 1px 1px 1px #000;
+	}
+}
 .cities-container {
-    display: flex;
-    flex-flow: column nowrap;
-    align-items: center;
-    width: 100%;
-    .cards-container {
-        width: 100%;
-    }
-    & .city-card {
-        display: block;
-        background-color: #ccc;
-        a {
-            &:visited {
-                color: inherit;
-            }
-        }
+	display: flex;
+	flex-flow: column nowrap;
+	align-items: center;
+	width: 100%;
+	.cards-container {
+		width: 100%;
     }
 }

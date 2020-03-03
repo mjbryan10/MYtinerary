@@ -79,7 +79,7 @@ function Destinations(props: any) {
 			) : (
 				<div className={classes.cardsContainer}>
 					{filterByCurrentSlide(cities).map((city: any, index: number) => {
-						return <CityCard cityName={city.name} key={index} />;
+						return <CityCard cityName={city.name} cityImg={city.img} imgCredit={city.img_credit} key={index} />;
 					})}
 				</div>
 			)}
