@@ -6,8 +6,10 @@ import Spinner from "../global/Spinner";
 //REDUX
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { default as fetchCitiesAction } from "../../store/actions/fetchCities";
+import {fetchTopCities as fetchTopCitiesAction} from '../../store/actions/cityActions'
+// import { default as fetchCitiesAction } from "../../store/actions/fetchCities";
 
+//STYLES
 import { createStyles, makeStyles } from "@material-ui/core/styles";
 const useStyles = makeStyles(() =>
 	createStyles({
@@ -35,12 +37,15 @@ function Destinations(props: any) {
 	//STATE
 	const [slideLength, setSlideLength] = useState<number>(0);
 	const [slideIndex, setSlideIndex] = useState<number>(0);
+	// const [numPerSlide, setNumPerSlide] = useState(4)
 	let numPerSlide = 4; //Change this to set how many cities appear per slide
+	// let maxCards = 12; //Change this to set array length
+
+	//FUNCTIONS
 	const calcNumOfSlides = (): number => {
 		return Math.ceil(cities.length / numPerSlide);
 	};
 	let onButtonClick = (direction: string) => {
-		// setisLoading(true);
 		let index: number = slideIndex;
 		if (direction === "right") {
 			index = slideIndex === slideLength - 1 ? 0 : index + 1;
@@ -48,10 +53,11 @@ function Destinations(props: any) {
 			index = slideIndex === 0 ? slideLength - 1 : index - 1;
 		}
 		setSlideIndex(index);
-		// setisLoading(false);
 	};
+	const onSpanClick = (spanIndex: number):void => {
+		setSlideIndex(spanIndex);
+	}
 	const updateState = (): void => {
-		// setCities(Cities);
 		setSlideLength(calcNumOfSlides());
 	};
 	function filterByCurrentSlide(array: [any]) {
@@ -87,6 +93,7 @@ function Destinations(props: any) {
 				slideLength={slideLength}
 				slideIndex={slideIndex}
 				onButtonClick={onButtonClick}
+				onSpanClick={onSpanClick}
 			/>
 		</div>
 	);
@@ -102,7 +109,7 @@ const mapStateToProps = (state: any): object => {
 const mapDispatchToProps = (dispatch: any) =>
 	bindActionCreators(
 		{
-			fetchCities: fetchCitiesAction,
+			fetchCities: fetchTopCitiesAction,
 		},
 		dispatch
 	);

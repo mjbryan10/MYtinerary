@@ -21,3 +21,18 @@ export function fetchCitiesError(error: string) {
         payload: error
     }
 }
+
+export const fetchTopCities = () => {
+    return (dispatch: any) => {
+        dispatch(fetchCitiesRequest());
+        fetch('http://localhost:5000/citiesAPI/top')
+        .then(res => res.json())
+        .then(res => {
+            dispatch(fetchCitiesSuccess(res));
+            return res.cities;
+        })
+        .catch(error => {
+            dispatch(fetchCitiesError(error.message));
+        })
+    }
+}

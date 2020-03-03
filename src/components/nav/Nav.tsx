@@ -14,14 +14,9 @@ import AccountCircle from "@material-ui/icons/AccountCircle";
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
 import { connect } from "react-redux";
-import {
-	tokenStatus,
-} from "../../store/actions/loginActions";
-import {
-	fetchCurrentUser as fetchCurrentUserAction
-} from "../../store/actions/userActions";
+import { tokenStatus } from "../../store/actions/loginActions";
+import { fetchCurrentUser as fetchCurrentUserAction } from "../../store/actions/userActions";
 import { bindActionCreators } from "redux";
-
 
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
@@ -48,7 +43,16 @@ function Nav(props: any) {
 	//state
 	const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 	const open = Boolean(anchorEl);
-	const { loggedIn, token, details, updateLoginStatus, fetchCurrentUser } = props;
+	const {
+		loggedIn,
+		token,
+		details,
+		updateLoginStatus,
+		fetchCurrentUser,
+		expired,
+		error,
+		userSuccess,
+	} = props;
 
 	const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
 		setAnchorEl(event.currentTarget);
@@ -57,9 +61,12 @@ function Nav(props: any) {
 	const handleClose = (e: any) => {
 		setAnchorEl(null);
 	};
-	const handleLogOut = (event: any) => {
+	const handleLogOutClick = (event: any) => {
 		event.preventDefault();
 		handleClose(event);
+		logOut();
+	};
+	const logOut = (): void => {
 		window.localStorage.removeItem("session_token");
 		updateLoginStatus();
 	};
@@ -69,6 +76,12 @@ function Nav(props: any) {
 			fetchCurrentUser(token);
 		}
 	}, [fetchCurrentUser, loggedIn, token, updateLoginStatus]);
+	useEffect(() => {
+		if (expired) {
+			alert(error);
+			logOut();
+		}
+	});
 	return (
 		<div className={classes.root}>
 			<AppBar position="static" style={{ margin: 0 }}>
@@ -98,7 +111,7 @@ function Nav(props: any) {
 							open={open}
 							onClose={handleClose}
 						>
-							<MenuItem onClick={loggedIn ? handleLogOut : handleClose}>
+							<MenuItem onClick={loggedIn ? handleLogOutClick : handleClose}>
 								{loggedIn ? <a href="">Log out</a> : <Link to="/login">Log in</Link>}
 							</MenuItem>
 							{loggedIn ? null : (
@@ -108,8 +121,8 @@ function Nav(props: any) {
 							)}
 						</Menu>
 					</div>
-					{/* DEBUG!!! {details.name.length ? details.name : null}*/}
-					
+					{userSuccess ? details.name : null}
+
 					<IconButton
 						edge="start"
 						className={classes.menuButton}
@@ -129,13 +142,16 @@ const mapStateToProps = (state: any): object => {
 		loggedIn: state.login.loggedIn,
 		token: state.login.token,
 		details: state.currentUser.details,
+		expired: state.currentUser.expired,
+		userSuccess: state.currentUser.success,
+		error: state.currentUser.error,
 	};
 };
 const mapDispatchToProps = (dispatch: any) =>
 	bindActionCreators(
 		{
 			updateLoginStatus: tokenStatus,
-			fetchCurrentUser: fetchCurrentUserAction
+			fetchCurrentUser: fetchCurrentUserAction,
 		},
 		dispatch
 	);
