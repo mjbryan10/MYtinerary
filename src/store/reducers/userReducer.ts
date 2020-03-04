@@ -42,7 +42,9 @@ export default function loginReducer(state: object = intialUserState, action: an
 			};
 		case CLEAR_CURRENT_USER:
 			return {
-				intialUserState,
+				success: false,
+				details: {},
+				error: "",
 			};
 		default:
 			return state;

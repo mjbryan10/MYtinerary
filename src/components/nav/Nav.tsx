@@ -17,12 +17,15 @@ import Menu from "@material-ui/core/Menu";
 
 //REDUX
 import { connect } from "react-redux";
-import { updateLoginStatus, logUserOut } from "../../store/actions/loginActions";
+import { 
+	updateLoginStatus, 
+	// logUserOut 
+} from "../../store/actions/loginActions";
 import { fetchCurrentUser as fetchCurrentUserAction } from "../../store/actions/userActions";
 import { bindActionCreators } from "redux";
 
 //MENU OPTIONS
-import Drawer from './Drawer';
+import Drawer from "./Drawer";
 // import Hamburger from './Hamburger';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -55,10 +58,10 @@ function Nav(props: any) {
 		token,
 		details,
 		updateLoginStatus,
-		logUserOut,
+		// logUserOut,
 		fetchCurrentUser,
-		expired,
-		error,
+		// expired,
+		// error,
 		userSuccess,
 	} = props;
 
@@ -85,12 +88,12 @@ function Nav(props: any) {
 			fetchCurrentUser(token);
 		}
 	}, [fetchCurrentUser, loggedIn, token, updateLoginStatus]);
-	useEffect(() => {
-		if (expired) {
-			alert(error);
-			logOut();
-		}
-	});
+	// useEffect(() => {
+	// 	if (expired) {
+	// 		alert(error);
+	// 		logOut();
+	// 	}
+	// });
 	return (
 		<div className={classes.root}>
 			<AppBar position="static" style={{ margin: 0 }}>
@@ -131,7 +134,7 @@ function Nav(props: any) {
 						</Menu>
 					</div>
 					{userSuccess ? details.name : null}
-								<Drawer />
+					<Drawer />
 					{/* <Hamburger /> */}
 				</Toolbar>
 			</AppBar>
@@ -144,7 +147,7 @@ const mapStateToProps = (state: any): object => {
 		loggedIn: state.login.loggedIn,
 		token: state.login.token,
 		details: state.currentUser.details,
-		expired: state.currentUser.expired,
+		// expired: state.currentUser.expired,
 		userSuccess: state.currentUser.success,
 		error: state.currentUser.error,
 	};
@@ -153,7 +156,7 @@ const mapDispatchToProps = (dispatch: any) =>
 	bindActionCreators(
 		{
 			updateLoginStatus,
-			logUserOut,
+			// logUserOut,
 			fetchCurrentUser: fetchCurrentUserAction,
 		},
 		dispatch

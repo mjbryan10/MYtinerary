@@ -8,13 +8,19 @@ import Landing from "../landing/Landing";
 import Cities from "../cities/Cities";
 import CityItineraries from "../itineraries/CityItineraries";
 import CreateAccount from "../account/CreateAccount";
-import LoginPage from '../account/LoginPage'
+import LoginPage from "../account/LoginPage";
 import NotFound from "../NotFound";
 import Footer from "../footer/Footer";
+
+//REDUX:
+import { connect } from "react-redux";
+import { updateLoginStatus } from "../../store/actions/loginActions";
+import { bindActionCreators } from "redux";
 
 //THEME FOR APP
 import { createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
+// import { userLoggedIn } from "../../store/actions/loginActions";
 const theme = createMuiTheme({
 	spacing: 8,
 	palette: {
@@ -28,8 +34,10 @@ const theme = createMuiTheme({
 		},
 	},
 });
-
 function App() {
+	React.useEffect(() => {
+		updateLoginStatus();
+	});
 	return (
 		<BrowserRouter>
 			<div className="App">
@@ -51,5 +59,11 @@ function App() {
 		</BrowserRouter>
 	);
 }
-
-export default App;
+const mapDispatchToProps = (dispatch: any) =>
+	bindActionCreators(
+		{
+			updateLoginStatus,
+		},
+		dispatch
+	);
+export default connect(mapDispatchToProps)(App);

@@ -1,6 +1,7 @@
 import { USER_LOGGED_IN, USER_LOGGED_OUT, REDIRECT } from "../actions/loginActions";
 
 type IntialLoginState = {
+	pending: boolean;
 	loggedIn: boolean;
 	token: string;
 	error: string;
@@ -8,6 +9,7 @@ type IntialLoginState = {
 };
 
 const initialLoginState: IntialLoginState = {
+	pending: true,
 	loggedIn: false,
 	token: "",
 	error: "",
@@ -22,6 +24,7 @@ export default function loginReducer(
 		case USER_LOGGED_IN:
 			return {
 				...state,
+				pending: false,
 				loggedIn: true,
 				redirect: false,
 				token: action.payload,
@@ -29,6 +32,7 @@ export default function loginReducer(
 		case USER_LOGGED_OUT:
 			return {
 				...state,
+				pending: false,
 				loggedIn: false,
 				token: "",
 				redirect: true,

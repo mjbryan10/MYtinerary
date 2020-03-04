@@ -12,23 +12,23 @@ import { Redirect } from "react-router-dom";
 // import { default as fetchAllCitiesAction } from "../../store/actions/fetchAllCities";
 
 const Cities = (props: any) => {
-	const { cities, fetchAllCities, loading, token, hasLoaded, redirect } = props;
+	const { cities, fetchAllCities, loading, token, hasLoaded, loggedIn, loginPending } = props;
 	const [searchStr, setSearchStr] = useState("");
 	useEffect((): void => {
-		//Should be able to check token here
-		fetchAllCities(token);
-	}, [fetchAllCities, token]);
+		if (loggedIn) {
+			fetchAllCities(token);
+		}
+	}, [fetchAllCities, token, loggedIn]);
 	const handleChange = (e: any) => {
 		e.preventDefault();
 		setSearchStr(e.target.value);
-		// props.onChange(e.target.value);
 	};
 	function filterCities(): any {
 		if (searchStr.length) {
 			let filtered = [];
 			for (const city of cities) {
 				if (city.name.toLowerCase().search(searchStr.toLowerCase()) === 0) {
-					//can change to to includes on preference
+					//CHOICE: change to includes if want less strict search
 					filtered.push(city);
 				}
 			}
@@ -36,22 +36,21 @@ const Cities = (props: any) => {
 		}
 		return cities;
 	} 
-	if (redirect) {
-		return <Redirect to='/login'/>;
+	if (!loggedIn && !loginPending) {
+		return (
+			<div>
+				{console.log("token", token) }
+				<Redirect to='/login'/>
+			</div>
+		);
 	}
 	return (
 		<div className="cities-container">
 			<h1>Cities</h1>
 			<Search className="city-search" value={searchStr} onChange={handleChange} />
-			{loading ? <Spinner /> : null}
+			{loading || loginPending ? <Spinner /> : null}
 			{hasLoaded ? (
 				<div className="cards-container">
-					{/* <input
-						type="text"
-						placeholder="Search for a city.."
-						value={searchStr}
-						onChange={handleChange}
-					/> */}
 					{filterCities().map((city: any, index: number) => (
 						<CityCard
 							// className="city-card"
@@ -68,12 +67,15 @@ const Cities = (props: any) => {
 };
 const mapStateToProps = (state: any): object => {
 	return {
+		//Cities
 		loading: state.cities.loading,
 		hasLoaded: state.cities.success,
 		cities: state.cities.cities,
 		error: state.cities.error,
+		//login
+		loginPending: state.login.pending,
 		token: state.login.token,
-		redirect: state.login.redirect,
+		loggedIn: state.login.loggedIn
 	};
 };
 const mapDispatchToProps = (dispatch: any) =>

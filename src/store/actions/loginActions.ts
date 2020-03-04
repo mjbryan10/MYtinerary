@@ -14,11 +14,11 @@ export function userLoggedOut(): object {
 		type: USER_LOGGED_OUT,
 	};
 }
-export function redirectToLogIn(): object {
-	return {
-		type: REDIRECT,
-	}
-}
+// export function redirectToLogIn(): object {
+// 	return {
+// 		type: REDIRECT,
+// 	}
+// }
 
 export const tokenFromStorage = (): string | null => {
 	return window.localStorage.getItem("session_token");
