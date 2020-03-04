@@ -86,7 +86,7 @@ function LoginPage(props: any) {
 					if (res.success) {
 						window.localStorage.setItem("session_token", res.token);
 						setLoginSuccess(true);
-						setRedirectToHome(true);
+						setTimeout(function(){ setRedirectToHome(true); }, 800);
 					} else {
 						setErrors({ email: res.msg, password: res.msg });
 					}
