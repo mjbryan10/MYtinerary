@@ -1,7 +1,7 @@
 import "./itineraries.scss";
 import React, { FunctionComponent } from "react";
 import { useEffect } from "react";
-import { useParams } from 'react-router'
+import { useParams } from "react-router";
 import CityCard from "../cities/CityCard";
 import Spinner from "../global/Spinner";
 import ItineraryCard from "./ItineraryCard";
@@ -48,23 +48,26 @@ const CityItineraries: FunctionComponent<CityItinerariesProps> = ({
 			fetchCurrentCity(cityName);
 		}
 		fetchItineraries(city._id);
-	}, [
-		city._id,
-		city.length,
-		cityName,
-		fetchCurrentCity,
-		fetchItineraries,
-    ]);
-    useEffect(() => {
-        return () => {
+	}, [city._id, city.length, cityName, fetchCurrentCity, fetchItineraries]);
+	useEffect(() => {
+		return () => {
 			resetItineraries();
 			resetCurrentCity();
 		};
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 	return (
 		<div>
-			{cityLoading ? <Spinner /> : <CityCard cityName={city.name} />}
+			{cityLoading ? (
+				<Spinner />
+			) : (
+				<CityCard
+					className="city-card"
+					cityName={city.name}
+					cityImg={city.img}
+					imgCredit={city.img_credit}
+				/>
+			)}
 			{itinerariesLoading ? (
 				<Spinner />
 			) : (
@@ -72,7 +75,7 @@ const CityItineraries: FunctionComponent<CityItinerariesProps> = ({
 					return <ItineraryCard key={index} itinerary={itinerary} />;
 				})
 			)}
-			<Link to="/cities" >Choose another city...</Link> 
+			<Link to="/cities">Choose another city...</Link>
 		</div>
 	);
 };

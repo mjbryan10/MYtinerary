@@ -2,50 +2,63 @@ import "./cities.scss";
 import React, { useState, useEffect } from "react";
 import CityCard from "./CityCard";
 import Spinner from "../global/Spinner";
+import Search from "../global/Search";
 
 //REDUX
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { default as fetchCitiesAction } from "../../store/actions/fetchCities";
+import { fetchAllCities as fetchAllCitiesAction } from "../../store/actions/cityActions";
+import { Redirect } from "react-router-dom";
+// import { default as fetchAllCitiesAction } from "../../store/actions/fetchAllCities";
 
 const Cities = (props: any) => {
-	const { cities, fetchCities, loading } = props;
+	const { cities, fetchAllCities, loading, token, hasLoaded, loggedIn, loginPending } = props;
 	const [searchStr, setSearchStr] = useState("");
 	useEffect((): void => {
-		fetchCities();
-	}, [fetchCities]);
+		if (loggedIn) {
+			fetchAllCities(token);
+		}
+	}, [fetchAllCities, token, loggedIn]);
 	const handleChange = (e: any) => {
 		e.preventDefault();
 		setSearchStr(e.target.value);
-		// props.onChange(e.target.value);
 	};
 	function filterCities(): any {
 		if (searchStr.length) {
 			let filtered = [];
 			for (const city of cities) {
-				if (city.name.toLowerCase().search(searchStr) === 0) {
-					//can change to to includes on preference
+				if (city.name.toLowerCase().search(searchStr.toLowerCase()) === 0) {
+					//CHOICE: change to includes if want less strict search
 					filtered.push(city);
 				}
 			}
 			return filtered;
 		}
 		return cities;
+	} 
+	if (!loggedIn && !loginPending) {
+		return (
+			<div>
+				{console.log("token", token) }
+				<Redirect to='/login'/>
+			</div>
+		);
 	}
 	return (
 		<div className="cities-container">
 			<h1>Cities</h1>
-			{loading ? <Spinner /> : null}
-			{cities.length ? (
+			<Search className="city-search" value={searchStr} onChange={handleChange} />
+			{loading || loginPending ? <Spinner /> : null}
+			{hasLoaded ? (
 				<div className="cards-container">
-					<input
-						type="text"
-						placeholder="Search for a city.."
-						value={searchStr}
-						onChange={handleChange}
-					/>
 					{filterCities().map((city: any, index: number) => (
-						<CityCard className="city-card" cityName={city.name} key={index} />
+						<CityCard
+							// className="city-card"
+							cityName={city.name}
+							cityImg={city.img}
+							imgCredit={city.img_credit}
+							key={index}
+						/>
 					))}
 				</div>
 			) : null}
@@ -54,15 +67,21 @@ const Cities = (props: any) => {
 };
 const mapStateToProps = (state: any): object => {
 	return {
+		//Cities
 		loading: state.cities.loading,
+		hasLoaded: state.cities.success,
 		cities: state.cities.cities,
 		error: state.cities.error,
+		//login
+		loginPending: state.login.pending,
+		token: state.login.token,
+		loggedIn: state.login.loggedIn
 	};
 };
 const mapDispatchToProps = (dispatch: any) =>
 	bindActionCreators(
 		{
-			fetchCities: fetchCitiesAction,
+			fetchAllCities: fetchAllCitiesAction,
 		},
 		dispatch
 	);

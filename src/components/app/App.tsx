@@ -7,21 +7,37 @@ import Nav from "../nav/Nav";
 import Landing from "../landing/Landing";
 import Cities from "../cities/Cities";
 import CityItineraries from "../itineraries/CityItineraries";
+import CreateAccount from "../account/CreateAccount";
+import LoginPage from "../account/LoginPage";
 import NotFound from "../NotFound";
 import Footer from "../footer/Footer";
+
+//REDUX:
+import { connect } from "react-redux";
+import { updateLoginStatus } from "../../store/actions/loginActions";
+import { bindActionCreators } from "redux";
 
 //THEME FOR APP
 import { createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
+// import { userLoggedIn } from "../../store/actions/loginActions";
 const theme = createMuiTheme({
+	spacing: 8,
 	palette: {
 		primary: {
-			main: "#dc2b00",
+			//Dont forget to change on variables.scss also
+			main: "#4a90ff",
+			// main: "#dc2b00",
+		},
+		secondary: {
+			main: "#394e56",
 		},
 	},
 });
-
 function App() {
+	React.useEffect(() => {
+		updateLoginStatus();
+	});
 	return (
 		<BrowserRouter>
 			<div className="App">
@@ -32,6 +48,8 @@ function App() {
 							<Route exact path="/" component={Landing} />
 							<Route path="/cities" component={Cities} />
 							<Route path="/itineraries/:cityName" component={CityItineraries} />
+							<Route path="/create" component={CreateAccount} />
+							<Route path="/login" component={LoginPage} />
 							<Route component={NotFound} />
 						</Switch>
 					</div>
@@ -41,5 +59,11 @@ function App() {
 		</BrowserRouter>
 	);
 }
-
-export default App;
+const mapDispatchToProps = (dispatch: any) =>
+	bindActionCreators(
+		{
+			updateLoginStatus,
+		},
+		dispatch
+	);
+export default connect(mapDispatchToProps)(App);

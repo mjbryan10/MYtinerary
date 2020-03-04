@@ -20,7 +20,7 @@ header {
     display: flex;
     flex-flow: column nowrap;
     justify-content: space-between;
-    padding: 0 3rem;
+    padding: 0 1rem;
     height: 100%;
     min-height: 600px;
     .content-wrapper {
@@ -38,7 +38,8 @@ header {
     justify-content: center;
     align-items: center;
     img {
-        font-size: 150px;
+        height: 8em;
+        width: 8em;
     }
 }
 

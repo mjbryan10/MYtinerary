@@ -35,17 +35,21 @@ const useStyles = makeStyles(() =>
 
 export default function DestinationControls(props: any) {
 	const classes = useStyles();
-	const { slideIndex, slideLength, onButtonClick } = props;
+	const { slideIndex, slideLength, onButtonClick, onSpanClick } = props;
 	const handleClick = (e: any) => {
 		e.preventDefault();
-		onButtonClick(e.target.value);
-		console.log("TCL: handleClick -> e.target.value", e.target.value);
+		if (e.target.value) {
+			onButtonClick(e.target.value);
+		} else {
+            console.log("handleClick -> e.target.key", e.target.getAttribute("data-index"));
+			onSpanClick(parseInt(e.target.getAttribute("data-index"), 10));
+		}
 	};
 	return (
 		<div className={classes.controlsContainer}>
 			<Button
 				variant="contained"
-				color="primary"
+				color="secondary"
 				onClick={handleClick}
 				value="left"
 				startIcon={<NavigateBeforeIcon />}
@@ -53,14 +57,14 @@ export default function DestinationControls(props: any) {
 			/>
 			{[...Array(slideLength)].map((element, index) => {
 				return slideIndex === index ? (
-					<span key={index} className="span-dot current"></span>
+					<span onClick={handleClick} key={index} data-index={index} className="span-dot current"></span>
 				) : (
-					<span key={index} className="span-dot"></span>
+					<span onClick={handleClick} key={index} data-index={index} className="span-dot"></span>
 				);
 			})}
 			<Button
 				variant="contained"
-				color="primary"
+				color="secondary"
 				onClick={handleClick}
 				value="right"
 				startIcon={<NavigateNextIcon />}

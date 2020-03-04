@@ -39,7 +39,7 @@ const AuthorAvatar: FunctionComponent<authorAvatarProps> = ({
 	const [authorLoading, setAuthorLoading] = useState(true);
 	const fetchAuthor = () => {
 		setAuthorLoading(true);
-		fetch(`http://localhost:5000/authors/${authorId}`)
+		fetch(`http://localhost:5000/authorsAPI/${authorId}`)
 			.then(res => res.json())
 			.then(res => {
 				setAuthor(res);
@@ -67,3 +67,5 @@ const AuthorAvatar: FunctionComponent<authorAvatarProps> = ({
 	}
 };
 export default AuthorAvatar;
+
+//NOTE THIS MAY NEED TO BE UPDATED TO USERS IN UPCOMING UPDATES

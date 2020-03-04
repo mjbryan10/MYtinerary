@@ -6,6 +6,7 @@ import {
 
 const initialCitiesState = {
 	loading: false,
+	success: false,
 	cities: [],
 	error : '',
 };
@@ -20,11 +21,13 @@ export default function citiesReducer(state: object = initialCitiesState, action
 		case FETCH_CITIES_SUCCESS:
 			return {
 				loading: false,
+				success: true,
 				cities: action.payload,
 			};
 		case FETCH_CITIES_ERROR:
 			return {
 				loading: false,
+				success: false,
 				error: action.payload,
 			};
 		default:
