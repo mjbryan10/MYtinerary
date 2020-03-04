@@ -54,12 +54,9 @@ function LoginPage(props: any) {
 	//FUNCTIONS:
 	const handleValueChange = (prop: keyof State, newValue: any) => {
 		setValues({ ...values, [prop]: newValue });
-		// if (errors.email === errors.password) {
-		// 	console.log("handleValueChange -> email", errors.email);
-		// 	let clearedErrors = { email: "", password: "" };
-		// 	setErrors(clearedErrors);
-		// } //TODO fix bug with login feedback
-		setErrors({ ...errors, [prop]: "" });
+		//Change below: due to UX
+		// setErrors({ ...errors, [prop]: "" });
+		setErrors({ email: "", password: "" });
 	};
 	const handleChange = (prop: keyof State) => (
 		event: React.ChangeEvent<HTMLInputElement>
