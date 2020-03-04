@@ -32,7 +32,7 @@ const useStyles = makeStyles(() =>
 	})
 );
 function Destinations(props: any) {
-	const { fetchCities, loading, cities } = props;
+	const { fetchCities, loading, cities, success } = props;
 	const classes = useStyles();
 	//STATE
 	const [slideLength, setSlideLength] = useState<number>(0);
@@ -58,7 +58,9 @@ function Destinations(props: any) {
 		setSlideIndex(spanIndex);
 	}
 	const updateState = (): void => {
-		setSlideLength(calcNumOfSlides());
+		if (cities) {
+			setSlideLength(calcNumOfSlides());
+		}
 	};
 	function filterByCurrentSlide(array: [any]) {
 		let filteredArray = [];
@@ -82,13 +84,14 @@ function Destinations(props: any) {
 			<h3>Popular MYtineraries</h3>
 			{loading ? (
 				<Spinner />
-			) : (
+			) : null }
+			{success ?  (
 				<div className={classes.cardsContainer}>
 					{filterByCurrentSlide(cities).map((city: any, index: number) => {
 						return <CityCard cityName={city.name} cityImg={city.img} imgCredit={city.img_credit} key={index} />;
 					})}
 				</div>
-			)}
+			) : null}
 			<DestinationControls
 				slideLength={slideLength}
 				slideIndex={slideIndex}
@@ -102,6 +105,7 @@ function Destinations(props: any) {
 const mapStateToProps = (state: any): object => {
 	return {
 		loading: state.cities.loading,
+		success: state.cities.success,
 		cities: state.cities.cities,
 		error: state.cities.error,
 	};

@@ -1,33 +1,44 @@
 import {clearCurrentUser} from "./userActions"
-export const USER_LOGIN = "USER_LOGIN";
-export const USER_LOGOUT = "USER_LOGOUT";
+export const USER_LOGGED_IN = "USER_LOGGED_IN";
+export const USER_LOGGED_OUT = "USER_LOGGED_OUT";
+export const REDIRECT = "REDIRECT";
 
-export function logUserIn(token: any): object {
+export function userLoggedIn(token: any): object {
 	return {
-		type: USER_LOGIN,
+		type: USER_LOGGED_IN,
 		payload: token,
 	};
 }
-export function logUserOut(): object {
+export function userLoggedOut(): object {
 	return {
-		type: USER_LOGOUT,
+		type: USER_LOGGED_OUT,
 	};
+}
+export function redirectToLogIn(): object {
+	return {
+		type: REDIRECT,
+	}
 }
 
 export const tokenFromStorage = (): string | null => {
 	return window.localStorage.getItem("session_token");
 };
 
-export const tokenStatus = (): any => {
+export const updateLoginStatus = (): any => {
 	let token: any = tokenFromStorage();
 	if (token === null) {
 		return (dispatch: any) => {
-            dispatch(logUserOut());
+            dispatch(userLoggedOut());
             dispatch(clearCurrentUser());
 		};
 	} else {
 		return (dispatch: any) => {
-			dispatch(logUserIn(token));
+			dispatch(userLoggedIn(token));
 		};
 	}
+}
+
+export const logUserOut = ():void => {
+	window.localStorage.removeItem("session_token");
+	updateLoginStatus();
 }

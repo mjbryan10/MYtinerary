@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
-import { tokenStatus as tokenStatusAction } from "../../store/actions/loginActions";
+import { updateLoginStatus } from "../../store/actions/loginActions";
 import PasswordInput from "./PasswordInput";
 import { Paper, FormControl, InputLabel, Input, FormHelperText } from "@material-ui/core";
 
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import SubmitButton from "../global/SubmitButton";
 import { bindActionCreators } from "redux";
+import { Redirect } from "react-router-dom";
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
 		root: {
@@ -49,9 +50,15 @@ function LoginPage(props: any) {
 	});
 	const [loading, setloading] = useState<boolean>(false);
 	const [loginSuccess, setLoginSuccess] = useState<boolean>(false);
+	const [redirectToHome, setRedirectToHome] = useState<boolean>(false);
 	//FUNCTIONS:
 	const handleValueChange = (prop: keyof State, newValue: any) => {
 		setValues({ ...values, [prop]: newValue });
+		// if (errors.email === errors.password) {
+		// 	console.log("handleValueChange -> email", errors.email);
+		// 	let clearedErrors = { email: "", password: "" };
+		// 	setErrors(clearedErrors);
+		// } //TODO fix bug with login feedback
 		setErrors({ ...errors, [prop]: "" });
 	};
 	const handleChange = (prop: keyof State) => (
@@ -79,16 +86,17 @@ function LoginPage(props: any) {
 					if (res.success) {
 						window.localStorage.setItem("session_token", res.token);
 						setLoginSuccess(true);
+						setRedirectToHome(true);
 					} else {
 						setErrors({ email: res.msg, password: res.msg });
 					}
 					setloading(false);
-					props.tokenStatus();
+					props.updateLoginStatus();
 				})
 				.catch(err => {
 					console.error(err);
 					setloading(false);
-					props.tokenStatus();
+					props.updateLoginStatus();
 				});
 		}
 	};
@@ -102,6 +110,9 @@ function LoginPage(props: any) {
 			body: JSON.stringify({ email, password }),
 		});
 		return await response.json();
+	}
+	if (redirectToHome) {
+		return <Redirect to="/" />;
 	}
 	return (
 		<div className={classes.root}>
@@ -144,7 +155,7 @@ const mapStatetoProps = (state: any): object => {
 const mapDispatchToProps = (dispatch: any) =>
 	bindActionCreators(
 		{
-			tokenStatus: tokenStatusAction,
+			updateLoginStatus,
 		},
 		dispatch
 	);

@@ -1,22 +1,29 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 
+//MATERIAL UI
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 // import Typography from '@material-ui/core/Typography';
-import IconButton from "@material-ui/core/IconButton";
-import MenuIcon from "@material-ui/icons/Menu";
-import AccountCircle from "@material-ui/icons/AccountCircle";
 // import Switch from '@material-ui/core/Switch';
 // import FormControlLabel from '@material-ui/core/FormControlLabel';
 // import FormGroup from '@material-ui/core/FormGroup';
+import IconButton from "@material-ui/core/IconButton";
+// import MenuIcon from "@material-ui/icons/Menu";
+import AccountCircle from "@material-ui/icons/AccountCircle";
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
+
+//REDUX
 import { connect } from "react-redux";
-import { tokenStatus } from "../../store/actions/loginActions";
+import { updateLoginStatus, logUserOut } from "../../store/actions/loginActions";
 import { fetchCurrentUser as fetchCurrentUserAction } from "../../store/actions/userActions";
 import { bindActionCreators } from "redux";
+
+//MENU OPTIONS
+import Drawer from './Drawer';
+// import Hamburger from './Hamburger';
 
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
@@ -48,6 +55,7 @@ function Nav(props: any) {
 		token,
 		details,
 		updateLoginStatus,
+		logUserOut,
 		fetchCurrentUser,
 		expired,
 		error,
@@ -65,6 +73,7 @@ function Nav(props: any) {
 		event.preventDefault();
 		handleClose(event);
 		logOut();
+		// logUserOut();
 	};
 	const logOut = (): void => {
 		window.localStorage.removeItem("session_token");
@@ -122,36 +131,8 @@ function Nav(props: any) {
 						</Menu>
 					</div>
 					{userSuccess ? details.name : null}
-
-					<IconButton
-						edge="start"
-						aria-controls="hamburger-appbar"
-						className={classes.menuButton}
-						color="inherit"
-						aria-label="menu"
-						onClick={handleMenu}
-					>
-						<MenuIcon />
-					</IconButton>
-					<Menu
-						id="hamburger-appbar"
-						anchorEl={anchorEl}
-						anchorOrigin={{
-							vertical: "top",
-							horizontal: "right",
-						}}
-						keepMounted
-						transformOrigin={{
-							vertical: "top",
-							horizontal: "right",
-						}}
-						open={open}
-						onClose={handleClose}
-					>
-						<MenuItem onClick={handleClose}>
-							<Link to="/cities">View Cities</Link>
-						</MenuItem>
-					</Menu>
+								<Drawer />
+					{/* <Hamburger /> */}
 				</Toolbar>
 			</AppBar>
 		</div>
@@ -171,7 +152,8 @@ const mapStateToProps = (state: any): object => {
 const mapDispatchToProps = (dispatch: any) =>
 	bindActionCreators(
 		{
-			updateLoginStatus: tokenStatus,
+			updateLoginStatus,
+			logUserOut,
 			fetchCurrentUser: fetchCurrentUserAction,
 		},
 		dispatch
