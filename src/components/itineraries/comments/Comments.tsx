@@ -49,7 +49,7 @@ function Comments(props: any) {
 	}, [comments.page]);
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	function fetchComments(itin: string, page: number | null = null) {
-		setComments({ ...comments, pending: true });
+		setComments({ ...comments, pending: true, data: []});
 		let api = `http://localhost:5000/commentsAPI/${itin}`;
 		if (page) api += `/${page}`;
 		fetch(api)
@@ -64,6 +64,7 @@ function Comments(props: any) {
 	}
 	const refreshComments = () => {
 		//refreshes comments when user submits a comment, from CommentForm.
+		// setComments({...comments, data: []});
 		fetchComments(itinId, comments.page);
 	};
 
@@ -77,19 +78,6 @@ function Comments(props: any) {
 			setComments({ ...comments, page: 0 });
 		}
 	};
-	const displayLoadMore = (): any => {
-		if (
-			comments.success === true &&
-			comments.page === 0 &&
-			(comments.data.length === 3 || comments.data.length === comments.page * 10)
-		) {
-			return (
-				<Button className={classes.loader} color="secondary" onClick={loadComments("more")}>
-					Load more...
-				</Button>
-			);
-		} else return null;
-	};
 	return (
 		<div className={classes.root}>
 			<h4>Comments:</h4>
@@ -100,22 +88,22 @@ function Comments(props: any) {
 					<Link to="/login">Log in to leave a comment</Link>
 				</div>
 			)}
-			{/* Comments will be displayed here! */}
 			{comments.pending ? <Spinner /> : null}
 			{comments.success
-				? comments.data.map((comment: any, index: number) => (
-						<Comment index={index} comment={comment} refreshComments={refreshComments} />
-						// <div key={index}>
-						// 	<h4>{comment.title}</h4>
-						// 	<p>{comment.text}</p>
-						// 	{console.log("Comments -> comment", comment)}
-						// </div>
+				? comments.data.map((comment: any) => (
+						<Comment comment={comment} refreshComments={refreshComments} />
 				  ))
 				: null}
 			{comments.success === false ? (
 				<p>No comments yet. Be the first and leave a comment!</p>
 			) : null}
-			{displayLoadMore()}
+			{(
+			(comments.success === true &&
+			comments.page === 0 &&
+			comments.data.length === 3) || (comments.data.length === comments.page * 10)
+		) ? (<Button className={classes.loader} color="secondary" onClick={loadComments("more")}>
+					Load more...
+				</Button>) : null}
 			{comments.page > 0 ? (
 				<Button className={classes.loader} color="secondary" onClick={loadComments("less")}>
 					Show less

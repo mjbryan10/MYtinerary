@@ -30,14 +30,12 @@ const useStyle = makeStyles((theme: Theme) =>
 );
 
 type commentProps = {
-	index: number;
 	comment: any;
 	token: string;
 	refreshComments: any;
 };
 
 const Comment: FunctionComponent<commentProps> = ({
-	index,
 	comment,
 	token,
 	refreshComments,
@@ -53,12 +51,13 @@ const Comment: FunctionComponent<commentProps> = ({
 	const [userIsAuthor, setUserIsAuthor] = React.useState(false);
 	React.useEffect(() => {
 		checkUserPrivileges().then(res => {
+			console.log("res", res);
 			if (res.success) {
 				setUserIsAuthor(true);
 			} else setUserIsAuthor(false);
 		});
 		return () => {
-			setUserIsAuthor(false);
+			// setUserIsAuthor(false);
 		};
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
@@ -95,6 +94,7 @@ const Comment: FunctionComponent<commentProps> = ({
 			.then(res => res.json())
 			.then(res => {
 				if (res.success) {
+					setUserIsAuthor(false);
 					refreshComments();
 					// checkUserPrivileges();
 				}
@@ -102,7 +102,7 @@ const Comment: FunctionComponent<commentProps> = ({
 			});
 	}
 	return (
-		<div key={index} className={classes.root}>
+		<div key={comment._id} className={classes.root}>
 			{/* <h4>{comment.title}</h4> */}
 			<Typography className={classes.text}>
 				<Typography display="inline" color="primary">
@@ -110,7 +110,6 @@ const Comment: FunctionComponent<commentProps> = ({
 				</Typography>{" "}
 				{comment.text}
 			</Typography>
-			{console.log("Comments -> comment", comment)}
 			{userIsAuthor ? <Button onClick={deleteComment}>X</Button> : null}
 			{/*Insert delete option here, if authorisUser */}
 		</div>
