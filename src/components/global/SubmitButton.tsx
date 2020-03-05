@@ -35,15 +35,13 @@ const useStyles = makeStyles((theme: Theme) =>
 type SubmitButtonProps = {
 	text?: string;
 	successText?: string;
-    // loading: boolean;
-	// success: boolean;
-    loading?: boolean;
-	success?: boolean;
+	loading?: boolean;
+	success?: boolean | null;
 };
 
 const SubmitButton: React.FunctionComponent<SubmitButtonProps> = ({
-    text,
-    successText,
+	text,
+	successText,
 	loading,
 	success,
 }) => {
@@ -62,7 +60,7 @@ const SubmitButton: React.FunctionComponent<SubmitButtonProps> = ({
 					disabled={loading}
 					type="submit"
 				>
-					{success ? successText : text || "Submit"}
+					{success ? successText || "Success!" : text || "Submit"}
 				</Button>
 				{loading && <CircularProgress size={24} className={classes.buttonProgress} />}
 			</div>
