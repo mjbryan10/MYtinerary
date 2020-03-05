@@ -1,8 +1,7 @@
 import React from "react";
-import { TextField, makeStyles, FormControl, FormHelperText } from "@material-ui/core";
 import SubmitButton from "../../global/SubmitButton";
 import { connect } from "react-redux";
-
+import { TextField, makeStyles, FormControl, FormHelperText } from "@material-ui/core";
 //STYLES:
 const useStyles = makeStyles({
 	root: {
@@ -23,7 +22,7 @@ interface Values {
 function CommentForm(props: any) {
 	const classes = useStyles();
    //State & props
-   const { itinId, token, userName, onSubmit } = props;
+   const { itinId, token, userName, refreshComments } = props;
 	const [values, setValues] = React.useState<Values>({
 		text: "",
 	});
@@ -49,7 +48,7 @@ function CommentForm(props: any) {
                   console.log(res.msg);
                   setSuccess(true);
                   setValues({...values, text: ""});
-                  onSubmit();
+                  refreshComments();
                } else {
                   setErrors({...errors, text: res.msg});
                   setSuccess(false);
