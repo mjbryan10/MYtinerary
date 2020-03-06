@@ -1,9 +1,20 @@
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import AuthorAvatar from "../author/AuthorAvatar";
+import FavoriteIcon from "@material-ui/icons/Favorite";
+import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
+import { connect } from "react-redux";
+
+// import { updateFavourites as updateFavouritesAction } from "../../store/actions/userActions";
 
 type itineraryProps = {
 	itinerary: any;
+	// isFavourite: boolean;
+	// onHeartChange: any;
+	id: string;
+	favourites: any;
+	token: string;
+	// updateFavourites: any;
 };
 
 const useStyles = makeStyles({
@@ -36,9 +47,28 @@ const useStyles = makeStyles({
 			margin: "0 0.5em",
 		},
 	},
+	input: {
+		display: "none",
+	},
+	heart: {
+		margin: "3px",
+		color: "#dc2b00",
+		"&:hover": {
+			cursor: "pointer",
+			transform: "scale(1.1)",
+		},
+	},
 });
 
-const ItineraryCardHeader: FunctionComponent<itineraryProps> = ({ itinerary }): any => {
+const ItineraryCardHeader: FunctionComponent<itineraryProps> = ({
+	itinerary,
+	// isFavourite,
+	// onHeartChange,
+	id,
+	favourites,
+	token,
+	// updateFavourites
+}): any => {
 	const classes = useStyles();
 
 	const calcDuration = (duration: number): string | undefined => {
@@ -50,6 +80,44 @@ const ItineraryCardHeader: FunctionComponent<itineraryProps> = ({ itinerary }): 
 			return "--";
 		}
 	};
+	const [isFav, setIsFav] = useState(false);
+	const onHeartChange = () => {
+		// setIsFav(!isFav);
+		let action = "";
+		isFav ? (action = "del") : (action = "add");
+		updateFavourites(action, itinerary._id, token);
+	};
+	useEffect(() => {
+		if (favourites.length) {
+			if (favourites.includes(itinerary._id)) {
+				setIsFav(true);
+				// console.log("setIsFav", isFav);
+			} else {
+				setIsFav(false);
+				// console.log("setIsFav", isFav);
+			}
+		} else {
+			setIsFav(false);
+		}
+	}, [favourites, itinerary._id]);
+	const updateFavourites = (action: string, itinId: string, token: string) => {
+		fetch(`http://localhost:5000/usersAPI/${action}/fav`, {
+			method: "put",
+			headers: {
+				Accept: "application/json, text/plain, */*",
+				"Content-Type": "application/json",
+				"x-api-key": token,
+			},
+			body: JSON.stringify({ fav: itinId }),
+		})
+			.then((res: any) => res.json())
+			.then((res: any) => {
+				if (res.success) {
+					setIsFav(!isFav);
+				}
+			});
+	};
+
 	return (
 		<header className={classes.header}>
 			<AuthorAvatar authorId={itinerary.author_id} variant="named" />
@@ -70,7 +138,37 @@ const ItineraryCardHeader: FunctionComponent<itineraryProps> = ({ itinerary }): 
 					))}
 				</p>
 			</div>
+
+			<input
+				className={classes.input}
+				id={`icon-heart-${id}`}
+				type="checkbox"
+				checked={isFav}
+				onChange={onHeartChange}
+			/>
+			<label htmlFor={`icon-heart-${id}`}>
+				{isFav ? (
+					<FavoriteIcon className={classes.heart} />
+				) : (
+					<FavoriteBorderIcon className={classes.heart} />
+				)}
+			</label>
 		</header>
 	);
 };
-export default ItineraryCardHeader;
+
+const mapStateToProps = (state: any) => {
+	return {
+		favourites: state.currentUser.details.favourites,
+		token: state.login.token,
+	};
+};
+
+// const mapDispatchToProps = (dispatch: any) => {
+// 	return {
+// 		updateFavourites: (action: string, itinId: string, token: string) =>
+// 			dispatch(updateFavouritesAction(action, itinId, token)),
+// 	};
+// };
+
+export default connect(mapStateToProps)(ItineraryCardHeader);

@@ -71,8 +71,8 @@ const CityItineraries: FunctionComponent<CityItinerariesProps> = ({
 			{itinerariesLoading ? (
 				<Spinner />
 			) : (
-				itineraries.map((itinerary: any, index: number) => {
-					return <ItineraryCard key={index} itinerary={itinerary} />;
+				itineraries.map((itinerary: any) => {
+					return <ItineraryCard key={itinerary._id} itinerary={itinerary} />;
 				})
 			)}
 			<Link to="/cities">Choose another city...</Link>
