@@ -101,7 +101,7 @@ const Comment: FunctionComponent<commentProps> = ({
 			});
 	};
 	return (
-		<div key={comment._id} className={classes.root}>
+		<div className={classes.root}>
 			{/* <h4>{comment.title}</h4> */}
 			{/* {console.log("comment", comment)} */}
 			<Typography className={classes.text}>
