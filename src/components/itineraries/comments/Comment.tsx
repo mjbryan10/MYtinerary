@@ -32,13 +32,13 @@ const useStyle = makeStyles((theme: Theme) =>
 type commentProps = {
 	comment: any;
 	token: string;
-	refreshComments: any;
+	updateCommentArray: any;
 };
 
 const Comment: FunctionComponent<commentProps> = ({
 	comment,
 	token,
-	refreshComments,
+	updateCommentArray,
 }) => {
 	const classes = useStyle();
 
@@ -49,9 +49,25 @@ const Comment: FunctionComponent<commentProps> = ({
 	// })
 	//State
 	const [userIsAuthor, setUserIsAuthor] = React.useState(false);
+
+
+
 	React.useEffect(() => {
+		const checkUserPrivileges = async () => {
+			let response = await fetch("http://localhost:5000/usersAPI/validate", {
+				method: "post",
+				headers: {
+					Accept: "application/json, text/plain, */*",
+					"content-Type": "application/json",
+					"x-api-key": token,
+				},
+				body: JSON.stringify({
+					id: comment.author.id,
+				}),
+			});
+			return await response.json();
+		};
 		checkUserPrivileges().then(res => {
-			console.log("res", res);
 			if (res.success) {
 				setUserIsAuthor(true);
 			} else setUserIsAuthor(false);
@@ -59,24 +75,8 @@ const Comment: FunctionComponent<commentProps> = ({
 		return () => {
 			// setUserIsAuthor(false);
 		};
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+	}, [comment.author.id, token]);
 
-	const checkUserPrivileges = async () => {
-		let api = "http://localhost:5000/usersAPI/validate";
-		let response = await fetch(api, {
-			method: "post",
-			headers: {
-				Accept: "application/json, text/plain, */*",
-				"content-Type": "application/json",
-				"x-api-key": token,
-			},
-			body: JSON.stringify({
-				id: comment.author.id,
-			}),
-		});
-		return await response.json();
-	};
 	const deleteComment = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
 		event.preventDefault();
 		let api = "http://localhost:5000/commentsAPI/delete";
@@ -94,16 +94,16 @@ const Comment: FunctionComponent<commentProps> = ({
 			.then(res => res.json())
 			.then(res => {
 				if (res.success) {
-					setUserIsAuthor(false);
-					refreshComments();
+					// setUserIsAuthor(false);
+					updateCommentArray("delete", res.id);
 					// checkUserPrivileges();
-				}
-				else console.log(res)
+				} else console.log(res);
 			});
-	}
+	};
 	return (
 		<div key={comment._id} className={classes.root}>
 			{/* <h4>{comment.title}</h4> */}
+			{/* {console.log("comment", comment)} */}
 			<Typography className={classes.text}>
 				<Typography display="inline" color="primary">
 					{comment.author.name}

@@ -22,7 +22,7 @@ interface Values {
 function CommentForm(props: any) {
 	const classes = useStyles();
    //State & props
-   const { itinId, token, userName, refreshComments } = props;
+   const { itinId, token, userName, updateCommentArray } = props;
 	const [values, setValues] = React.useState<Values>({
 		text: "",
 	});
@@ -48,7 +48,8 @@ function CommentForm(props: any) {
                   console.log(res.msg);
                   setSuccess(true);
                   setValues({...values, text: ""});
-                  refreshComments();
+                  
+                  updateCommentArray("add", res.comment);
                } else {
                   setErrors({...errors, text: res.msg});
                   setSuccess(false);

@@ -27,9 +27,9 @@ type State = {
 	success: boolean | null;
 	data: any;
 	page: number;
+	count: number;
 };
 
-//TODO!!!
 function Comments(props: any) {
 	const classes = useStyles();
 	const { loggedIn, itinId } = props;
@@ -39,35 +39,61 @@ function Comments(props: any) {
 		success: null,
 		data: [],
 		page: 0,
+		count: 0,
 	});
+	// useEffect(() => {
+	// 	//OnMount:
+	// 	fetchComments(itinId, comments.page);
+	// }, [comments.page]);
 	useEffect(() => {
-		//OnMount:
-		fetchComments(itinId);
-	}, []);
-	useEffect(() => {
-		fetchComments(itinId, comments.page);
-	}, [comments.page]);
+		function getFetchUrl() {
+			return `http://localhost:5000/commentsAPI/${itinId}/${comments.page}`
+		}
+		async function fetchComments() {
+			setComments({ ...comments, pending: true });
+			let response = await fetch(getFetchUrl()).then(res => res.json());
+			let res = await response;
+			if (res.success) {
+				setComments({
+					...comments,
+					pending: false,
+					success: true,
+					data: res.comments,
+					count: res.count,
+				});
+			} else if (!res.success) {
+				setComments({ ...comments, pending: false, success: false, data: [] });
+			}
+		}
+		fetchComments();
+	}, [comments.page, itinId]);
 	// eslint-disable-next-line react-hooks/exhaustive-deps
-	function fetchComments(itin: string, page: number | null = null) {
-		setComments({ ...comments, pending: true, data: []});
-		let api = `http://localhost:5000/commentsAPI/${itin}`;
-		if (page) api += `/${page}`;
-		fetch(api)
-			.then(res => res.json())
-			.then(res => {
-				if (res.success) {
-					setComments({ ...comments, pending: false, success: true, data: res.comments });
-				} else {
-					setComments({ ...comments, pending: false, success: false, data: [] });
-				}
-			});
-	}
-	const refreshComments = () => {
-		//refreshes comments when user submits a comment, from CommentForm.
-		// setComments({...comments, data: []});
-		fetchComments(itinId, comments.page);
-	};
 
+	// const refreshComments = () => {
+	// 	//refreshes comments when user submits a comment, from CommentForm.
+	// 	// setComments({...comments, data: []});
+	// 	fetchComments(itinId, comments.page);
+	// };
+	const updateCommentArray = (type: string, data: string | object) => {
+		if (type === "delete") {
+			console.log("updateCommentArray ->", type, data);
+			// let id = data;
+			setComments({
+				...comments,
+				data: [
+					...comments.data.filter((comment: any) => {
+						console.log("updateCommentArray -> comment", comment);
+						return comment._id !== data;
+					}),
+				],
+			});
+		} else if (type === "add") {
+			setComments({
+				...comments,
+				data: [data, ...comments.data],
+			});
+		}
+	};
 	const loadComments = (amount: string) => (
 		event: React.MouseEvent<HTMLButtonElement, MouseEvent>
 	): void => {
@@ -82,7 +108,7 @@ function Comments(props: any) {
 		<div className={classes.root}>
 			<h4>Comments:</h4>
 			{loggedIn ? (
-				<CommentForm itinId={itinId} refreshComments={refreshComments} />
+				<CommentForm itinId={itinId} updateCommentArray={updateCommentArray} />
 			) : (
 				<div>
 					<Link to="/login">Log in to leave a comment</Link>
@@ -91,19 +117,17 @@ function Comments(props: any) {
 			{comments.pending ? <Spinner /> : null}
 			{comments.success
 				? comments.data.map((comment: any) => (
-						<Comment comment={comment} refreshComments={refreshComments} />
+						<Comment comment={comment} updateCommentArray={updateCommentArray} />
 				  ))
 				: null}
 			{comments.success === false ? (
 				<p>No comments yet. Be the first and leave a comment!</p>
 			) : null}
-			{(
-			(comments.success === true &&
-			comments.page === 0 &&
-			comments.data.length === 3) || (comments.data.length === comments.page * 10)
-		) ? (<Button className={classes.loader} color="secondary" onClick={loadComments("more")}>
+			{comments.count > comments.data.length ? (
+				<Button className={classes.loader} color="secondary" onClick={loadComments("more")}>
 					Load more...
-				</Button>) : null}
+				</Button>
+			) : null}
 			{comments.page > 0 ? (
 				<Button className={classes.loader} color="secondary" onClick={loadComments("less")}>
 					Show less
