@@ -42,8 +42,8 @@ const SUCCESS = "SUCCESS";
 const FAIL = "FAIL";
 const UPDATE_DATA = "UPDATE_DATA";
 const INCREMENT_PAGE_COUNT = "INCREMENT_PAGE_COUNT";
-const RESET_PAGE_COUNT = "RESET_PAGE_COUNT"
-//ACTIONS
+const RESET_PAGE_COUNT = "RESET_PAGE_COUNT";
+//ACTIONS + REDUCER
 const pendingAction = () => {
 	return {
 		type: PENDING,
@@ -60,24 +60,24 @@ const failAction = () => {
 		type: FAIL,
 	};
 };
-const  updateAction = (command: string, payload: any) => {
+const updateAction = (command: string, payload: any) => {
 	return {
 		type: UPDATE_DATA,
 		command,
 		payload,
-	}
-}
+	};
+};
 const changePageAction = (command: string) => {
 	if (command === "more") {
 		return {
 			type: INCREMENT_PAGE_COUNT,
-		}
+		};
 	} else if (command === "less") {
 		return {
 			type: RESET_PAGE_COUNT,
-		}
+		};
 	}
-}	
+};
 
 function reducer(state: any, action: any) {
 	switch (action.type) {
@@ -98,7 +98,7 @@ function reducer(state: any, action: any) {
 			return {
 				...state,
 				pending: false,
-				success: fail,
+				success: false,
 				data: [],
 				count: 0,
 			};
@@ -106,29 +106,31 @@ function reducer(state: any, action: any) {
 			if (action.command === "add") {
 				return {
 					...state,
-					data: [action.payload, ...state.data]
-				}
+					count: state.count + 1,
+					data: [action.payload, ...state.data],
+				};
 			} else if (action.command === "delete") {
 				return {
 					...state,
+					count: state.count - 1,
 					data: [
 						...state.data.filter((comment: any) => {
 							return comment._id !== action.payload;
 						}),
-					]
-				}
+					],
+				};
 			}
-			return {...state}
-		case INCREMENT_PAGE_COUNT: 
+			return { ...state };
+		case INCREMENT_PAGE_COUNT:
 			return {
 				...state,
-				page: state.page + 1
-			}
-		case RESET_PAGE_COUNT: 
+				page: state.page + 1,
+			};
+		case RESET_PAGE_COUNT:
 			return {
 				...state,
-				page: 0
-			}
+				page: 0,
+			};
 		default:
 			throw new Error();
 	}
@@ -139,7 +141,6 @@ function Comments(props: any) {
 
 	const [comments, dispatch] = useReducer(reducer, initialState);
 
-	//POSSIBLY USE DISPATCH?
 	useEffect(() => {
 		function getFetchUrl() {
 			return `http://localhost:5000/commentsAPI/${itinId}/${comments.page}`;
@@ -158,17 +159,14 @@ function Comments(props: any) {
 	}, [comments.page, itinId]);
 
 	const updateCommentArray = (command: string, data: string | object) => {
-		dispatch(updateAction(command, data))
-		// if (command === "delete") {
-		// } else if (command === "add") {
-		// 	dispatch(updateAction(command, data))
-		// }
+		//Removes or adds to array without need of re-render.
+		dispatch(updateAction(command, data));
 	};
 	const loadComments = (command: string) => (
 		event: React.MouseEvent<HTMLButtonElement, MouseEvent>
-		): void => {
-			event.preventDefault();
-			console.log("Comments -> command", command);
+	): void => {
+		//increases load amount dep on page, or resets page to 0
+		event.preventDefault();
 		dispatch(changePageAction(command));
 	};
 	return (
@@ -182,15 +180,19 @@ function Comments(props: any) {
 				</div>
 			)}
 			{comments.pending ? <Spinner /> : null}
-			{comments.success
+			{comments.data.length
 				? comments.data.map((comment: any) => (
-						<Comment key={comment._id} comment={comment} updateCommentArray={updateCommentArray} />
+						<Comment
+							key={comment._id}
+							comment={comment}
+							updateCommentArray={updateCommentArray}
+						/>
 				  ))
 				: null}
-			{comments.success === false ? (
+			{comments.data.length  ? null : (
 				<p>No comments yet. Be the first and leave a comment!</p>
-			) : null}
-			{comments.count > comments.data.length ? (
+			)}
+			{comments.count > comments.data.length && comments.data.length !== 0 ? (
 				<Button className={classes.loader} color="secondary" onClick={loadComments("more")}>
 					Load more...
 				</Button>

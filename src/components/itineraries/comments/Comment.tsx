@@ -1,5 +1,6 @@
 import React, { FunctionComponent } from "react";
 import { connect } from "react-redux";
+import CommentMenu from "./CommentMenu";
 
 //MATERIAL-UI
 import { makeStyles, createStyles, Theme, Typography, Button } from "@material-ui/core";
@@ -7,6 +8,9 @@ import { makeStyles, createStyles, Theme, Typography, Button } from "@material-u
 const useStyle = makeStyles((theme: Theme) =>
 	createStyles({
 		root: {
+			display: "flex",
+			flexFlow: "row wrap",
+			alignItems: "center",
 			"& > *": {
 				margin: theme.spacing(1),
 			},
@@ -18,7 +22,7 @@ const useStyle = makeStyles((theme: Theme) =>
 			// color: "#1c1e21",
 			display: "inline-block",
 			lineHeight: "16px",
-			margin: 0,
+			margin: "auto 0",
 			padding: " 0.6em",
 			maxWidth: "100%",
 			wordWrap: "break-word",
@@ -26,6 +30,12 @@ const useStyle = makeStyles((theme: Theme) =>
 			whiteSpace: "normal",
 			wordBreak: "break-word",
 		},
+		author: {
+			color: theme.palette.primary.main,
+		},
+		date: {
+			fontSize: "0.9em"
+		}
 	})
 );
 
@@ -49,8 +59,6 @@ const Comment: FunctionComponent<commentProps> = ({
 	// })
 	//State
 	const [userIsAuthor, setUserIsAuthor] = React.useState(false);
-
-
 
 	React.useEffect(() => {
 		const checkUserPrivileges = async () => {
@@ -100,18 +108,30 @@ const Comment: FunctionComponent<commentProps> = ({
 				} else console.log(res);
 			});
 	};
+	const dateComparison = (date: number) => {
+		let current = Date.now();
+		let difference = current - date;
+		let diffHours = Math.floor(difference /(1000 * 60 * 60) % 60);
+		if (diffHours >= 24) {
+			let days = Math.floor(diffHours / 24);
+			if (days >= 7){
+				return Math.floor(days / 7) + "w"
+			}
+			return Math.floor(diffHours / 24) + "d"
+		} else if(diffHours < 1) {
+			return Math.floor(difference / (1000 * 60) % 60) + "m"
+		}
+		return diffHours + "h";
+	}
 	return (
 		<div className={classes.root}>
 			{/* <h4>{comment.title}</h4> */}
-			{/* {console.log("comment", comment)} */}
 			<Typography className={classes.text}>
-				<Typography display="inline" color="primary">
-					{comment.author.name}
-				</Typography>{" "}
-				{comment.text}
+				<span className={classes.author}>{comment.author.name}</span> {comment.text}
 			</Typography>
-			{userIsAuthor ? <Button onClick={deleteComment}>X</Button> : null}
-			{/*Insert delete option here, if authorisUser */}
+			<p className={classes.date}>{dateComparison(comment.posted)}</p>
+			{/* {userIsAuthor ? <Button onClick={deleteComment}>X</Button> : null} */}
+			{userIsAuthor ? <CommentMenu deleteComment={deleteComment} /> : null}
 		</div>
 	);
 };
