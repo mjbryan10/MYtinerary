@@ -3,7 +3,7 @@ import React, { FunctionComponent, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Paper, Button } from "@material-ui/core";
 import ItineraryCardHeader from "./ItineraryCardHeader";
-import ItineraryActivies from "./ItineraryActivies";
+import ItineraryActivties from "./ItineraryActivties";
 
 type itineraryProps = {
 	itinerary: any;
@@ -32,7 +32,7 @@ const ItineraryCard: FunctionComponent<itineraryProps> = ({ itinerary }): any =>
 		<Paper className={classes.root + " fade-in"} elevation={3}>
 			<ItineraryCardHeader itinerary={itinerary} />
 			{moreToggled ? (
-				<ItineraryActivies itinerary={itinerary} />
+				<ItineraryActivties itinerary={itinerary} />
 			) : null}
 			<Button
 				className={classes.moreBtn}

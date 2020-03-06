@@ -28,7 +28,7 @@ const useStyles = makeStyles({
 	},
 });
 
-const ItineraryActivies: FunctionComponent<ItineraryActiviesProps> = ({ itinerary }) => {
+const ItineraryActivties: FunctionComponent<ItineraryActiviesProps> = ({ itinerary }) => {
 	const classes = useStyles();
 	return (
 		<article className={classes.root + " fade-in"}>
@@ -40,9 +40,9 @@ const ItineraryActivies: FunctionComponent<ItineraryActiviesProps> = ({ itinerar
 					</div>
 				))}
 			</div>
-			<Comments />
+			<Comments itinId={itinerary._id} />
 		</article>
 	);
 };
 
-export default ItineraryActivies;
+export default ItineraryActivties;
