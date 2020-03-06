@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import CommentMenu from "./CommentMenu";
 
 //MATERIAL-UI
-import { makeStyles, createStyles, Theme, Typography, Button } from "@material-ui/core";
+import { makeStyles, createStyles, Theme, Typography } from "@material-ui/core";
 
 const useStyle = makeStyles((theme: Theme) =>
 	createStyles({
@@ -124,7 +124,7 @@ const Comment: FunctionComponent<commentProps> = ({
 		return diffHours + "h";
 	}
 	return (
-		<div className={classes.root}>
+		<div className={classes.root + " fade-in"}>
 			{/* <h4>{comment.title}</h4> */}
 			<Typography className={classes.text}>
 				<span className={classes.author}>{comment.author.name}</span> {comment.text}

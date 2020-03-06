@@ -17,7 +17,7 @@ function CityCard(props: any) {
 			onClick={handleClick}
 		>
 			<div className="city-card-inner">
-			{cityImg ? <img src={cityImg} alt={imgCredit} /> : null}
+			{cityImg ? <img className="fade-in" src={cityImg} alt={imgCredit} /> : null}
 				<h4>{cityName}</h4>
 			</div>
 		</Link>
