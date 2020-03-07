@@ -26,11 +26,13 @@ const theme = createMuiTheme({
 	palette: {
 		primary: {
 			//Dont forget to change on variables.scss also
-			main: "#4a90ff",
-			// main: "#dc2b00",
+			// main: "#4a90ff", // Blue
+			// main: "#394e56", //Grey
+			main: "#dc2b00", // Red
 		},
 		secondary: {
-			main: "#394e56",
+			main: "#394e56", //Dark grey
+			// main: "#dc2b00", // Red
 		},
 	},
 });

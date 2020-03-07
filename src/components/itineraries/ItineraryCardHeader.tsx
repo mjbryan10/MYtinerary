@@ -5,16 +5,11 @@ import FavoriteIcon from "@material-ui/icons/Favorite";
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 import { connect } from "react-redux";
 
-// import { updateFavourites as updateFavouritesAction } from "../../store/actions/userActions";
-
 type itineraryProps = {
 	itinerary: any;
-	// isFavourite: boolean;
-	// onHeartChange: any;
 	id: string;
 	favourites: any;
 	token: string;
-	// updateFavourites: any;
 };
 
 const useStyles = makeStyles({
@@ -62,12 +57,9 @@ const useStyles = makeStyles({
 
 const ItineraryCardHeader: FunctionComponent<itineraryProps> = ({
 	itinerary,
-	// isFavourite,
-	// onHeartChange,
 	id,
 	favourites,
 	token,
-	// updateFavourites
 }): any => {
 	const classes = useStyles();
 
@@ -163,12 +155,5 @@ const mapStateToProps = (state: any) => {
 		token: state.login.token,
 	};
 };
-
-// const mapDispatchToProps = (dispatch: any) => {
-// 	return {
-// 		updateFavourites: (action: string, itinId: string, token: string) =>
-// 			dispatch(updateFavouritesAction(action, itinId, token)),
-// 	};
-// };
 
 export default connect(mapStateToProps)(ItineraryCardHeader);
