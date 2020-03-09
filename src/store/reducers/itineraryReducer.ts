@@ -7,6 +7,7 @@ import {
 
 const initialItineraryState = {
 	loading: false,
+	success: null,
 	itineraries: [],
 	error: "",
 };
@@ -20,21 +21,25 @@ export default function itinerariesReducer(
 			return {
 				...state,
 				loading: true,
+				success: null,
 			};
 		case FETCH_ITINERARIES_SUCCESS:
 			return {
 				loading: false,
+				success: true,
 				itineraries: action.payload,
 			};
 		case FETCH_ITINERARIES_FAILURE:
 			return {
 				loading: false,
+				success: false,
 				itineraries: [],
 				error: action.payload,
 			};
 		case RESET_ITINERARIES:
 			return {
 				loading: false,
+				success: null,
 				itineraries: [],
 				error: "",
 			};

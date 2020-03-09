@@ -17,9 +17,9 @@ import Menu from "@material-ui/core/Menu";
 
 //REDUX
 import { connect } from "react-redux";
-import { 
-	updateLoginStatus, 
-	// logUserOut 
+import {
+	updateLoginStatus,
+	// logUserOut
 } from "../../store/actions/loginActions";
 import { fetchCurrentUser as fetchCurrentUserAction } from "../../store/actions/userActions";
 import { bindActionCreators } from "redux";
@@ -96,7 +96,7 @@ function Nav(props: any) {
 	// });
 	return (
 		<div className={classes.root}>
-			<AppBar position="static" style={{ margin: 0 }}>
+			<AppBar position="static" style={{ margin: 0 }} color="secondary">
 				<Toolbar className={classes.bar}>
 					<div>
 						<IconButton

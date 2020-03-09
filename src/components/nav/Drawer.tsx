@@ -11,6 +11,7 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import LocationCityIcon from "@material-ui/icons/LocationCity";
+import ListAltIcon from '@material-ui/icons/ListAlt';
 import MenuIcon from "@material-ui/icons/Menu";
 import HomeIcon from "@material-ui/icons/Home";
 
@@ -74,6 +75,14 @@ export default function TemporaryDrawer() {
 							<LocationCityIcon />
 						</ListItemIcon>
 						<ListItemText primary="Cities" />
+					</ListItem>
+				</Link>
+				<Link to={"/favourites"} key="2">
+					<ListItem button>
+						<ListItemIcon>
+							<ListAltIcon />
+						</ListItemIcon>
+						<ListItemText primary="Favourites" />
 					</ListItem>
 				</Link>
 			</List>

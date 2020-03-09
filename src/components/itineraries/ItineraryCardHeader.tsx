@@ -1,9 +1,17 @@
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, useEffect, useState } from "react";
+import PopLogin from '../global/PopLogin';
 import { makeStyles } from "@material-ui/core/styles";
 import AuthorAvatar from "../author/AuthorAvatar";
+import FavoriteIcon from "@material-ui/icons/Favorite";
+import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
+import { connect } from "react-redux";
 
 type itineraryProps = {
 	itinerary: any;
+	id: string;
+	favourites: any;
+	token: string;
+	loggedIn: boolean;
 };
 
 const useStyles = makeStyles({
@@ -36,9 +44,29 @@ const useStyles = makeStyles({
 			margin: "0 0.5em",
 		},
 	},
+	input: {
+		display: "none",
+	},
+	'label:disabled+label heart': {
+		color: '#ccc'
+	},
+	heart: {
+		margin: "15px",
+		color: "#dc2b00",
+		"&:hover": {
+			cursor: "pointer",
+			transform: "scale(1.1)",
+		},
+	},
 });
 
-const ItineraryCardHeader: FunctionComponent<itineraryProps> = ({ itinerary }): any => {
+const ItineraryCardHeader: FunctionComponent<itineraryProps> = ({
+	itinerary,
+	id,
+	favourites,
+	token,
+	loggedIn,
+}): any => {
 	const classes = useStyles();
 
 	const calcDuration = (duration: number): string | undefined => {
@@ -50,6 +78,46 @@ const ItineraryCardHeader: FunctionComponent<itineraryProps> = ({ itinerary }): 
 			return "--";
 		}
 	};
+	const [isFav, setIsFav] = useState(false);
+	const onHeartChange = () => {
+		let action = "";
+		isFav ? (action = "del") : (action = "add");
+		updateFavourites(action, itinerary._id, token);
+	};
+	useEffect(() => {
+		if (loggedIn && favourites.length) {
+			if (favourites.includes(itinerary._id)) {
+				setIsFav(true);
+			} else {
+				setIsFav(false);
+			}
+		} else {
+			setIsFav(false);
+		}
+	}, [loggedIn, favourites, itinerary._id]);
+	const updateFavourites = (action: string, itinId: string, token: string) => {
+		fetch(`http://localhost:5000/usersAPI/${action}/fav`, {
+			method: "put",
+			headers: {
+				Accept: "application/json, text/plain, */*",
+				"Content-Type": "application/json",
+				"x-api-key": token,
+			},
+			body: JSON.stringify({ fav: itinId }),
+		})
+			.then((res: any) => res.json())
+			.then((res: any) => {
+				if (res.success) {
+					setIsFav(!isFav);
+				}
+			});
+	};
+	const [popLogIn, setPopLogIn] = useState(false);
+	const handlePopLogin = () => {
+		if(!loggedIn) {
+			setPopLogIn(!popLogIn);
+		}
+	}
 	return (
 		<header className={classes.header}>
 			<AuthorAvatar authorId={itinerary.author_id} variant="named" />
@@ -70,7 +138,33 @@ const ItineraryCardHeader: FunctionComponent<itineraryProps> = ({ itinerary }): 
 					))}
 				</p>
 			</div>
+
+			<input
+				className={classes.input}
+				id={`icon-heart-${id}`}
+				type="checkbox"
+				checked={isFav}
+				onChange={onHeartChange}
+				disabled={!loggedIn}
+			/>
+			<label htmlFor={`icon-heart-${id}`} onClick={handlePopLogin}>
+				{isFav ? (
+					<FavoriteIcon className={classes.heart} />
+				) : (
+					<FavoriteBorderIcon className={classes.heart} />
+				)}
+				<PopLogin open={popLogIn} handlePopLogin={handlePopLogin} />
+			</label>
 		</header>
 	);
 };
-export default ItineraryCardHeader;
+
+const mapStateToProps = (state: any) => {
+	return {
+		favourites: state.currentUser.details.favourites,
+		token: state.login.token,
+		loggedIn: state.login.loggedIn
+	};
+};
+
+export default connect(mapStateToProps)(ItineraryCardHeader);
