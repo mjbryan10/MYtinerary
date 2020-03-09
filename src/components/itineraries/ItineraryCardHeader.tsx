@@ -1,4 +1,5 @@
 import React, { FunctionComponent, useEffect, useState } from "react";
+import PopLogin from '../global/PopLogin';
 import { makeStyles } from "@material-ui/core/styles";
 import AuthorAvatar from "../author/AuthorAvatar";
 import FavoriteIcon from "@material-ui/icons/Favorite";
@@ -10,6 +11,7 @@ type itineraryProps = {
 	id: string;
 	favourites: any;
 	token: string;
+	loggedIn: boolean;
 };
 
 const useStyles = makeStyles({
@@ -45,8 +47,11 @@ const useStyles = makeStyles({
 	input: {
 		display: "none",
 	},
+	'label:disabled+label heart': {
+		color: '#ccc'
+	},
 	heart: {
-		margin: "3px",
+		margin: "15px",
 		color: "#dc2b00",
 		"&:hover": {
 			cursor: "pointer",
@@ -60,6 +65,7 @@ const ItineraryCardHeader: FunctionComponent<itineraryProps> = ({
 	id,
 	favourites,
 	token,
+	loggedIn,
 }): any => {
 	const classes = useStyles();
 
@@ -74,24 +80,21 @@ const ItineraryCardHeader: FunctionComponent<itineraryProps> = ({
 	};
 	const [isFav, setIsFav] = useState(false);
 	const onHeartChange = () => {
-		// setIsFav(!isFav);
 		let action = "";
 		isFav ? (action = "del") : (action = "add");
 		updateFavourites(action, itinerary._id, token);
 	};
 	useEffect(() => {
-		if (favourites.length) {
+		if (loggedIn && favourites.length) {
 			if (favourites.includes(itinerary._id)) {
 				setIsFav(true);
-				// console.log("setIsFav", isFav);
 			} else {
 				setIsFav(false);
-				// console.log("setIsFav", isFav);
 			}
 		} else {
 			setIsFav(false);
 		}
-	}, [favourites, itinerary._id]);
+	}, [loggedIn, favourites, itinerary._id]);
 	const updateFavourites = (action: string, itinId: string, token: string) => {
 		fetch(`http://localhost:5000/usersAPI/${action}/fav`, {
 			method: "put",
@@ -109,7 +112,12 @@ const ItineraryCardHeader: FunctionComponent<itineraryProps> = ({
 				}
 			});
 	};
-
+	const [popLogIn, setPopLogIn] = useState(false);
+	const handlePopLogin = () => {
+		if(!loggedIn) {
+			setPopLogIn(!popLogIn);
+		}
+	}
 	return (
 		<header className={classes.header}>
 			<AuthorAvatar authorId={itinerary.author_id} variant="named" />
@@ -137,13 +145,15 @@ const ItineraryCardHeader: FunctionComponent<itineraryProps> = ({
 				type="checkbox"
 				checked={isFav}
 				onChange={onHeartChange}
+				disabled={!loggedIn}
 			/>
-			<label htmlFor={`icon-heart-${id}`}>
+			<label htmlFor={`icon-heart-${id}`} onClick={handlePopLogin}>
 				{isFav ? (
 					<FavoriteIcon className={classes.heart} />
 				) : (
 					<FavoriteBorderIcon className={classes.heart} />
 				)}
+				<PopLogin open={popLogIn} handlePopLogin={handlePopLogin} />
 			</label>
 		</header>
 	);
@@ -153,6 +163,7 @@ const mapStateToProps = (state: any) => {
 	return {
 		favourites: state.currentUser.details.favourites,
 		token: state.login.token,
+		loggedIn: state.login.loggedIn
 	};
 };
 

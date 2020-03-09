@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Redirect, Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { updateLoginStatus } from "../../store/actions/loginActions";
 import PasswordInput from "./PasswordInput";
@@ -7,7 +8,6 @@ import { Paper, FormControl, InputLabel, Input, FormHelperText } from "@material
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import SubmitButton from "../global/SubmitButton";
 import { bindActionCreators } from "redux";
-import { Redirect } from "react-router-dom";
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
 		root: {
@@ -29,6 +29,11 @@ const useStyles = makeStyles((theme: Theme) =>
 		},
 		upload: {
 			display: "flex",
+		},
+		createLink: {
+			textAlign: "center",
+			margin: "0.7em",
+			display: "block",
 		},
 	})
 );
@@ -83,7 +88,9 @@ function LoginPage(props: any) {
 					if (res.success) {
 						window.localStorage.setItem("session_token", res.token);
 						setLoginSuccess(true);
-						setTimeout(function(){ setRedirectToHome(true); }, 800);
+						setTimeout(function() {
+							setRedirectToHome(true);
+						}, 800);
 					} else {
 						setErrors({ email: res.msg, password: res.msg });
 					}
@@ -139,6 +146,9 @@ function LoginPage(props: any) {
 						successText="Success!"
 					/>
 				</form>
+				<Link className={classes.createLink} to="/create">
+					Don't have an account? Click here.
+				</Link>
 			</Paper>
 		</div>
 	);

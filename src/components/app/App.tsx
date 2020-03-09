@@ -7,6 +7,7 @@ import Nav from "../nav/Nav";
 import Landing from "../landing/Landing";
 import Cities from "../cities/Cities";
 import CityItineraries from "../itineraries/CityItineraries";
+import Favourites from "../favourites/Favourites";
 import CreateAccount from "../account/CreateAccount";
 import LoginPage from "../account/LoginPage";
 import NotFound from "../NotFound";
@@ -50,6 +51,7 @@ function App() {
 							<Route exact path="/" component={Landing} />
 							<Route path="/cities" component={Cities} />
 							<Route path="/itineraries/:cityName" component={CityItineraries} />
+							<Route path="/favourites" component={Favourites} />
 							<Route path="/create" component={CreateAccount} />
 							<Route path="/login" component={LoginPage} />
 							<Route component={NotFound} />

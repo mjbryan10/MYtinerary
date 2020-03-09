@@ -8,11 +8,9 @@ import Search from "../global/Search";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { fetchAllCities as fetchAllCitiesAction } from "../../store/actions/cityActions";
-import { Redirect } from "react-router-dom";
-// import { default as fetchAllCitiesAction } from "../../store/actions/fetchAllCities";
 
 const Cities = (props: any) => {
-	const { cities, fetchAllCities, loading, token, hasLoaded, loggedIn, loginPending } = props;
+	const { cities, fetchAllCities, loading, token, hasLoaded, loggedIn,  } = props;
 	const [searchStr, setSearchStr] = useState("");
 	useEffect((): void => {
 		if (loggedIn) {
@@ -28,7 +26,7 @@ const Cities = (props: any) => {
 			let filtered = [];
 			for (const city of cities) {
 				if (city.name.toLowerCase().search(searchStr.toLowerCase()) === 0) {
-					//CHOICE: change to includes if want less strict search
+					//Change to includes if want less strict search
 					filtered.push(city);
 				}
 			}
@@ -36,19 +34,11 @@ const Cities = (props: any) => {
 		}
 		return cities;
 	} 
-	if (!loggedIn && !loginPending) {
-		return (
-			<div>
-				{console.log("token", token) }
-				<Redirect to='/login'/>
-			</div>
-		);
-	}
 	return (
 		<div className="cities-container">
 			<h1>Cities</h1>
 			<Search className="city-search" value={searchStr} onChange={handleChange} />
-			{loading || loginPending ? <Spinner /> : null}
+			{loading ? <Spinner /> : null}
 			{hasLoaded ? (
 				<div className="cards-container">
 					{filterCities().map((city: any, index: number) => (
@@ -85,10 +75,4 @@ const mapDispatchToProps = (dispatch: any) =>
 		},
 		dispatch
 	);
-//ALT
-// const mapDispatchToProps = (dispatch: any): object => {
-// 	return {
-// 		fetchCities: () => dispatch(fetchCitiesAction()),
-// 	};
-// };
 export default connect(mapStateToProps, mapDispatchToProps)(Cities);
