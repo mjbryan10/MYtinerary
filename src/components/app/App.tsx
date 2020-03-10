@@ -50,11 +50,11 @@ function App() {
 						<Switch>
 							<Route exact path="/" component={Landing} />
 							<Route exact path="/MYtinerary" component={Landing} />
-							<Route path="/MYtinerary/cities" component={Cities} />
-							<Route path="/MYtinerary/itineraries/:cityName" component={CityItineraries} />
-							<Route path="/MYtinerary/favourites" component={Favourites} />
-							<Route path="/MYtinerary/create" component={CreateAccount} />
-							<Route path="/MYtinerary/login" component={LoginPage} />
+							<Route path="/cities" component={Cities} />
+							<Route path="/itineraries/:cityName" component={CityItineraries} />
+							<Route path="/favourites" component={Favourites} />
+							<Route path="/create" component={CreateAccount} />
+							<Route path="/login" component={LoginPage} />
 							<Route component={NotFound} />
 						</Switch>
 					</div>

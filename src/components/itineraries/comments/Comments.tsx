@@ -176,7 +176,7 @@ function Comments(props: any) {
 				<CommentForm itinId={itinId} updateCommentArray={updateCommentArray} />
 			) : (
 				<div>
-					<Link to="/MYtinerary/login">Log in to leave a comment</Link>
+					<Link to="/login">Log in to leave a comment</Link>
 				</div>
 			)}
 			{comments.pending ? <Spinner /> : null}

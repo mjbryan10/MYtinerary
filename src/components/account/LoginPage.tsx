@@ -116,7 +116,7 @@ function LoginPage(props: any) {
 		return await response.json();
 	}
 	if (redirectToHome) {
-		return <Redirect to="/MYtinerary" />;
+		return <Redirect to="/" />;
 	}
 	return (
 		<div className={classes.root}>

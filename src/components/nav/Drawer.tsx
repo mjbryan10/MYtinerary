@@ -61,7 +61,7 @@ export default function TemporaryDrawer() {
 			onKeyDown={toggleDrawer(side, false)}
 		>
 			<List>
-				<Link to={"/MYtinerary"} key="0">
+				<Link to={"/"} key="0">
 					<ListItem button>
 						<ListItemIcon>
 							<HomeIcon />
@@ -69,7 +69,7 @@ export default function TemporaryDrawer() {
 						<ListItemText primary="Home" />
 					</ListItem>
 				</Link>
-				<Link to={"/MYtinerary/cities"} key="1">
+				<Link to={"/cities"} key="1">
 					<ListItem button>
 						<ListItemIcon>
 							<LocationCityIcon />
@@ -77,7 +77,7 @@ export default function TemporaryDrawer() {
 						<ListItemText primary="Cities" />
 					</ListItem>
 				</Link>
-				<Link to={"/MYtinerary/favourites"} key="2">
+				<Link to={"/favourites"} key="2">
 					<ListItem button>
 						<ListItemIcon>
 							<ListAltIcon />
