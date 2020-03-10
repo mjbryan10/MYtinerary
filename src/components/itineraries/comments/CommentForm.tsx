@@ -61,7 +61,7 @@ function CommentForm(props: any) {
 		}
    };
    async function postComment() {
-      let response = await fetch("http://localhost:5000/commentsAPI/post", {
+      let response = await fetch("https://my-itinerary-demo.herokuapp.com/commentsAPI/post", {
 			   method: "post",
 			   headers: {
                Accept: "application/json, text/plain, */*",

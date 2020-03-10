@@ -143,7 +143,7 @@ function Comments(props: any) {
 
 	useEffect(() => {
 		function getFetchUrl() {
-			return `http://localhost:5000/commentsAPI/${itinId}/${comments.page}`;
+			return `https://my-itinerary-demo.herokuapp.com/commentsAPI/${itinId}/${comments.page}`;
 		}
 		async function fetchComments() {
 			dispatch(pendingAction());
@@ -176,7 +176,7 @@ function Comments(props: any) {
 				<CommentForm itinId={itinId} updateCommentArray={updateCommentArray} />
 			) : (
 				<div>
-					<Link to="/login">Log in to leave a comment</Link>
+					<Link to="/MYtinerary/login">Log in to leave a comment</Link>
 				</div>
 			)}
 			{comments.pending ? <Spinner /> : null}

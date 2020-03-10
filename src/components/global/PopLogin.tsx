@@ -40,12 +40,12 @@ const AlertDialog: React.FunctionComponent<State> = ({ open, handlePopLogin }) =
 					</DialogContentText>
 				</DialogContent>
 				<DialogActions>
-					<Link to="/login">
+					<Link to="/MYtinerary/login">
 						<Button onClick={handleClose} color="primary">
 							Login
 						</Button>
 					</Link>
-					<Link to="/create">
+					<Link to="/MYtinerary/create">
 						<Button onClick={handleClose} color="primary" autoFocus>
 							Create account
 						</Button>
