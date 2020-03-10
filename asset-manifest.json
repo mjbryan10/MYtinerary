@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/MYtinerary/static/css/main.543329d3.chunk.css",
-    "main.js": "/MYtinerary/static/js/main.d5a97adc.chunk.js",
-    "main.js.map": "/MYtinerary/static/js/main.d5a97adc.chunk.js.map",
+    "main.js": "/MYtinerary/static/js/main.3e9f0908.chunk.js",
+    "main.js.map": "/MYtinerary/static/js/main.3e9f0908.chunk.js.map",
     "runtime-main.js": "/MYtinerary/static/js/runtime-main.9251d1e0.js",
     "runtime-main.js.map": "/MYtinerary/static/js/runtime-main.9251d1e0.js.map",
     "static/js/2.cf444787.chunk.js": "/MYtinerary/static/js/2.cf444787.chunk.js",
     "static/js/2.cf444787.chunk.js.map": "/MYtinerary/static/js/2.cf444787.chunk.js.map",
     "index.html": "/MYtinerary/index.html",
-    "precache-manifest.9c421dc7a968967a5e5ef526f11ea598.js": "/MYtinerary/precache-manifest.9c421dc7a968967a5e5ef526f11ea598.js",
+    "precache-manifest.f92a1adf663939c41eb53e2d118fc8fa.js": "/MYtinerary/precache-manifest.f92a1adf663939c41eb53e2d118fc8fa.js",
     "service-worker.js": "/MYtinerary/service-worker.js",
     "static/css/main.543329d3.chunk.css.map": "/MYtinerary/static/css/main.543329d3.chunk.css.map",
     "static/js/2.cf444787.chunk.js.LICENSE.txt": "/MYtinerary/static/js/2.cf444787.chunk.js.LICENSE.txt",
@@ -19,6 +19,6 @@
     "static/js/runtime-main.9251d1e0.js",
     "static/js/2.cf444787.chunk.js",
     "static/css/main.543329d3.chunk.css",
-    "static/js/main.d5a97adc.chunk.js"
+    "static/js/main.3e9f0908.chunk.js"
   ]
 }
