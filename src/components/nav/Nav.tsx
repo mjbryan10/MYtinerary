@@ -124,11 +124,11 @@ function Nav(props: any) {
 							onClose={handleClose}
 						>
 							<MenuItem onClick={loggedIn ? handleLogOutClick : handleClose}>
-								{loggedIn ? <Link to="/">Log out</Link> : <Link to="/login">Log in</Link>}
+								{loggedIn ? <Link to="/">Log out</Link> : <Link to="/MYtinerary/login">Log in</Link>}
 							</MenuItem>
 							{loggedIn ? null : (
 								<MenuItem onClick={handleClose}>
-									<Link to="/create">Create Account</Link>
+									<Link to="/MYtinerary/create">Create Account</Link>
 								</MenuItem>
 							)}
 						</Menu>
