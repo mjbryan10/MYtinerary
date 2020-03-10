@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { HashRouter, Route, Switch } from "react-router-dom";
 import "./App.scss";
 
 //COMPONENTS
@@ -42,7 +42,7 @@ function App() {
 		updateLoginStatus();
 	});
 	return (
-		<BrowserRouter>
+		<HashRouter basename="/">
 			<div className="App">
 				<ThemeProvider theme={theme}>
 					<Nav />
@@ -61,7 +61,7 @@ function App() {
 					<Footer />
 				</ThemeProvider>
 			</div>
-		</BrowserRouter>
+		</HashRouter>
 	);
 }
 const mapDispatchToProps = (dispatch: any) =>
