@@ -57,7 +57,7 @@ export function expiredUser(payload: any): object {
 export const fetchCurrentUser = (token: string) => {
 	return (dispatch: any) => {
 		dispatch(fetchUserPending());
-		fetch("http://localhost:5000/usersAPI/user", {
+		fetch("https://my-itinerary-demo.herokuapp.com/usersAPI/user", {
 			method: "post",
 			headers: {
 				Accept: "application/json, text/plain, */*",

@@ -96,7 +96,7 @@ const ItineraryCardHeader: FunctionComponent<itineraryProps> = ({
 		}
 	}, [loggedIn, favourites, itinerary._id]);
 	const updateFavourites = (action: string, itinId: string, token: string) => {
-		fetch(`http://localhost:5000/usersAPI/${action}/fav`, {
+		fetch(`https://my-itinerary-demo.herokuapp.com/usersAPI/${action}/fav`, {
 			method: "put",
 			headers: {
 				Accept: "application/json, text/plain, */*",

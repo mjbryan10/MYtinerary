@@ -53,28 +53,6 @@ export default function loginReducer(state: any = intialUserState, action: any =
 				details: {},
 				error: "",
 			};
-		// case ADD_FAV:
-		// 	console.log("payload: ", action.payload)
-		// 	return {
-		// 		...state,
-		// 		details: {...state.details, favourites: state.details.favourites.push(action.payload)}
-		// 	}
-		// case DEL_FAV:
-		// 	let index = state.details.favourites.indexOf(action.payload)
-      //    console.log("loginReducer -> state.details.favourites", state.details.favourites);
-		// 	console.log("index:", index, "payload: ", action.payload)
-		// 	let newArray = state.details.favourites.splice(index, 1);
-      //    console.log("loginReducer -> state.details.favourites", state.details.favourites);
-		// 	return {
-		// 		...state,
-		// 		details: {...state.details, favourites: newArray},
-		// 	}
-		// case CLEAR_FAV: {
-		// 	return {
-		// 		...state,
-		// 		details: {favourites: action.payload}
-		// 	}
-		// }
 		default:
 			return state;
 	}

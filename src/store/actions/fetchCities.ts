@@ -5,7 +5,7 @@ import {fetchCitiesRequest, fetchCitiesSuccess, fetchCitiesError} from './cityAc
 const fetchCities = () => {
     return (dispatch: any) => {
         dispatch(fetchCitiesRequest());
-        fetch('http://localhost:5000/citiesAPI/all')
+        fetch('https://my-itinerary-demo.herokuapp.com/citiesAPI/all')
         .then(res => res.json())
         .then(res => {
             // if(res.error) {

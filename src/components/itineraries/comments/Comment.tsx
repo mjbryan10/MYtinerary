@@ -62,7 +62,7 @@ const Comment: FunctionComponent<commentProps> = ({
 
 	React.useEffect(() => {
 		const checkUserPrivileges = async () => {
-			let response = await fetch("http://localhost:5000/usersAPI/validate", {
+			let response = await fetch("https://my-itinerary-demo.herokuapp.com/usersAPI/validate", {
 				method: "post",
 				headers: {
 					Accept: "application/json, text/plain, */*",
@@ -87,7 +87,7 @@ const Comment: FunctionComponent<commentProps> = ({
 
 	const deleteComment = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
 		event.preventDefault();
-		let api = "http://localhost:5000/commentsAPI/delete";
+		let api = "https://my-itinerary-demo.herokuapp.com/commentsAPI/delete";
 		fetch(api, {
 			method: "delete",
 			headers: {
