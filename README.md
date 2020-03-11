@@ -2,7 +2,7 @@
 
 This is a demo app built using the MERN stack (Mongodb, Express, React & Node.js). 
 
-To view the server side code, please visit [here](https://github.com/mjbryan10/MYtinerary-backend)
+To view the server side code, please visit [here](https://github.com/mjbryan10/MYtinerary-backend).
 
 ## Technologies
 
