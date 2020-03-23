@@ -45,6 +45,31 @@ a {
     color: $primary-color;
   }
 }
+
+//Scrollbar Styles:
+$bar-width: 15px;
+/* width */
+::-webkit-scrollbar {
+  width: $bar-width;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 $bar-width/4 $secondary-color; 
+  // border-radius: $bar-width/2;
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: $secondary-color; 
+  border-radius: $bar-width/2;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: lighten($secondary-color, 10); 
+}
+
 //dots for pagination
 .span-dot {
   $height: 1.3em;
