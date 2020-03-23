@@ -10,95 +10,109 @@ import ItineraryCard from "./ItineraryCard";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import {
-	fetchCurrentCity as fetchCurrentCityAction,
-	resetCurrentCity as resetCurrentCityAction,
+   fetchCurrentCity as fetchCurrentCityAction,
+   resetCurrentCity as resetCurrentCityAction,
 } from "../../store/actions/currentCityActions";
 import {
-	fetchCurrentCityItineraries as fetchItinerariesAction,
-	resetItineraries as resetItinerariesAction,
+   fetchCurrentCityItineraries as fetchItinerariesAction,
+   resetItineraries as resetItinerariesAction,
 } from "../../store/actions/itineraryActions";
 import { Link } from "react-router-dom";
 
+//STYLES
+import { makeStyles, createStyles, Theme } from "@material-ui/core";
+
+const useStyles = makeStyles((theme: Theme) =>
+   createStyles({
+      root: {
+         maxWidth: 800,
+         margin: "0 auto",
+      },
+   })
+);
+
+//TYPES
 type CityItinerariesProps = {
-	fetchCurrentCity: any;
-	city: any;
-	cityLoading: boolean;
-	fetchItineraries: any;
-	itinerariesLoading: boolean;
-	itineraries: [any];
-	resetItineraries: any;
-	resetCurrentCity: any;
+   fetchCurrentCity: any;
+   city: any;
+   cityLoading: boolean;
+   fetchItineraries: any;
+   itinerariesLoading: boolean;
+   itineraries: [any];
+   resetItineraries: any;
+   resetCurrentCity: any;
 };
 
 const CityItineraries: FunctionComponent<CityItinerariesProps> = ({
-	fetchCurrentCity,
-	city,
-	cityLoading,
-	fetchItineraries,
-	itinerariesLoading,
-	itineraries,
-	resetItineraries,
-	resetCurrentCity,
+   fetchCurrentCity,
+   city,
+   cityLoading,
+   fetchItineraries,
+   itinerariesLoading,
+   itineraries,
+   resetItineraries,
+   resetCurrentCity,
 }) => {
-	let pathName: any = useParams();
-	let cityName = pathName.cityName;
+   const classes = useStyles();
+   let pathName: any = useParams();
+   let cityName = pathName.cityName;
 
-	useEffect(() => {
-		if (!city.length) {
-			fetchCurrentCity(cityName);
-		}
-		fetchItineraries(city._id);
-	}, [city._id, city.length, cityName, fetchCurrentCity, fetchItineraries]);
-	useEffect(() => {
-		return () => {
-			resetItineraries();
-			resetCurrentCity();
-		};
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
-	return (
-		<div>
-			{cityLoading ? (
-				<Spinner />
-			) : (
-				<CityCard
-					className="city-card"
-					cityName={city.name}
-					cityImg={city.img}
-					imgCredit={city.img_credit}
-				/>
-			)}
-			{itinerariesLoading ? (
-				<Spinner />
-			) : (
-				itineraries.map((itinerary: any) => {
-					return <ItineraryCard key={itinerary._id} itinerary={itinerary} />;
-				})
-			)}
-			<Link to="/cities">Choose another city...</Link>
-		</div>
-	);
+   useEffect(() => {
+      if (!city.length) {
+         fetchCurrentCity(cityName);
+      }
+      fetchItineraries(city._id);
+   }, [city._id, city.length, cityName, fetchCurrentCity, fetchItineraries]);
+   useEffect(() => {
+      return () => {
+         resetItineraries();
+         resetCurrentCity();
+      };
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+   }, []);
+   return (
+      <div className={classes.root}>
+         {cityLoading ? (
+            <Spinner />
+         ) : (
+            <CityCard
+               className="city-card"
+               cityName={city.name}
+               cityImg={city.img}
+               imgCredit={city.img_credit}
+            />
+         )}
+         {itinerariesLoading ? (
+            <Spinner />
+         ) : (
+            itineraries.map((itinerary: any) => {
+               return <ItineraryCard key={itinerary._id} itinerary={itinerary} />;
+            })
+         )}
+         <Link to="/cities">Choose another city...</Link>
+      </div>
+   );
 };
 
 const mapStateToProps = (state: any): object => {
-	return {
-		cityLoading: state.currentCity.loading,
-		city: state.currentCity.city,
-		itinerariesLoading: state.itineraries.loading,
-		itineraries: state.itineraries.itineraries,
-	};
+   return {
+      cityLoading: state.currentCity.loading,
+      city: state.currentCity.city,
+      itinerariesLoading: state.itineraries.loading,
+      itineraries: state.itineraries.itineraries,
+   };
 };
 
 const mapDispatchToProps = (dispatch: any) =>
-	bindActionCreators(
-		{
-			fetchCurrentCity: fetchCurrentCityAction,
-			fetchItineraries: fetchItinerariesAction,
-			resetItineraries: resetItinerariesAction,
-			resetCurrentCity: resetCurrentCityAction,
-			// fetchAuthors: fetchAuthorsAction,
-		},
-		dispatch
-	);
+   bindActionCreators(
+      {
+         fetchCurrentCity: fetchCurrentCityAction,
+         fetchItineraries: fetchItinerariesAction,
+         resetItineraries: resetItinerariesAction,
+         resetCurrentCity: resetCurrentCityAction,
+         // fetchAuthors: fetchAuthorsAction,
+      },
+      dispatch
+   );
 
 export default connect(mapStateToProps, mapDispatchToProps)(CityItineraries);
