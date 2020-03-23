@@ -118,12 +118,10 @@ const Comment: FunctionComponent<commentProps> = ({
 	}
 	return (
 		<div className={classes.root + " fade-in"}>
-			{/* <h4>{comment.title}</h4> */}
 			<Typography className={classes.text}>
 				<span className={classes.author}>{comment.author.name}</span> {comment.text}
 			</Typography>
 			<p className={classes.date}>{dateComparison(comment.posted)}</p>
-			{/* {userIsAuthor ? <Button onClick={deleteComment}>X</Button> : null} */}
 			{userIsAuthor ? <CommentMenu deleteComment={deleteComment} /> : null}
 		</div>
 	);

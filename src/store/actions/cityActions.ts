@@ -38,20 +38,43 @@ export const fetchTopCities = () => {
 	};
 };
 
-export const fetchAllCities = (token: string) => {
+// -- WITH TOKEN
+// export const fetchAllCities = (token: string) => {
+// 	return (dispatch: any) => {
+// 		dispatch(fetchCitiesRequest());
+// 		fetch("https://my-itinerary-demo.herokuapp.com/citiesAPI/all", {
+// 			method: "get",
+// 			headers: {
+// 				"Content-type": "application/x-www-form-urlencoded",
+// 				"x-api-key": token,
+// 			},
+// 		})
+// 			.then(res => {
+//                 if (res.status === 200) return res.json();
+//                 logUserOut();
+// 			})
+// 			.then(res => {
+// 				if(res.error) {
+// 				    dispatch(fetchCitiesError(res.error));
+// 				    throw(res.error);
+// 				}
+// 				dispatch(fetchCitiesSuccess(res));
+// 				return res.cities; 
+// 			})
+// 			.catch(error => {
+// 				dispatch(fetchCitiesError(error.message));
+// 			});
+// 	};
+// };
+
+//Refactored without token
+export const fetchAllCities = () => {
 	return (dispatch: any) => {
 		dispatch(fetchCitiesRequest());
 		fetch("https://my-itinerary-demo.herokuapp.com/citiesAPI/all", {
 			method: "get",
-			headers: {
-				"Content-type": "application/x-www-form-urlencoded",
-				"x-api-key": token,
-			},
 		})
-			.then(res => {
-                if (res.status === 200) return res.json();
-                logUserOut();
-			})
+			.then(res => res.json())
 			.then(res => {
 				if(res.error) {
 				    dispatch(fetchCitiesError(res.error));
