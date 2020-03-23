@@ -3,9 +3,6 @@ export const USER_SUCCESS = "USER_SUCCESS";
 export const USER_ERROR = "USER_ERROR";
 export const CLEAR_CURRENT_USER = "CLEAR_CURRENT_USER";
 export const USER_EXPIRED = "USER_EXPIRED";
-// export const ADD_FAV = "ADD_FAV";
-// export const DEL_FAV = "DEL_FAV";
-// export const CLEAR_FAV = "CLEAR_FAV";
 
 export function fetchUserPending(): object {
 	return {
@@ -36,24 +33,6 @@ export function expiredUser(payload: any): object {
 	};
 }
 
-// export function updateFav(action: string, payload: any): object {
-// 	if (action === "add") {
-// 		return {
-// 			type: ADD_FAV,
-// 			payload,
-// 		};
-// 	} else if (action === "del") {
-// 		return {
-// 			type: DEL_FAV,
-// 			payload,
-// 		};
-// 	}
-// 	return {
-// 		type: CLEAR_FAV,
-// 		payload: [],
-// 	};
-// }
-
 export const fetchCurrentUser = (token: string) => {
 	return (dispatch: any) => {
 		dispatch(fetchUserPending());
@@ -82,23 +61,3 @@ export const fetchCurrentUser = (token: string) => {
 			});
 	};
 };
-
-// export const updateFavourites = (action: string, itinId: string, token: string) => {
-// 	return (dispatch: any) => {
-// 		fetch(`http://localhost:5000/usersAPI/${action}/fav`, {
-// 			method: "put",
-// 			headers: {
-// 				Accept: "application/json, text/plain, */*",
-// 				"Content-Type": "application/json",
-// 				"x-api-key": token,
-// 			},
-// 			body: JSON.stringify({ fav: itinId }),
-// 		})
-// 			.then((res: any) => res.json())
-// 			.then((res: any) => {
-// 				if (res.success) {
-// 					dispatch(updateFav(action, itinId));
-// 				}
-// 			});
-// 	};
-// };

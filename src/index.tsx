@@ -5,12 +5,6 @@ import App from "./components/app/App";
 import * as serviceWorker from "./serviceWorker";
 
 //REDUX
-// import { createStore } from 'redux';
-// import { Provider } from 'react-redux';
-// import rootReducer from './store/rootReducer';
-// const store = createStore(rootReducer);
-
-//REDUX
 import { composeWithDevTools } from "redux-devtools-extension";
 import { createStore, applyMiddleware } from "redux";
 import { Provider } from "react-redux";

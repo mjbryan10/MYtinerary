@@ -3,9 +3,6 @@ import {
 	USER_SUCCESS,
 	USER_ERROR,
 	CLEAR_CURRENT_USER,
-	// ADD_FAV,
-	// DEL_FAV,
-	// CLEAR_FAV,
 } from "../actions/userActions";
 
 type IntialUserState = {
@@ -19,9 +16,6 @@ const intialUserState: IntialUserState = {
 	pending: false,
 	success: false,
 	details: {
-		// name:"",
-		// img: "",
-		// favourities: [],
 	},
 	error: "",
 };
