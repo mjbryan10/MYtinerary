@@ -52,11 +52,6 @@ const Comment: FunctionComponent<commentProps> = ({
 }) => {
 	const classes = useStyle();
 
-	// const [author, setAuthor] = React.useState<any>({
-	// 	// authorAvatar: ,
-	// 	userIsAuthor: false,
-
-	// })
 	//State
 	const [userIsAuthor, setUserIsAuthor] = React.useState(false);
 
@@ -80,9 +75,6 @@ const Comment: FunctionComponent<commentProps> = ({
 				setUserIsAuthor(true);
 			} else setUserIsAuthor(false);
 		});
-		return () => {
-			// setUserIsAuthor(false);
-		};
 	}, [comment.author.id, token]);
 
 	const deleteComment = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -102,26 +94,27 @@ const Comment: FunctionComponent<commentProps> = ({
 			.then(res => res.json())
 			.then(res => {
 				if (res.success) {
-					// setUserIsAuthor(false);
 					updateCommentArray("delete", res.id);
-					// checkUserPrivileges();
 				} else console.log(res);
 			});
 	};
 	const dateComparison = (date: number) => {
-		let current = Date.now();
-		let difference = current - date;
-		let diffHours = Math.floor(difference /(1000 * 60 * 60) % 60);
-		if (diffHours >= 24) {
-			let days = Math.floor(diffHours / 24);
-			if (days >= 7){
-				return Math.floor(days / 7) + "w"
-			}
-			return Math.floor(diffHours / 24) + "d"
-		} else if(diffHours < 1) {
-			return Math.floor(difference / (1000 * 60) % 60) + "m"
+		const current = Date.now();
+		const difference = current - date;
+		const diffMins = difference / 60000;
+		if (diffMins < 60) {
+			return Math.floor(diffMins) + "m";
+		} else {
+			let diffHours = diffMins / 60;
+			if (diffHours >= 24) {
+				let days = Math.floor(diffHours / 24);
+				if (days >= 7){
+					return Math.floor(days / 7) + "w"
+				}
+				return Math.floor(diffHours / 24) + "d"
+			} 
+			return Math.floor(diffHours) +"h"
 		}
-		return diffHours + "h";
 	}
 	return (
 		<div className={classes.root + " fade-in"}>

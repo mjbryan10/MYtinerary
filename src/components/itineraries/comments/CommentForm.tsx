@@ -93,7 +93,6 @@ function CommentForm(props: any) {
 					{errors.text.length ? errors.text : null}
 				</FormHelperText>
 			</FormControl>
-			{/* <input type="text" onChange={handleChange("text")} placeholder="Your comment..." /> */}
 			<SubmitButton loading={pending} success={success} />
 		</form>
 	);

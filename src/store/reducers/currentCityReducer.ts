@@ -29,6 +29,7 @@ export default function citiesReducer(
 		case CURRENT_CITY_ERROR:
 			return {
 				loading: false,
+				city: {error: true},
 				error: action.payload,
 			};
 		case RESET_CURRENT_CITY:

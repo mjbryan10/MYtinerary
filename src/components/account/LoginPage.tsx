@@ -59,8 +59,6 @@ function LoginPage(props: any) {
 	//FUNCTIONS:
 	const handleValueChange = (prop: keyof State, newValue: any) => {
 		setValues({ ...values, [prop]: newValue });
-		//Change below: due to UX
-		// setErrors({ ...errors, [prop]: "" });
 		setErrors({ email: "", password: "" });
 	};
 	const handleChange = (prop: keyof State) => (
@@ -167,5 +165,3 @@ const mapDispatchToProps = (dispatch: any) =>
 		dispatch
 	);
 export default connect(mapStatetoProps, mapDispatchToProps)(LoginPage);
-
-//ADD REDUX PROPS and FUNCTIONS

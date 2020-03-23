@@ -36,7 +36,7 @@ const initialState: State = {
 	page: 0,
 	count: 0,
 };
-//TYPES
+//ACTION TYPES
 const PENDING = "PENDING";
 const SUCCESS = "SUCCESS";
 const FAIL = "FAIL";
@@ -78,7 +78,6 @@ const changePageAction = (command: string) => {
 		};
 	}
 };
-
 function reducer(state: any, action: any) {
 	switch (action.type) {
 		case PENDING:
@@ -135,10 +134,11 @@ function reducer(state: any, action: any) {
 			throw new Error();
 	}
 }
+
+//COMPONENT:
 function Comments(props: any) {
 	const classes = useStyles();
 	const { loggedIn, itinId } = props;
-
 	const [comments, dispatch] = useReducer(reducer, initialState);
 
 	useEffect(() => {

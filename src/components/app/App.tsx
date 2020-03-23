@@ -21,12 +21,11 @@ import { bindActionCreators } from "redux";
 //THEME FOR APP
 import { createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
-// import { userLoggedIn } from "../../store/actions/loginActions";
 const theme = createMuiTheme({
 	spacing: 8,
 	palette: {
 		primary: {
-			//Dont forget to change on variables.scss also
+			//NOTE: Don't forget to change on variables.scss also
 			// main: "#4a90ff", // Blue
 			// main: "#394e56", //Grey
 			main: "#dc2b00", // Red

@@ -74,7 +74,6 @@ function CreateAccount() {
 		event.preventDefault();
 		setIsPosting(true);
 		postUser()
-			//delete below for non async await ----
 			.then(res => {
 				if (res.hasOwnProperty("errors")) {
 					updateErrors(res.errors);
@@ -94,7 +93,6 @@ function CreateAccount() {
 				setIsPosting(false);
 				setErrors(err);
 			});
-		//---
 	};
 	async function postUser() {
 		const { email, password } = values;

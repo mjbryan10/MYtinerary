@@ -30,16 +30,17 @@ export function resetCurrentCity() {
 }
 
 export function fetchCurrentCity(cityName: string) {
-	//TODO: include fall back if city not found
 	return (dispatch: any) => {
 		dispatch(currentCityRequest());
 		fetch(`https://my-itinerary-demo.herokuapp.com/citiesAPI/${cityName}`)
 			.then(res => res.json())
 			.then(res => {
 				if (res.error) {
+					dispatch(currentCityError(res.error));
 					throw res.error;
+				} else {
+					dispatch(currentCitySuccess(res));
 				}
-				dispatch(currentCitySuccess(res));
 			})
 			.catch(err => dispatch(currentCityError(err.message)));
 	};

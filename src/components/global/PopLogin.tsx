@@ -12,21 +12,11 @@ interface State {
 }
 
 const AlertDialog: React.FunctionComponent<State> = ({ open, handlePopLogin }) => {
-	// const [open, setOpen] = React.useState(false);
-
-	// const handleClickOpen = () => {
-	// 	handlePopLogin(true);
-	// };
-
 	const handleClose = () => {
 		handlePopLogin(false);
 	};
-
 	return (
 		<div>
-			{/* <Button variant="outlined" color="primary" onClick={handleClickOpen}>
-				Open alert dialog
-			</Button> */}
 			<Dialog
 				open={open}
 				onClose={handleClose}
