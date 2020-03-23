@@ -23,7 +23,7 @@ export function fetchAuthorsFailure(error: string): object {
 export function fetchAuthors(authorId: string) {
 	return (dispatch: any) => {
 		dispatch(fetchAuthorsRequest());
-		fetch(`http://localhost:5000/authorsAPI/${authorId}`) //TODO: NOT YET ROUTED
+		fetch(`https://my-itinerary-demo.herokuapp.com/authorsAPI/${authorId}`)
 			.then(res => res.json())
 			.then(res => {
 				if (res.error) {

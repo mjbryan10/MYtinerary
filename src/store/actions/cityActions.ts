@@ -26,7 +26,7 @@ export function fetchCitiesError(error: string) {
 export const fetchTopCities = () => {
 	return (dispatch: any) => {
 		dispatch(fetchCitiesRequest());
-		fetch("http://localhost:5000/citiesAPI/top")
+		fetch("https://my-itinerary-demo.herokuapp.com/citiesAPI/top")
 			.then(res => res.json())
 			.then(res => {
 				dispatch(fetchCitiesSuccess(res));
@@ -41,7 +41,7 @@ export const fetchTopCities = () => {
 export const fetchAllCities = (token: string) => {
 	return (dispatch: any) => {
 		dispatch(fetchCitiesRequest());
-		fetch("http://localhost:5000/citiesAPI/all", {
+		fetch("https://my-itinerary-demo.herokuapp.com/citiesAPI/all", {
 			method: "get",
 			headers: {
 				"Content-type": "application/x-www-form-urlencoded",

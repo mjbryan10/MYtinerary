@@ -39,7 +39,7 @@ const AuthorAvatar: FunctionComponent<authorAvatarProps> = ({
 	const [authorLoading, setAuthorLoading] = useState(true);
 	const fetchAuthor = () => {
 		setAuthorLoading(true);
-		fetch(`http://localhost:5000/authorsAPI/${authorId}`)
+		fetch(`https://my-itinerary-demo.herokuapp.com/authorsAPI/${authorId}`)
 			.then(res => res.json())
 			.then(res => {
 				setAuthor(res);

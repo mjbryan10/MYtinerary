@@ -143,7 +143,7 @@ function Comments(props: any) {
 
 	useEffect(() => {
 		function getFetchUrl() {
-			return `http://localhost:5000/commentsAPI/${itinId}/${comments.page}`;
+			return `https://my-itinerary-demo.herokuapp.com/commentsAPI/${itinId}/${comments.page}`;
 		}
 		async function fetchComments() {
 			dispatch(pendingAction());

@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { HashRouter, Route, Switch } from "react-router-dom";
 import "./App.scss";
 
 //COMPONENTS
@@ -42,13 +42,14 @@ function App() {
 		updateLoginStatus();
 	});
 	return (
-		<BrowserRouter>
+		<HashRouter basename="/">
 			<div className="App">
 				<ThemeProvider theme={theme}>
 					<Nav />
 					<div className="page-content">
 						<Switch>
 							<Route exact path="/" component={Landing} />
+							<Route exact path="/MYtinerary" component={Landing} />
 							<Route path="/cities" component={Cities} />
 							<Route path="/itineraries/:cityName" component={CityItineraries} />
 							<Route path="/favourites" component={Favourites} />
@@ -60,7 +61,7 @@ function App() {
 					<Footer />
 				</ThemeProvider>
 			</div>
-		</BrowserRouter>
+		</HashRouter>
 	);
 }
 const mapDispatchToProps = (dispatch: any) =>

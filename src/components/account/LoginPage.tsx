@@ -105,7 +105,7 @@ function LoginPage(props: any) {
 		}
 	};
 	async function submitLogin(email: string, password: string): Promise<any> {
-		let response = await fetch("http://localhost:5000/usersAPI/login", {
+		let response = await fetch("https://my-itinerary-demo.herokuapp.com/usersAPI/login", {
 			method: "post",
 			headers: {
 				Accept: "application/json, text/plain, */*",

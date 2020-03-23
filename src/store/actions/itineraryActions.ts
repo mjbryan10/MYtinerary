@@ -31,7 +31,7 @@ export function resetItineraries() {
 export function fetchCurrentCityItineraries(cityId: string) {
 	return (dispatch: any) => {
 		dispatch(fetchItinerariesRequest());
-		fetch(`http://localhost:5000/itinerariesAPI/city/${cityId}`) //TODO: NOT YET ROUTED
+		fetch(`https://my-itinerary-demo.herokuapp.com/itinerariesAPI/city/${cityId}`) //TODO: NOT YET ROUTED
 			.then(res => res.json())
 			.then(res => {
 				if (res.error) {
@@ -44,7 +44,7 @@ export function fetchCurrentCityItineraries(cityId: string) {
 }
 
 async function fetchItinerarybyId(itinId: string, onlyOnce = true) {
-	return await fetch(`http://localhost:5000/itinerariesAPI/itinerary/${itinId}`) //TODO: NOT YET ROUTED
+	return await fetch(`https://my-itinerary-demo.herokuapp.com/itinerariesAPI/itinerary/${itinId}`) //TODO: NOT YET ROUTED
 		.then(res => res.json())
 		.then(res => {
 			console.log(res);

@@ -34,9 +34,3 @@ export default function citiesReducer(state: object = initialCitiesState, action
 			return state;
 	}
 }
-
-
-//DEPRICATED
-// export const getCities = (state: any) => state.cities;
-// export const getCitiesRequest = (state: any) => state.loading;
-// export const getCitiesError = (state: any) => state.error;

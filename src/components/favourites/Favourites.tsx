@@ -28,7 +28,7 @@ function Favourites(props: any) {
 		resetItineraries();
 		async function fetchUserFavourites() {
 			setFavPending(true);
-			let res = await fetch("http://localhost:5000/usersAPI/user/favourites", {
+			let res = await fetch("https://my-itinerary-demo.herokuapp.com/usersAPI/user/favourites", {
 				method: "get",
 				headers: {
 					"x-api-key": token,

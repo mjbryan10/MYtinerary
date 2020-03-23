@@ -96,40 +96,9 @@ function CreateAccount() {
 			});
 		//---
 	};
-	// function postUser() {
-	// 	const { email, password } = values;
-	// 	fetch("http://localhost:5000/usersAPI/", {
-	// 		method: "post",
-	// 		headers: {
-	// 			Accept: "application/json, text/plain, */*",
-	// 			"Content-Type": "application/json",
-	// 		},
-	// 		body: JSON.stringify({ email: email, password: password }),
-	// 	})
-	// 		.then(res => res.json())
-	// 		.then(res => {
-	// 			if (res.hasOwnProperty("errors")) {
-	// 				updateErrors(res.errors);
-	// 			} else if (res.hasOwnProperty("duplicate")) {
-	// 				setDuplicateEmail({
-	// 					isDuplicate: res.duplicate,
-	// 					msg: res.msg,
-	// 				});
-	// 			} else {
-	// 				setSuccess(true);
-	// 			}
-	// 			setIsPosting(false);
-	// 		})
-	// 		.catch(err => {
-	// 			console.error(err);
-	// 			setSuccess(false);
-	// 			setIsPosting(false);
-	// 			setErrors(err);
-	// 		});
-	// }
 	async function postUser() {
 		const { email, password } = values;
-		let response = await fetch("http://localhost:5000/usersAPI/create", {
+		let response = await fetch("https://my-itinerary-demo.herokuapp.com/usersAPI/create", {
 			method: "post",
 			headers: {
 				Accept: "application/json, text/plain, */*",

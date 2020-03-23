@@ -33,7 +33,7 @@ export function fetchCurrentCity(cityName: string) {
 	//TODO: include fall back if city not found
 	return (dispatch: any) => {
 		dispatch(currentCityRequest());
-		fetch(`http://localhost:5000/citiesAPI/${cityName}`)
+		fetch(`https://my-itinerary-demo.herokuapp.com/citiesAPI/${cityName}`)
 			.then(res => res.json())
 			.then(res => {
 				if (res.error) {
