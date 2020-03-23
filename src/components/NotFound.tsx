@@ -6,7 +6,6 @@ export default function NotFound() {
         flexFlow: "column",
         alignItems: "center",
         justifyContent: "center"
-        //https://media.giphy.com/media/l2JJKs3I69qfaQleE/giphy.gif --ALT
     }
     return (
         <div style={styles}>

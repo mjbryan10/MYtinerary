@@ -1,5 +1,4 @@
 import React from "react";
-// import { NavigateBefore, NavigateNext } from '@material-ui/icons';
 import Button from "@material-ui/core/Button";
 import NavigateNextIcon from "@material-ui/icons/NavigateNext";
 import NavigateBeforeIcon from "@material-ui/icons/NavigateBefore";
@@ -19,7 +18,6 @@ const useStyles = makeStyles(() =>
          "& > *": {
             margin: "0 2px",
          },
-         // color: "blue",
       },
       buttonControls: {
 			height: "25px",
@@ -53,7 +51,6 @@ export default function DestinationControls(props: any) {
             color="secondary"
             onClick={handleClick}
             value="left"
-            // startIcon={<NavigateBeforeIcon />}
             className={classes.buttonControls}
          >
             <NavigateBeforeIcon />
@@ -80,7 +77,6 @@ export default function DestinationControls(props: any) {
             color="secondary"
             onClick={handleClick}
             value="right"
-            // startIcon={<NavigateNextIcon />}
             className={classes.buttonControls}
          >
             <NavigateNextIcon />

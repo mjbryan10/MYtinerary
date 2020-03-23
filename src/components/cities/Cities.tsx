@@ -43,7 +43,6 @@ const Cities = (props: any) => {
 				<div className="cards-container">
 					{filterCities().map((city: any, index: number) => (
 						<CityCard
-							// className="city-card"
 							cityName={city.name}
 							cityImg={city.img}
 							imgCredit={city.img_credit}

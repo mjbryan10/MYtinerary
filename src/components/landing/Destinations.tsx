@@ -39,7 +39,6 @@ function Destinations(props: any) {
    const [slideLength, setSlideLength] = useState<number>(0);
    const [slideIndex, setSlideIndex] = useState<number>(0);
    let numPerSlide = 4; //Change this to set how many cities appear per slide
-   // let maxCards = 12; //Change this to set array length
 
    //FUNCTIONS
    const calcNumOfSlides = (): number => {

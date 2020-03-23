@@ -67,5 +67,3 @@ const AuthorAvatar: FunctionComponent<authorAvatarProps> = ({
 	}
 };
 export default AuthorAvatar;
-
-//NOTE THIS MAY NEED TO BE UPDATED TO USERS IN UPCOMING UPDATES

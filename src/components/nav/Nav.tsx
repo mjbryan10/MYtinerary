@@ -37,13 +37,9 @@ const useStyles = makeStyles((theme: Theme) =>
 			marginRight: theme.spacing(2),
 		},
 		bar: {
-			// background: 'linear-gradient(45deg, #dc2b00 30%, #FF8E53 90%)',
 			display: "flex",
 			justifyContent: "space-between",
 		},
-		// title: {
-		// 	flexGrow: 1,
-		// },
 	})
 );
 
@@ -58,10 +54,7 @@ function Nav(props: any) {
 		token,
 		details,
 		updateLoginStatus,
-		// logUserOut,
 		fetchCurrentUser,
-		// expired,
-		// error,
 		userSuccess,
 	} = props;
 
@@ -76,7 +69,6 @@ function Nav(props: any) {
 		event.preventDefault();
 		handleClose(event);
 		logOut();
-		// logUserOut();
 	};
 	const logOut = (): void => {
 		window.localStorage.removeItem("session_token");
@@ -88,12 +80,6 @@ function Nav(props: any) {
 			fetchCurrentUser(token);
 		}
 	}, [fetchCurrentUser, loggedIn, token, updateLoginStatus]);
-	// useEffect(() => {
-	// 	if (expired) {
-	// 		alert(error);
-	// 		logOut();
-	// 	}
-	// });
 	return (
 		<div className={classes.root}>
 			<AppBar position="static" style={{ margin: 0 }} color="secondary">
@@ -147,7 +133,6 @@ const mapStateToProps = (state: any): object => {
 		loggedIn: state.login.loggedIn,
 		token: state.login.token,
 		details: state.currentUser.details,
-		// expired: state.currentUser.expired,
 		userSuccess: state.currentUser.success,
 		error: state.currentUser.error,
 	};
@@ -156,7 +141,6 @@ const mapDispatchToProps = (dispatch: any) =>
 	bindActionCreators(
 		{
 			updateLoginStatus,
-			// logUserOut,
 			fetchCurrentUser: fetchCurrentUserAction,
 		},
 		dispatch

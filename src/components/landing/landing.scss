@@ -1,14 +1,11 @@
 @import "../../styles/variables.scss";
 header {
-    // max-width: 100vw;
     display: flex;
     justify-content: center;
     margin: 1em auto;
     h1 {
         min-width: 320px;
         min-height: 130px;
-        // width:100%;
-        // height: 100%;
         background-image: url('./MYtineraryLogo.png');
         background-size: contain;
         background-repeat: no-repeat;
@@ -46,7 +43,6 @@ header {
 //Destinations:
 .city-card {
     flex: 1 0 40%;
-    // height:40%;
     min-width:100px;
     min-height:100px;
     margin: 0.2rem;
@@ -59,9 +55,6 @@ header {
         width: 100%;
         align-items: center;
         justify-content: center;
-        // top: 0;
-        // right:0;
-        // bottom: 0;
     }
 }
 .destination-controls {
